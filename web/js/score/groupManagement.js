@@ -33,10 +33,11 @@ $(function () {
 
     var searchData = null;
 
+    var enCodeGroup = "";
 
     // 查询按钮
     $("#query_button").click(function () {
-        var enCodeGroup;
+
 
         searchData = {
             courseKey: getListSelectK("group_choose_class"),
@@ -75,30 +76,31 @@ $(function () {
     });
 
     var search = function (searchData, enCodeGroup) {
-
-        console.log(enCodeGroup);
-
         if (!query_flag) {
             return;
         }
-        //query_flag = false;
+        query_flag = false;
 
         // 数据源
         var source = {
             // 设置查询路径
-            //url: "./queryGroups.do",
+            url: "./queryGroups.do",
             datatype: "json",
-            id: 'id',
-            data: searchData,
+            // id: 'group_id', 此处注释是因为如果是同一个id的就去重了
+            data: {
+                id: enCodeGroup
+            },
             datafields: [
+                // 小组编号
+                {name: 'group_id', type: 'String'},
                 // 组号
-                {name: 'id', type: 'String'},
+                {name: 'group_num', type: 'String'},
                 // 小组组长
-                {name: 'groupLeader', type: 'String'},
+                {name: 'stu_is_leader', type: 'String'},
                 // 组员姓名
-                {name: 'groupMember', type: 'String'},
+                {name: 'stu_is_member', type: 'String'},
                 // 小组成绩
-                {name: 'groupScore', type: 'String'},
+                {name: 'group_score', type: 'String'},
             ]
         };
 
@@ -111,22 +113,21 @@ $(function () {
             source: dataAdapter,
             // 设置不可分页
             theme: jqx_default_theme,
-            editable: true,
-            editmode: 'selectedrow',
+            editable: false,
             altrows: true,
             showtoolbar: true,
             selectionmode: 'singlerow',
             columns: [
-                {text: '组号', dataField: 'id', align: "center", cellsAlign: 'center', width: "10%"},
-                {text: '小组组长', dataField: 'groupLeader', align: "center", cellsAlign: 'center', width: "15%"},
-                {text: '组员姓名', dataField: 'groupMember', align: "center", cellsAlign: 'center', width: "55%"},
-                {text: '小组成绩', dataField: 'groupScore', align: "center", cellsAlign: 'center', width: "20%"},
+                {text: '组号', dataField: 'group_num', align: "center", cellsAlign: 'center', width: "10%"},
+                {text: '小组组长', dataField: 'stu_is_leader', align: "center", cellsAlign: 'center', width: "15%"},
+                {text: '组员姓名', dataField: 'stu_is_member', align: "center", cellsAlign: 'center', width: "55%"},
+                {text: '小组成绩', dataField: 'group_score', align: "center", cellsAlign: 'center', width: "20%"},
             ],
             rendered: function () {
                 $(":text").jqxInput({theme: jqx_default_theme, width: '30%', height: "25px"});
-
                 // 分组编号
                 var groups = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+
                 $("#group_num").jqxDropDownList({
                     placeHolder: "小组号",
                     source:groups,
@@ -162,17 +163,24 @@ $(function () {
                 deleteButton.find('div:first').addClass('jqx-icon-delete');
                 deleteButton.jqxTooltip({position: 'bottom', content: "删除"});
 
-                // 获取表格中选中行的index
-                function getRowIndex() {
-                    return $('#dataTable').jqxGrid('getselectedrowindex');
+                function reDrawGrid() {
+                    destroyGrid("dataTable");
+                    search(searchData, enCodeGroup);
                 }
 
-                var selectRowIndex = getRowIndex();
+                // 获取表格中选中行的数据
+                var rowSelectData;
 
-                // 当没有选中状态的时候, 删除按钮不可用
-                if(selectRowIndex == -1) {
-                    deleteButton.jqxButton({disabled: true});
-                }
+                $('#dataTable').on('rowselect', function (event) {
+                    var args = event.args;
+                    rowSelectData = args.row;
+                   // 当没有选中状态的时候, 删除按钮不可用
+                   if (rowSelectData.boundindex + 1) {
+                       deleteButton.jqxButton({disabled: false});
+                   } else {
+                       deleteButton.jqxButton({disabled: true});
+                   }
+                });
 
                 // 查询学生, 需要根据选择这门课程的学生来进行筛选
                 $.get(
@@ -246,7 +254,27 @@ $(function () {
                         return;
                     }
                     createGroupWindow('add');
-                })
+                });
+
+                deleteButton.unbind('click').click(function () {
+                   $bs.confirm("确定删除该条记录吗 ?", function () {
+                       $.post(
+                           './deleteRowByIdAndNum.do',
+                           {
+                               id:  $("#group_id").val(),
+                               num: rowSelectData.group_num
+                           },
+                           function (rtn) {
+                               if (rtn.status == 'success') {
+                                   $bs.success(rtn.msg);
+                               } else {
+                                   $bs.error(rtn.msg);
+                               }
+                               reDrawGrid();
+                           }
+                       );
+                   })
+                });
 
                 $("#createSubmit").unbind('click').click(function () {
 
@@ -278,6 +306,7 @@ $(function () {
                                 return;
                             }
                             $bs.success(rtn.msg);
+                            reDrawGrid();
                         }
                     );
 
@@ -287,7 +316,7 @@ $(function () {
                 })
             },
         }).on("bindingcomplete", function () {
-            console.log("complete");
+            $("#group_id").val(enCodeGroup);
             $('#dataTable').jqxGrid('refresh');
             query_flag = true;
         });

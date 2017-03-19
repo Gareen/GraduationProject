@@ -1,9 +1,11 @@
 package cn.sams.service.score;
 
 import cn.sams.common.util.Chk;
+import cn.sams.common.util.CollectionUtil;
 import cn.sams.common.util.SelectModelUtil;
 import cn.sams.dao.score.GroupManagementDao;
 import cn.sams.entity.Course;
+import cn.sams.entity.Group;
 import cn.sams.entity.Student;
 import cn.sams.entity.Teacher;
 import cn.sams.entity.commons.ReturnObj;
@@ -13,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Fanpeng on 2017/2/27.
@@ -49,7 +49,9 @@ public class GroupManagementService {
     }
 
     public List<SelectModel> queryStu() {
+
         List<Student> students = groupManagementDao.queryStu();
+
         if (students == null) {
             return new ArrayList<>();
         }
@@ -94,7 +96,35 @@ public class GroupManagementService {
         return groupManagementDao.queryTeacherName(course.getCou_tea_no());
     }
 
+    public List<Group> queryGroups(HttpServletRequest req) {
+        String group_id = req.getParameter("id");
 
+        if (! Chk.spaceCheck(group_id)) {
+            return new ArrayList<>();
+        }
+        List<Group> groups = groupManagementDao.queryGroupsByGroupId(group_id);
+        Collections.sort(groups, (Group g1, Group g2) -> g1.getGroup_num().compareTo(g2.getGroup_num()));
+        return groups;
+    }
+
+
+    public ReturnObj deleteRowByIdAndNum(HttpServletRequest req) {
+        String groupId = req.getParameter("id");
+        String groupNum = req.getParameter("num");
+
+        if (! Chk.spaceCheck(groupId) || ! Chk.spaceCheck(groupNum)) {
+            return new ReturnObj("error", "删除异常 !", null);
+        }
+
+        int count = groupManagementDao.deleteRowByIdAndNum(groupId, groupNum);
+
+        if (count == 0) {
+            return new ReturnObj("error", "该条记录可能已被删除, 请刷新重试 !", null);
+        } else {
+            return new ReturnObj("success", "删除记录成功 !", null);
+        }
+
+    }
 
     public ReturnObj saveorupdate(HttpServletRequest req) {
         // jud判断是新增还是修改后保存
@@ -118,8 +148,17 @@ public class GroupManagementService {
             String group_id = getEncodeGroupid(req);
 
             if (! Chk.spaceCheck(group_id)) {
-                System.out.println(group_id);
                 return new ReturnObj("", "", null);
+            }
+
+            List<Group> groups = groupManagementDao.queryGroupsByGroupId(group_id);
+            for (Group p : groups) {
+                if (group_num.equals(p.getGroup_num())) {
+                    return new ReturnObj("error", "添加失败: 小组号重复 !", null);
+                }
+                if (group_leader.equals(p.getStu_is_leader())) {
+                    return new ReturnObj("error", "添加失败: 小组长重复 !", null);
+                }
             }
 
             int count = groupManagementDao.save(group_id, group_leader, group_member, group_num, group_score);

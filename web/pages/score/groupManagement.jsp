@@ -103,6 +103,8 @@
                             <table class="form" width="100%" id="info_form">
                                 <%--新增和更新判断--%>
                                 <input type="hidden" id="jud">
+                                <%-- 小组编码 --%>
+                                <input type="hidden" id="group_id">
                                 <tr>
                                     <td class='text-right'>小组编号:&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                     <td>

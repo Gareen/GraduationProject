@@ -1,6 +1,7 @@
 package cn.sams.controller.score;
 
 import cn.sams.common.util.Chk;
+import cn.sams.entity.Group;
 import cn.sams.entity.Teacher;
 import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
@@ -77,6 +78,17 @@ public class GroupManagementController {
     }
 
 
+    @RequestMapping("queryGroups.do")
+    @ResponseBody
+    public List<Group> queryGroups(HttpServletRequest req) {
+        return groupManagementService.queryGroups(req);
+    }
+
+    @RequestMapping("deleteRowByIdAndNum.do")
+    @ResponseBody
+    public ReturnObj deleteRowByIdAndNum(HttpServletRequest req) {
+        return groupManagementService.deleteRowByIdAndNum(req);
+    }
 
     @RequestMapping("saveorupdate.do")
     @ResponseBody

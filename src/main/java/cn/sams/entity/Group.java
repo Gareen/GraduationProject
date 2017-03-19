@@ -65,12 +65,15 @@ public class Group implements Serializable {
 
         Group group = (Group) o;
 
-        return group_id != null ? group_id.equals(group.group_id) : group.group_id == null;
+        if (group_id != null ? !group_id.equals(group.group_id) : group.group_id != null) return false;
+        return group_num != null ? group_num.equals(group.group_num) : group.group_num == null;
     }
 
     @Override
     public int hashCode() {
-        return group_id != null ? group_id.hashCode() : 0;
+        int result = group_id != null ? group_id.hashCode() : 0;
+        result = 31 * result + (group_num != null ? group_num.hashCode() : 0);
+        return result;
     }
 
     @Override

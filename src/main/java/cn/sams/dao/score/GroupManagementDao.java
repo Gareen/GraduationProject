@@ -1,6 +1,7 @@
 package cn.sams.dao.score;
 
 import cn.sams.entity.Course;
+import cn.sams.entity.Group;
 import cn.sams.entity.Student;
 import cn.sams.entity.Teacher;
 import org.springframework.stereotype.Repository;
@@ -36,5 +37,29 @@ public interface GroupManagementDao {
      */
     Teacher queryTeacherName(String id);
 
+    /**
+     * 根据分组id来查询分组
+     * @param groupId
+     * @return
+     */
+    List<Group> queryGroupsByGroupId(String groupId);
+
+    /**
+     * 删除分组记录
+     * @param groupId
+     * @param groupNum
+     * @return
+     */
+    Integer deleteRowByIdAndNum(String groupId, String groupNum);
+
+    /**
+     * 保存新增记录
+     * @param groupId
+     * @param stuLeader
+     * @param stuMem
+     * @param groupNum
+     * @param score
+     * @return
+     */
     Integer save(String groupId, String stuLeader, String stuMem, String groupNum, String score);
 }
