@@ -1,0 +1,641 @@
+@charset "utf-8";
+.modal{
+    top:25%;
+}
+
+.modal .icon {
+    width: 5%;
+    /*height: 30px;*/
+    font-size: 30px;
+    line-height: 30px;
+    /*font-size: 150%;*/
+    float: left;
+}
+
+.modal .msg{
+    width: 95%;
+    float: left;
+    /*height: 30px;*/
+    line-height: 30px;
+    font-size: 13px;
+    padding:  0 10px 10px;
+
+}
+
+.modal .icon.fa-check-circle{
+    color : #00CC00;
+}
+
+.modal .icon.fa-exclamation-circle{
+    color: #FFA500;
+}
+
+.modal .icon.fa-question-circle{
+    color: #0044cc;
+}
+
+.modal .icon.fa-times-circle{
+    color: #FF0000;
+}
+
+
+
+
+
+.clear {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+
+.clearfix:before, .clearfix:after {
+    content: '.';
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+    height: 0;
+}
+
+.clearfix:after{
+    clear: both;
+}
+.aiis{
+    width: 50px;
+    text-align: center;
+    background: #008FBF;
+    cursor: pointer;
+}
+.aiis span{
+    font-size: 20px;
+    color:#FFF;
+    line-height: 50px;
+}
+
+.form-group>div.fl{
+    height: 34px;
+    line-height: 33px;
+    padding-right: 4px;
+}
+
+/*
+  The following zoom:1 rule is specifically for IE6 + IE7.
+  Move to separate stylesheet if invalid CSS is a problem.
+*/
+
+.clearfix {
+    zoom: 1;
+}
+
+.fl{
+    float:left;
+}
+.fr{
+    float:right;
+}
+
+.ml5 {
+    margin-left: 5px;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.mr5 {
+    margin-right: 5px;
+}
+
+.mr10 {
+    margin-right: 10px;
+}
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Microsoft YaHei','Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', Tahoma, 'Hiragino Sans GB', STHeiti;
+}
+
+body {
+    font-size: 12px;
+}
+
+
+#view-top{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:50px;
+    line-height: 50px;
+    background: #0099cc;
+    font-size: 13px;
+    /*padding:  0 50px 0 0;*/
+}
+#view-content{
+    position:absolute;
+    top:50px;
+    right:0;
+    bottom:0;
+    left:0;
+    overflow:hidden;
+    width:100%;
+}
+
+#view-content-left{
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width:180px;
+    background:#293038;
+    color:#fff;
+
+}
+
+
+#view-content-left-sub{
+    position:absolute;
+    top:0;
+    left: 180px;
+    bottom:0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width:180px;
+    background:#EAEDF1;
+    color:#000;
+}
+
+
+#left-sub-title{
+    background: #D9DEE4;
+    height: 70px;
+    font-weight: bold;
+    line-height: 70px;
+    padding-left: 30px;
+}
+
+#view-content-main{
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:360px;
+    overflow:auto;
+    /*width: 100%;*/
+    background:#fff;
+}
+
+a{
+    color: #06C;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #039;
+}
+
+
+ul.sidebar-nav{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    overflow: hidden;
+    /*font-size: 16px;*/
+}
+
+
+.sidebar-nav li.nav-item{
+    font-size: 12px;
+    padding: 0;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+.sidebar-nav .nav-icon{
+    /*border: 1px solid #000;*/
+    height: 40px;
+    text-align: center;
+    font-size: 17px;
+    float: left;
+    /*margin-top: 2px;*/
+    line-height: 40px;
+}
+
+.sidebar-nav.nav1 .nav-icon{
+    width: 50px;
+    color: #aeb9c2;
+}
+
+.sidebar-nav.nav2 .nav-icon{
+    font-size: 15px;
+    width: 30px;
+    color: #333;
+}
+
+
+.sidebar-nav .nav-title{
+    float: left;
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+
+.sidebar-nav.nav1 .nav-title{
+    color: #fff;
+    width: 110px;
+}
+
+.sidebar-nav.nav2 .nav-title{
+    width: 130px;
+    color: #000;
+
+}
+
+
+.sidebar-nav.nav1 li.nav-item a{
+    display: block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    color: #FFFFFF;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.sidebar-nav.nav1 li.nav-item.active a {
+    background: #0099cc;
+}
+
+.sidebar-nav.nav1 li.nav-item.active .nav-icon , .sidebar-nav.nav1 li.nav-item:hover .nav-icon {
+    color: #FFF;
+}
+
+
+.sidebar-nav.nav1 li.nav-item:hover{
+    background:#37424F;
+}
+
+
+.sidebar-nav.nav2 li.nav-item a{
+    display: block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    color: #333;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.sidebar-nav.nav2 li.nav-item.active>a {
+    background: #FFF;
+}
+
+.sidebar-nav.nav2 li.nav-item.active .nav-icon , .sidebar-nav.nav2 li.nav-item:hover .nav-icon {
+    color: #333;
+}
+
+
+.sidebar-nav.nav2 li:hover{
+    background:#F4F6F8;
+}
+
+
+#nav1-switch{
+    font-size: 18px;
+    width: 100%;
+    background: #22282E;
+    /*padding: 5px;*/
+    text-align: center;
+    cursor: pointer;
+    color: #aaa;
+    height: 30px;
+    line-height: 30px;
+}
+
+
+#nav2-switch-left{
+    z-index: 20000;
+    cursor: pointer;
+    position: absolute;
+    top:45%;
+    padding-left: 7px;
+    height: 50px;
+    width: 0;
+    background: transparent;
+    border-left: 15px solid #D9DEE4;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    color: #333;
+    line-height: 35px;
+    font-size: 120%;
+    transition : border 0.1s ease-in;
+    text-align: left;
+}
+
+#nav2-switch-left *{
+    margin-left: -17px;
+}
+
+#nav2-switch-left:hover{
+    border-left: 20px solid #D9DEE4;
+}
+
+#nav2-switch-right{
+    cursor: pointer;
+    position: absolute;
+    /*padding-left: 51px;*/
+    top:45%;
+    right: 0;
+    height: 50px;
+    width: 0;
+    background: transparent;
+    border-right: 15px solid #F7F7F7;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    color: #333;
+    line-height: 35px;
+    font-size: 120%;
+    transition : border 0.1s ease-in;
+}
+
+
+#nav2-switch-right:hover{
+    border-right: 20px solid #F7F7F7;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.topbar-nav span.nav-title{
+     padding:0 10px;
+ }
+.topbar-nav span.nav-title.nav-title-large{
+    font-size: 110%;
+}
+
+.topbar-nav .nav-icon{
+    margin-right : 10px;
+    font-size: 16px;
+    /*padding: 0 6px ;*/
+    line-height: 32px;
+    top : 3px;
+}
+
+.topbar-nav{
+    color: #FFF;
+    position:relative;
+    /*background-color:#0ba9c9;*/
+    border: 1px solid #008FBF;
+    border-bottom: none;
+    border-top: none;
+    /*margin-right: 100px;*/
+    margin-left: -1px;
+}
+
+
+.topbar-nav ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display:none;
+    line-height:40px;
+    position:absolute;
+    margin-top: 10px ;
+    left:0;
+    top:40px;
+    width:140px;
+    font-size:1em;
+    z-index:9999;
+    overflow: hidden;
+    box-shadow:2px 2px 1px rgba(0,0,0,.2);
+    /*width: 100%;*/
+}
+
+.topbar-nav:hover ul{
+    width: 100%;
+    display:block;
+}
+
+
+.topbar-nav div:hover a{
+    background:#fff;
+    color:#000;
+}
+
+.topbar-nav ul li{
+    padding:0;
+    margin-right:0;
+    margin-bottom: -1px;
+    background:#fff;
+    border:#e9edee 1px solid;
+    text-align: center;
+}
+
+.topbar-nav a{
+    text-decoration: none;
+    display: block;
+    color: #FFF;
+}
+
+.topbar-nav li a{
+    color:#000;
+}
+
+.topbar-nav li:hover a{
+    background:#eee;
+    /*color:#fff;*/
+}
+
+
+
+.topbar-nav .fa-caret-up,.topbar-nav .fa-caret-down{
+    font-size: 15px;
+    padding: 0 5px;
+}
+
+.topbar-nav div:hover .fa-caret-down,.topbar-nav .fa-caret-up{
+    display: none;
+}
+
+.topbar-nav div:hover .fa-caret-up{
+    display: inline;
+}
+
+
+
+.console-title{
+    padding: 16px 0px;
+    min-height: 70px;
+}
+
+.console-title-border {
+    border-bottom: 1px solid #DDD;
+}
+.console-title h5,.console-title h4,.console-title h3,.console-title h2,.console-title h1{
+    display: inline-block;
+    text-indent: 8px;
+    border-left: 2px solid #88B7E0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 8px;
+}
+
+.console-title h5 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.console-title .nav-pills {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.nav-pills li a, .nav-pills li a:focus, .nav-pills li button, .nav-pills li button:focus {
+    padding: 6px 12px;
+    border-radius: 0px;
+    border: 1px solid #D9DEE4;
+    background-color: #D9DEE4;
+    color: #666;
+    line-height: 20px;
+    height: 32px;
+    margin-left: 2px;
+}
+
+.nav-pills li.active a, .nav-pills li.active a:hover, .nav-pills li.active a:focus, .nav-pills li.active button, .nav-pills li.active button:hover, .nav-pills li.active button:focus {
+    border: 1px solid #546478;
+    background-color: #546478;
+    color: #FFFFFF;
+}
+
+.alert {
+    padding: 6px 12px;
+    line-height: 18px;
+    margin-bottom: 6px;
+    border-radius: 0px;
+}
+
+.alert-success {
+    color: #090;
+    background-color: #F2FFEA;
+    border-color: #C7DDB9;
+}
+
+.alert .close {
+    /*margin-top: -5px;*/
+    font-size: 15px;
+}
+
+.margin-top, .margin-top-1 {
+    margin-top: 10px !important;
+}
+
+.btn {
+    font-size: 12px;
+    padding: 8px 16px;
+    height: 32px;
+    line-height: 14px;
+}
+
+.btn-default {
+    color: #333;
+    border: 1px solid #ddd;
+    background-color: #F7F7F7;
+}
+
+.btn-default:hover {
+    border: 1px solid #ddd;
+    background-color: #FFFFFF;
+}
+
+.btn-primary {
+    color: #fff;
+    border: 1px solid #09c;
+    background-color: #09c;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    border: 1px solid #28B5D6;
+    background-color: #28B5D6;
+}
+
+label.control-label {
+    font-weight: normal;
+    font-size: 12px;
+    color: #666;
+}
+
+.tooltip{
+    font-family: 'Microsoft YaHei','Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', Tahoma, 'Hiragino Sans GB', STHeiti;
+    /*font-size :30px;*/
+}
+
+.nav-icon-tooltip{
+    height:34px;
+    line-height: 34px;
+
+}
+
+
+.top-border {
+    border-top: 1px solid #DDD;
+}
+
+.bottom-border {
+    border-bottom: 1px solid #DDD;
+}
+
+.left-border{
+    border-left: 1px solid #DDD;
+}
+
+.right-border {
+    border-right: 1px solid #DDD;
+}
+
+.top-dashed-border {
+    border-top: 2px dashed #DDD;
+}
+
+.bottom-dashed-border {
+    border-bottom: 2px dashed #DDD;
+}
+
+.left-dashed-border{
+    border-left: 2px dashed #DDD;
+}
+
+.right-dashed-border {
+    border-right: 2px dashed #DDD;
+}
+
+.clock{
+    position: absolute;
+    bottom: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+

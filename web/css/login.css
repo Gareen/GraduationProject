@@ -1,0 +1,217 @@
+@charset "utf-8";
+html,body{
+    margin:0px;
+    height:100%;
+}
+
+body {
+    font-family: "Microsoft YaHei";
+    /*font-size: 18px;*/
+    font-weight: 300;
+    color: #333;
+    line-height: 30px;
+    /*text-align: center;*/
+}
+
+
+.bg{
+    /*margin:0px;*/
+    background:url(../images/BG-1.jpg) ;
+    background-size:100% 100%;
+    -moz-background-size: 100% 100%;
+    /*height: 100%;*/
+}
+
+/*自行添加login页面背景logo的属性*/
+.bg .logo {
+    height:320px;
+    width:370px;
+    background:url(../images/BG-6.png) no-repeat ;
+    top: 23%;
+    right: 62%;
+    position: absolute;
+   /* border: 1px solid pink;*/
+}
+
+
+
+strong { font-weight: 500; }
+
+a, a:hover, a:focus {
+    color: #de615e;
+    text-decoration: none;
+    -o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
+}
+
+h1, h2 {
+    margin-top: 10px;
+    font-size: 32px;
+    font-weight: 100;
+    color: #333;
+    line-height: 50px;
+}
+
+h3 {
+    font-size: 22px;
+    font-weight: 300;
+    color: #555;
+    line-height: 30px;
+}
+
+
+/*::-moz-selection { background: #de615e; color: #fff; text-shadow: none; }*/
+/*::selection { background: #de615e; color: #fff; text-shadow: none; }*/
+
+
+
+
+/***** Top content *****/
+
+
+
+.top-content .text {
+    color: #fff;
+}
+
+.top-content .text h1 { color: #fff; }
+
+.top-content .description {
+    margin: 20px 0 10px 0;
+}
+
+.top-content .description p { opacity: 0.8; }
+
+.top-content .description a {
+    color: #fff;
+}
+.top-content .description a:hover,
+.top-content .description a:focus { border-bottom: 1px dotted #fff; }
+
+.form-box {
+    margin-top: 35px;
+}
+
+.form-top {
+    overflow: hidden;
+    padding: 0 25px 15px 20px;
+    background: #444;
+    background: rgba(0, 0, 0, 0.5);
+    /*-moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0;*/
+    text-align: left;
+}
+
+.form-top-left {
+    float: left;
+    width: 75%;
+    padding-top: 20px;
+}
+
+.form-top-left h2 { margin-top: 0; color: #fff; }
+.form-top-left p { opacity: 0.8; color: #fff; }
+
+.form-top-right {
+    float: left;
+    width: 25%;
+    padding-top: 5px;
+    font-size: 65px;
+    color: #fff;
+    line-height: 100px;
+    text-align: right;
+    opacity: 0.4;
+}
+
+.form-bottom {
+    padding: 35px 25px 35px 25px;
+    background: #444;
+    background: rgba(0, 0, 0, 0.4);
+    /*-moz-border-radius: 0 0 4px 4px; -webkit-border-radius: 0 0 4px 4px; border-radius: 0 0 4px 4px;*/
+    text-align: left;
+}
+
+
+
+.form-bottom button.btn {
+    width: 100%;
+}
+
+.form-bottom .input-error {
+    border-color: #de615e;
+}
+
+.social-login {
+    margin-top: 35px;
+}
+
+.social-login h3 {
+    color: #fff;
+}
+
+.social-login-buttons {
+    margin-top: 25px;
+}
+
+input[type="text"],
+input[type="password"]{
+    height: 45px;
+    margin: 0;
+    padding: 0 20px;
+    vertical-align: middle;
+    background: #fff;
+    border: 3px solid #fff;
+    font-family: 'Microsoft YaHei';
+    font-size: 16px;
+    /*font-weight: bold;*/
+    line-height: 45px;
+    color: #333;
+    /*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;*/
+    -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
+    -o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
+}
+
+
+
+input[type="text"]:focus,
+input[type="password"]:focus{
+    outline: 0;
+    background: #fff;
+    border: 3px solid #fff;
+    -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
+}
+
+input[type="text"]:-moz-placeholder, input[type="password"]:-moz-placeholder,
+textarea:-moz-placeholder, textarea.form-control:-moz-placeholder { color: #888; }
+
+input[type="text"]:-ms-input-placeholder, input[type="password"]:-ms-input-placeholder,
+textarea:-ms-input-placeholder, textarea.form-control:-ms-input-placeholder { color: #888; }
+
+input[type="text"]::-webkit-input-placeholder, input[type="password"]::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder, textarea.form-control::-webkit-input-placeholder { color: #888; }
+
+
+
+button.btn {
+    height: 45px;
+    margin: 0;
+    padding: 0 20px;
+    vertical-align: middle;
+    background: #de615e;
+    border: 0;
+    font-family: 'Microsoft YaHei';
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 45px;
+    color: #fff;
+    /*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;*/
+    text-shadow: none;
+    -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
+    -o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
+}
+
+button.btn:hover { opacity: 0.6; color: #fff; }
+
+button.btn:active { outline: 0; opacity: 0.6; color: #fff; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none; }
+
+button.btn:focus { outline: 0; opacity: 0.6; background: #de615e; color: #fff; }
+
+button.btn:active:focus, button.btn.active:focus { outline: 0; opacity: 0.6; background: #de615e; color: #fff; }
+

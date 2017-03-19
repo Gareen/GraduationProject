@@ -1,0 +1,25 @@
+@charset "utf-8";
+.jqx-grid-cell{
+  font-size: 13px;
+}
+
+.jqx-grid-column-header{
+  font-family: 'Microsoft YaHei','Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', Tahoma, 'Hiragino Sans GB', STHeiti;
+  font-weight: bold;
+}
+
+.jqx-grid{
+  border: 1px solid #bbb;
+}
+
+
+
+
+.grid-toolbar{
+  height: 25px;
+  width: 100%;
+  line-height: 25px;
+  font-size: 13px;
+  font-weight: bold;
+  /*border-top: 1px solid #666;*/
+}

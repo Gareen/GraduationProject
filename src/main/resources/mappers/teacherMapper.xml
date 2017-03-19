@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.sams.dao.system.TeacherManagerDao">
+
+    <!--<update id="updatePwd" parameterType="string">
+        UPDATE sams_teacher SET tea_password = #{1} WHERE tea_no = #{0}
+    </update>-->
+
+    <select id="findTeachers" resultType="cn.sams.entity.Teacher">
+        SELECT * FROM sams_teacher
+    </select>
+
+    <select id="queryTeaById" resultType="cn.sams.entity.Teacher" parameterType="String">
+        SELECT * FROM sams_teacher WHERE tea_no = #{id}
+    </select>
+
+    <insert id="saveTeacher" parameterType="String">
+        INSERT INTO sams_teacher VALUES (#{0}, #{1}, #{2}, #{3})
+    </insert>
+
+    <delete id="deleteTeaById" parameterType="String">
+        DELETE FROM sams_teacher WHERE tea_no = #{id}
+    </delete>
+
+    <update id="updateTeacher" parameterType="String">
+        UPDATE sams_teacher
+        SET tea_name = #{2}, tea_password = #{1}, tea_permission = #{3}
+        WHERE tea_no = #{0}
+    </update>
+</mapper>

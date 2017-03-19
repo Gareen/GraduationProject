@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.sams.dao.system.ResourcesDao">
+
+    <update id="updatePwd" parameterType="string">
+        UPDATE sams_teacher SET tea_password = #{1} WHERE tea_no = #{0}
+    </update>
+
+    <select id="findNav2ByPid" parameterType="string" resultType="cn.sams.entity.ResourcesPath">
+        SELECT * FROM sams_path WHERE pid = #{0}
+    </select>
+
+    <select id="queryResources" resultType="cn.sams.entity.ResourcesPath">
+        SELECT t.id, t.title, t.path, t.icon, t.level, t.pid FROM sams_path t
+    </select>
+</mapper>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<head>
+  <title></title>
+
+
+  <link rel="stylesheet" href="../framework/jqwidgets/styles/jqx.base.css" type="text/css" />
+  <link rel="stylesheet" href="../framework/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
+
+  <link rel="stylesheet" href="../framework/fontAwesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../framework/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/commons.css" type="text/css" />
+  <link rel="stylesheet" href="../css/jqx-commons.css" type="text/css" />
+
+  <script src="../framework/jqwidgets/scripts/jquery-1.11.1.min.js"></script>
+
+  <script src="../framework/jqwidgets/jqx-all.js"></script>
+  <script src="../framework/jqwidgets/globalization/globalize.js"></script>
+  <script src="../framework/jqwidgets/globalization/globalize.culture.zh-CN.js"></script>
+  <script src="../framework/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../framework/bootstrap/js/modal.js"></script>
+
+
+  <script src="../js/common/base.js"></script>
+
+  <script src="../js/common/sidebar.js"></script>
+
+
+
+
+
+
+</head>
+
+
+<body>
+
+
+
+  <div id="view-top">
+
+
+    <div class="aiis fl">
+      <a href="#"><span class="glyphicon glyphicon-plane"></span></a>
+    </div>
+
+    <div class="fl topbar-nav">
+      <div>
+        <a><span class="nav-title" >管理控制台</span></a>
+      </div>
+    </div>
+
+    <div class="fl topbar-nav">
+      <div>
+
+
+        <a><span class="nav-title">产品与服务</span></a>
+        <ul>
+          <li><a href="#"><span class="nav-title">云计算ECS</span></a></li>
+          <li><a href="#"><span class="nav-title">弹性伸缩</span></a></li>
+          <li><a href="#"><span class="nav-title">容器服务</span></a></li>
+          <li><a href="#"><span class="nav-title">资源排版</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+
+
+    <div class="fr topbar-nav">
+      <div>
+        <a><span class="nav-title">wangshuqin@wondersgroup.com</span></a>
+        <ul>
+          <li><a href="#"><span class="nav-title">修改信息</span></a></li>
+          <li><a href="#"><span class="nav-title">修改密码</span></a></li>
+          <li><a href="#"><span class="nav-title">退出</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="fr topbar-nav">
+      <div>
+        <a>
+          <span class="nav-title"><span class="fa fa-search nav-icon"></span>搜索</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="fr topbar-nav">
+      <div>
+        <a>
+          <span class="nav-title"><span class="glyphicon glyphicon-phone nav-icon"></span>手机版</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="fr topbar-nav">
+      <div>
+        <a><span class="nav-title">工单服务</span></a>
+        <ul>
+          <li><a href="#"><span class="nav-title">我的工单</span></a></li>
+          <li><a href="#"><span class="nav-title">提交工单</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fr topbar-nav">
+      <div>
+        <a>
+          <span class="nav-title"><span class="fa fa-file nav-icon"></span>帮助与文档</span>
+        </a>
+      </div>
+    </div>
+
+
+</div>
+
+
+  <div id="view-content">
+
+
+
+    <!-- 左侧第一排菜单-->
+    <div id="view-content-left">
+
+      <!--<div id="nav1-switch" class="fa fa-bars"></div>-->
+      <div id="nav1-switch" class="fa fa-minus"></div>
+
+      <ul class="sidebar-nav nav1">
+        <li class="nav-item">
+          <a href="#" >
+            <div class="iconTooltip nav-icon fa fa-plane   data-toggle="tooltip" data-placement="right" data-title="<div class='nav-icon-tooltip'>航班管理</div>" ></div>
+            <div class="nav-title">航班管理</div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" >
+            <div class="iconTooltip nav-icon fa fa-registered"   data-toggle="tooltip" data-placement="right" data-title="<div class='nav-icon-tooltip'>资源管理</div>" ></div>
+            <div class="nav-title">资源管理</div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" >
+            <div class="iconTooltip nav-icon fa fa-database"   data-toggle="tooltip" data-placement="right" data-title="<div class='nav-icon-tooltip'>基础数据</div>" ></div>
+            <div class="nav-title">基础数据</div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" >
+            <div class="iconTooltip nav-icon fa fa-bell"   data-toggle="tooltip" data-placement="right" data-title="<div class='nav-icon-tooltip'>地面服务</div>" ></div>
+            <div class="nav-title">地面服务</div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" >
+            <div class="iconTooltip nav-icon fa fa-area-chart"   data-toggle="tooltip" data-placement="right" data-title="<div class='nav-icon-tooltip'>报表</div>" ></div>
+            <div class="nav-title">报表</div>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 左侧第二排菜单-->
+    <div id="view-content-left-sub">
+      <div id="nav2-switch-left"><span class="fa fa-chevron-right"></span></div>
+      <div id="nav2-switch-right"><span class="fa fa-chevron-left"></span></div>
+
+      <div id="left-sub-title"></div>
+
+      <ul class="sidebar-nav nav2">
+
+
+        <li class="nav-item parent ">
+          <a href="#>">
+            <div class="nav-icon fa fa-caret-down"></div>
+            <div class="nav-title">营运日航班管理</div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#>">
+            <div class="nav-icon"></div>
+            <div class="nav-title">&nbsp;&nbsp;进离港动态</div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#>">
+            <div class="nav-icon"></div>
+            <div class="nav-title">&nbsp;&nbsp;修改计划</div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#>">
+            <div class="nav-icon"></div>
+            <div class="nav-title">&nbsp;&nbsp;自定义设置</div>
+          </a>
+        </li>
+
+        <li class="nav-item parent ">
+          <a href="#>">
+            <div class="nav-icon fa fa-caret-down"></div>
+            <div class="nav-title">计划航班管理</div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#>">
+            <div class="nav-icon"></div>
+            <div class="nav-title">&nbsp;&nbsp;新增运营</div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#>">
+            <div class="nav-icon"></div>
+            <div class="nav-title">&nbsp;&nbsp;修改运营</div>
+          </a>
+        </li>
+
+
+      </ul>
+    </div>
+
+
+
+    <!--   main -->
+    <div id="view-content-main">
+
+      <div class="container-fluid">
+            <div class="row rowtop">
+              <div class="col-md-12">
+                <div class="console-title console-title-border clearfix">
+                    <div class="fl">
+                          <h5>here is title</h5>
+                          <ul class="nav nav-pills flightDirection">
+                            <li class="active"><a value="A">进港</a></li>
+                            <li><a value="D">离港</a></li>
+                          </ul>
+                    </div>
+
+                    <div class="fr">
+                      <button class="btn btn-success"><span class="fa fa-refresh"></span> 新增航班</button>
+                      <button class="btn btn-primary">修改航班</button>
+                      <button class="btn">复制航班</button>
+                    </div>
+                </div>
+
+
+                  <div class="alert alert-success margin-top">
+                    <a href="#" class="close" data-dismiss="alert"><span class="fa fa-close"></span></a>
+                    <strong>警告！</strong>您的网络连接有问题。<br/>
+                  </div>
+
+
+                  <form id="form" class="form-inline margin-top" onsubmit="return false;">
+                    <input type="hidden" name="flightDirection" value="A" id="flightDirection"/>
+
+                    <div class="form-group">
+                      <label class="control-label">航班号：</label>
+                      <input type="text" class="jqxInput" name="flightIdentity"/>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="fl">
+                        <label class="control-label">执行日：</label>
+                      </div>
+                      <div class="fl">
+                        <div class="jqxDateTimeInput" name="scheduledDate" value="2016-05-01"></div>
+                      </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="query-btn">查询</button>
+
+                  </form>
+                </div>
+              </div>
+
+
+            <div class="row">
+              <div class="col-md-12">
+
+                <div class="margin-top">
+                  <div class="grid-toolbar">
+                    <span class="fr" id="g-total"></span>
+                    <span class="fr">总记录数量:</span>
+                  </div>
+                  <div id="g"></div>
+                </div>
+              </div>
+
+            </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+  </div>
+
+  <div class="clock"></div>
+
+
+</body>
+</html>

@@ -1,0 +1,433 @@
+@charset "UTF-8";
+/* CSS Document */
+h1,h2,h3,h4,h5,h6{
+	font-weight:normal;
+}
+header .time h3{
+	line-height:24px;
+	padding-top:4px;
+}
+header .time h5{
+	line-height:18px;
+}
+.panel{
+	margin-top:10px;
+}
+.search{
+	line-height:25px;
+}
+.search .main, .search .ad{
+	padding:4px 10px;
+}
+.search .ad{
+	border-top:#8d8d8d 1px solid;
+	display:none;
+}
+.search .tit{
+	line-height:40px;
+	position:relative;
+}
+.search .tit a{
+	padding-right:20px;
+	/*display:block;*/
+	width:130px;
+	background-position:right -202px;
+}
+.open, .close, .open a, .close a{
+	width:12px;
+	height:40px;
+}
+.open{
+	background-position:right -593px;
+}
+.close{
+	background-position:right -669px;
+}
+/*.open a, .close a{
+	display:block;
+}*/
+.search .main td{
+	vertical-align: middle;
+	padding:10px 5px 10px 0;
+}
+.search .main td.lb{
+	padding-left: 10px;
+}
+.search .main p{
+	margin:0 5px;
+	float:left;
+}
+.search input[type="button"], .search button{
+	width:60px;
+	height:25px;
+	/*此处把按钮的样式调整一下*/
+	/*background-color:#09c;*/
+	border:none;
+}
+.search input[type="button"].find, .search button.find{
+	background-position:-8px -415px;
+}
+.search input[type="button"].save, .search button.save{
+	background-position:-8px -464px;
+}
+.search input[type="button"].dc, .search button.dc{
+	background-position:-8px -1214px;
+}
+.search input[type="button"].cl, .search button.cl{
+	background-position:-8px -1264px;
+}
+.search input[type="button"].dr, .search button.dc{
+	background-position:-8px -1314px;
+}
+.search td .bar{
+	float:left;
+	padding:0 10px 10px 10px;
+}
+.search td .bar:last-child{
+	background:none;
+}
+.search input{
+	margin:2px;
+}
+.exchange{
+	height:40px;
+	width:15px;
+	background-position:-11px -522px;
+}
+.exchange a{
+	width:0;
+	height:0;
+	padding-left:15px;
+	padding-top:40px;
+	text-indent:-9999px;
+}
+
+/*charts-index*/
+.charts .tit,  .tit2{
+	line-height:40px;
+}
+.zoom, .setting1, .setting2{
+	width:20px;
+	height:40px;
+}
+.zoom a, .setting1 a, .setting2 a{
+	display:block;
+	width:0;
+	height:0;
+	padding-left:20px;
+	padding-top:40px;
+	text-indent:-9999px;
+}
+.zoom a{
+	background-position:left 10px;
+	background-repeat:no-repeat;
+}
+.zoom a:hover{
+	background-position:left -26px;
+}
+ul.blue{
+	padding:8px;
+}
+ul.blue li{
+	margin-bottom:10px;
+}
+ul.daily{
+	line-height:38px;
+}
+ul.daily li{
+	padding:0 12px;
+}
+ul.daily li:last-child{
+	border:none;
+}
+ul.daily h5{
+	float:left;
+	padding-left:22px;
+}
+ul.daily h5.f1{
+	background-position:-8px -989px;
+}
+ul.daily h5.f2{
+	background-position:-8px -939px;
+}
+ul.daily h5.f3{
+	background-position:-8px -1039px;
+}
+ul.daily h5.f4{
+	background-position:-8px -1089px;
+}
+
+ul.daily h1, ul.daily h6{
+	float:right;
+}
+ul.daily h6{
+	width:25px;
+	margin-left:5px;
+}
+.more a{
+	background-position:right -715px;
+	padding-right:25px;
+	padding-bottom:4px;
+}
+ul.daily a{
+	width:90%;
+	display:block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+}
+.weather dt{
+	width:32%;
+	float:left;
+	text-align:center;
+	text-shadow:1px 1px 1px rgba(0,0,0,.2);
+}
+.weather dd{
+	width:68%;
+	float:left;
+}
+.weather dd h6{
+	float:left;
+	width:40%;
+	margin:8px 5%;
+}
+.weather span{
+	font-weight:bold;
+}
+.weather dt img{
+	width:50%;
+	margin:8px auto;
+}
+.setting1 a{
+	background-position:-7px -805px;
+}
+.setting1 a:hover{
+	background-position:-7px -98px;
+}
+.setting2 a{
+	background-position:-7px -755px;
+}
+.setting2 a:hover{
+	background-position:-7px -855px;
+}
+.strip{
+	position:relative;
+}
+.dir{
+	position:absolute;
+	width:14px;
+	height:28px;
+	background-position:-10px -900px;
+	right:8px;
+}
+.strip li{
+	float:left;
+	width:6%;
+	margin:7%;
+	border-radius:50px;
+	min-height:60px;
+	height:100%;
+	padding-top:20%;
+	text-align:center;
+	position:relative;
+	text-transform:uppercase;
+}
+.plane{
+	position:absolute;
+}
+.plane img{
+	width:100%;
+}
+.p1{
+	top:-7%;
+}
+.p2{
+	bottom:-7%;
+}
+
+
+
+
+.r-detail{
+	/*Firefox*/
+	width:-moz-calc(100% - 623px);
+	/*chrome safari*/
+	width:-webkit-calc(100% - 623px);
+	/*Standard */
+	width:calc(100% - 623px);
+}
+
+table.detail th, table.detail td{
+	padding: 5px;
+}
+.newday{
+	font-size:9px;
+}
+
+#detail-panel table.detail td{
+	width:15%;
+}
+
+#detail-panel table.detail td.t_r{
+	width:10%;
+}
+.search input[type="button"].save1, .search button.save1{
+	background-position:-8px -464px;
+}
+
+/*login*/
+.login{
+	background-repeat:no-repeat;
+	background-position:center center;
+}
+.login .body{
+	padding-top:120px;
+	width:980px;
+	margin:0 auto;
+}
+.login .logo{
+	height:100px;
+	width:335px;
+}
+.login .form_bg{
+	width:413px;
+	height:326px;
+	padding-left:2px;
+	padding-right:7px;
+}
+.login .form_bg hgroup{
+	border-bottom:#eee 1px solid;
+	line-height:50px;
+	padding-left:50px;
+	padding-top:8px;
+	margin-bottom:30px;
+}
+.login h2, .login h3, .login h4{
+	font-weight:normal;
+	margin-right:8px;
+}
+.login .form_bg .con{
+	padding:0 50px;
+	font-family:'Microsoft YaHei';
+}
+.login label{
+	line-height:32px;
+	font-size:18px;
+	*font-size:16px;
+}
+.login input[type="text"], .login input[type="password"], .login button, .login input[type="button"]{
+	height:38px;
+	width: 100%;
+	line-height:36px;
+	margin-bottom:15px;
+	font-size:16px;
+	font-family:'Microsoft YaHei';
+	border-radius:3px;
+}
+.login button, .login input[type="button"]{
+	border:none;
+	word-spacing:20px;
+	line-height:inherit;
+}
+.login input[type="text"], .login input[type="password"]{
+	padding-left:36px;
+	background-repeat:no-repeat;
+	background-position:left center;
+}
+
+header{
+	height:68px;
+	padding-left:20px;
+	padding-right:20px;
+}
+header .logo{
+	height:68px;
+	width:501px;
+}
+header .user, header .time, header .but{
+	padding:10px;
+	height:48px;
+}
+header .time dt{
+	line-height:48px;
+	font-size:40px;
+}
+
+header .but{
+	padding-top:16px;
+	padding-bottom:4px;
+}
+header .but input[type="button"], header .but button{
+	width:34px;
+	height:34px;
+	border-radius:17px;
+	border:none;
+}
+header .but input[type="button"].mes, header .but button.mes{
+	background-position:center top;
+}
+header .but input[type="button"].fav, header .but button.fav{
+	background-position:center -50px;
+}
+header .but input[type="button"].setting, header .but button.setting{
+	background-position:center -100px;
+}
+header .user dt, header .user img{
+	width:48px;
+	height:48px;
+	border-radius:4px;
+}
+header .user h6{
+	line-height:24px;
+}
+header .user a{
+	background-position: right -145px;
+	/*display:block;*/
+	width:220px;
+}
+
+
+
+menu{
+	width:80px;
+	text-align:center;
+	font-size:11px;
+	float:left;
+}
+menu li{
+	width:80px;
+	height:26px;
+	line-height:26px;
+	padding-top:50px;
+	background-repeat:no-repeat;
+	display: none;
+}
+menu li.me1{
+	background-position:left top;
+}
+menu li.me2{
+	background-position:left -100px;
+}
+menu li.me3{
+	background-position:left -200px;
+}
+menu li.me4{
+	background-position:left -300px;
+}
+menu li.me5{
+	background-position:left -400px;
+}
+menu li.me6{
+	background-position:left -500px;
+}
+menu li.me7{
+	background-position:left -600px;
+}
+menu li.me8{
+	background-position:left -700px;
+}
+menu li.me9{
+	background-position:left -800px;
+}
+
