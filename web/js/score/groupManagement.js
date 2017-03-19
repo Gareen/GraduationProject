@@ -233,7 +233,6 @@ $(function () {
                         $("#jud").val("").val("mod");
                         $("#group_win_title").html("修改分组记录");
                         initWindow();
-
                     }
                     $("#createWin").modal("show");
 

@@ -16,4 +16,8 @@
         select tea_name from sams_teacher where tea_no = #{0}
     </select>
 
+    <insert id="save" parameterType="string">
+        INSERT into sams_group VALUES (#{0}, #{1}, #{2}, #{3}, #{4})
+    </insert>
+
 </mapper>

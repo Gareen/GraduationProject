@@ -35,4 +35,6 @@ public interface GroupManagementDao {
      * @return
      */
     Teacher queryTeacherName(String id);
+
+    Integer save(String groupId, String stuLeader, String stuMem, String groupNum, String score);
 }
