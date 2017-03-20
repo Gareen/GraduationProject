@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -89,6 +90,13 @@ public class GroupManagementController {
     public ReturnObj deleteRowByIdAndNum(HttpServletRequest req) {
         return groupManagementService.deleteRowByIdAndNum(req);
     }
+
+    @RequestMapping("queryGroupInfoByIdAndNum.do")
+    @ResponseBody
+    public Group queryGroupInfoByIdAndNum(HttpServletRequest req) {
+        return groupManagementService.queryGroupInfoByIdAndNum(req);
+    }
+
 
     @RequestMapping("saveorupdate.do")
     @ResponseBody

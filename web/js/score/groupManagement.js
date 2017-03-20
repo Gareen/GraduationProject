@@ -46,7 +46,7 @@ $(function () {
             classTime: getListSelectK("group_choose_classTime")
         };
         enCodeGroup = new Date().format('yyyy') + searchData.courseKey + searchData.classPlace
-                        + searchData.classWeek + searchData.classTime.split(',').join("").trim();
+            + searchData.classWeek + searchData.classTime.split(',').join("").trim();
 
         $.post(
             "./queryTeacherName.do",
@@ -130,7 +130,7 @@ $(function () {
 
                 $("#group_num").jqxDropDownList({
                     placeHolder: "小组号",
-                    source:groups,
+                    source: groups,
                     theme: jqx_default_theme,
                     width: '150',
                     height: "25px",
@@ -175,12 +175,12 @@ $(function () {
                 $('#dataTable').on('rowselect', function (event) {
                     var args = event.args;
                     rowSelectData = args.row;
-                   // 当没有选中状态的时候, 删除按钮不可用
-                   if (rowSelectData.boundindex + 1) {
-                       deleteButton.jqxButton({disabled: false});
-                   } else {
-                       deleteButton.jqxButton({disabled: true});
-                   }
+                    // 当没有选中状态的时候, 删除按钮不可用
+                    if (rowSelectData.boundindex + 1) {
+                        deleteButton.jqxButton({disabled: false});
+                    } else {
+                        deleteButton.jqxButton({disabled: true});
+                    }
                 });
 
                 // 查询学生, 需要根据选择这门课程的学生来进行筛选
@@ -206,7 +206,7 @@ $(function () {
                             selectedIndex: 0,
                             width: '250',
                             height: '25',
-                            checkboxes:true,
+                            checkboxes: true,
                             theme: jqx_default_theme,
                             // autoDropDownHeight: true,
                             filterable: true,
@@ -236,12 +236,38 @@ $(function () {
                         $("#group_win_title").html("新增分组记录");
                         initWindow();
 
-
                     } else {
-                        // 新建窗口初始化
+                        // 修改窗口初始化
                         $("#jud").val("").val("mod");
                         $("#group_win_title").html("修改分组记录");
+
+                        // 分组号不允许修改
+                        $(" #group_num").jqxDropDownList({disabled: true});
+
                         initWindow();
+
+                        // 打开窗口后, 将信息回填
+                        $.post(
+                            './queryGroupInfoByIdAndNum.do',
+                            {
+                                id: $("#group_id").val(),
+                                num: rowSelectData.group_num
+                            },
+                            function (rtn) {
+
+                                //{"group_id":"20177050584021tue4","stu_is_leader":"14550407",
+                                // "stu_is_member":"14550610","group_num":"2","group_score":"81"}
+                                if (!rtn) {
+                                    $bs.error("查询出错 !");
+                                    return;
+                                }
+
+                                // 这边是存在问题的, 但是暂时先不做修改, 因为会影响到全局的下拉列表的问题
+                                // display应为key, 目前采用的display是value
+                                $("#group_num").val(rtn.group_num);
+                                $("#group_score").val(rtn.group_score);
+                            }
+                        )
                     }
                     $("#createWin").modal("show");
 
@@ -258,23 +284,31 @@ $(function () {
                 });
 
                 deleteButton.unbind('click').click(function () {
-                   $bs.confirm("确定删除该条记录吗 ?", function () {
-                       $.post(
-                           './deleteRowByIdAndNum.do',
-                           {
-                               id:  $("#group_id").val(),
-                               num: rowSelectData.group_num
-                           },
-                           function (rtn) {
-                               if (rtn.status == 'success') {
-                                   $bs.success(rtn.msg);
-                               } else {
-                                   $bs.error(rtn.msg);
-                               }
-                               reDrawGrid();
-                           }
-                       );
-                   })
+                    if (deleteButton.jqxButton('disabled')) {
+                        return;
+                    }
+                    $bs.confirm("确定删除该条记录吗 ?", function () {
+                        $.post(
+                            './deleteRowByIdAndNum.do',
+                            {
+                                id: $("#group_id").val(),
+                                num: rowSelectData.group_num
+                            },
+                            function (rtn) {
+                                if (rtn.status == 'success') {
+                                    $bs.success(rtn.msg);
+                                } else {
+                                    $bs.error(rtn.msg);
+                                }
+                                reDrawGrid();
+                            }
+                        );
+                    })
+                });
+
+                // 修改窗口
+                $('#dataTable').on('rowdoubleclick', function (event) {
+                    createGroupWindow('mod');
                 });
 
                 $("#createSubmit").unbind('click').click(function () {
@@ -298,11 +332,12 @@ $(function () {
                         group_code: enCodeGroup
                     };
 
+
                     $.post(
                         "./saveorupdate.do",
                         group,
                         function (rtn) {
-                            if(rtn.status != 'success') {
+                            if (rtn.status != 'success') {
                                 $bs.error(rtn.msg);
                                 return;
                             }
@@ -356,7 +391,7 @@ $(function () {
         createClassWeekDropdownList(class_key);
     });
 
-    // 传入DropDownList的id选择器, 获取当前课程的key
+    // 传入DropDownList的id选择器, 获取当前DropDownList的key
     function getListSelectK(id_selector) {
         var select_index = $("#" + id_selector).jqxDropDownList('getSelectedIndex');
         var selected = $("#" + id_selector).jqxDropDownList('getItem', select_index);

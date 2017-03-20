@@ -31,4 +31,13 @@
     <select id="findStuById" parameterType="string" resultType="cn.sams.entity.Student">
         SELECT * FROM sams_student WHERE stu_no = #{0}
     </select>
+
+    <select id="queryGroupInfoByIdAndNum" parameterType="string" resultType="cn.sams.entity.Group">
+        SELECT * FROM sams_group WHERE group_id = #{0} AND group_num = #{1};
+    </select>
+
+    <update id="update" parameterType="string">
+        UPDATE sams_group SET stu_is_leader = #{1}, stu_is_member = #{2}, group_score = #{4}
+        WHERE group_id = #{0} AND group_num = #{3}
+    </update>
 </mapper>

@@ -53,6 +53,15 @@ public interface GroupManagementDao {
     Integer deleteRowByIdAndNum(String groupId, String groupNum);
 
     /**
+     * 查询分组的信息
+     *
+     * @param groupId  分组id
+     * @param groupNum 分组编号
+     * @return
+     */
+    Group queryGroupInfoByIdAndNum(String groupId, String groupNum);
+
+    /**
      * 保存新增记录
      * @param groupId
      * @param stuLeader
@@ -62,6 +71,19 @@ public interface GroupManagementDao {
      * @return
      */
     Integer save(String groupId, String stuLeader, String stuMem, String groupNum, String score);
+
+
+    /**
+     * 更新分组记录
+     *
+     * @param groupId   分组id
+     * @param stuLeader 小组组长
+     * @param stuMem    小组成员
+     * @param groupNum  小组组号
+     * @param score     小组分数
+     * @return
+     */
+    Integer update(String groupId, String stuLeader, String stuMem, String groupNum, String score);
 
     /**
      * 通过学生学号查找到学生

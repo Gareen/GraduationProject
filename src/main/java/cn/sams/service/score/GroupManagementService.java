@@ -144,14 +144,16 @@ public class GroupManagementService {
             }
         }
 
+        // 获取分组的id编码
+        String group_id = getEncodeGroupid(req);
+
+        if (!Chk.spaceCheck(group_id)) {
+            return new ReturnObj("", "", null);
+        }
+        List<Group> groups = groupManagementDao.queryGroupsByGroupId(group_id);
+
         if ("add".equals(jud)) {
-            String group_id = getEncodeGroupid(req);
 
-            if (!Chk.spaceCheck(group_id)) {
-                return new ReturnObj("", "", null);
-            }
-
-            List<Group> groups = groupManagementDao.queryGroupsByGroupId(group_id);
             for (Group p : groups) {
                 if (group_num.equals(p.getGroup_num())) {
                     return new ReturnObj("error", "添加失败: 小组号重复 !", null);
@@ -170,11 +172,52 @@ public class GroupManagementService {
             }
 
         } else {
+            // 更新分组操作
 
-            // todo  更新操作待完成
-            return new ReturnObj("", "", null);
+            Group group = groupManagementDao.queryGroupInfoByIdAndNum(group_id, group_num);
+
+            if (group == null) {
+                return new ReturnObj("error", "更新失败: 查无此数据 !", null);
+            }
+
+            for (Group p : groups) {
+                if (group_leader.equals(p.getStu_is_leader())) {
+
+                    // 如果修改的不是本条记录时, 出现别的小组的小组长, 就报错
+                    if (!group_leader.equals(group.getStu_is_leader())) {
+                        return new ReturnObj("error", "更新失败: 和其他小组长重复 !", null);
+                    }
+                }
+            }
+
+            for (Group p : groups) {
+                // 只能够更新已有的分组, 没有的分组提示报错信息
+                // 也就是说要修改分组号, 只能删除重建分组
+                if (group_num.equals(p.getGroup_num())) {
+
+                    int count = groupManagementDao.update(group_id, group_leader, group_member, group_num, group_score);
+
+                    if (count != 0) {
+                        return new ReturnObj("success", "更新成功 !", null);
+                    } else {
+                        return new ReturnObj("error", "记录可能被删除, 请刷新后操作 !", null);
+                    }
+                }
+            }
+            return new ReturnObj("error", "请选择已有的分组号进行修改操作 !", null);
         }
 
+    }
+
+    public Group queryGroupInfoByIdAndNum(HttpServletRequest req) {
+        String id = req.getParameter("id");
+        String num = req.getParameter("num");
+
+        if (!Chk.spaceCheck(id) || !Chk.spaceCheck(num)) {
+            return new Group();
+        }
+
+        return groupManagementDao.queryGroupInfoByIdAndNum(id, num);
     }
 
     /**
