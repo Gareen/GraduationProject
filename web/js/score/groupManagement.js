@@ -148,7 +148,7 @@ $(function () {
 
                 toolBar.append(container);
 
-                addButton.jqxButton({cursor: "pointer", disabled: true, enableDefault: false, height: 25, width: 25});
+                addButton.jqxButton({cursor: "pointer", enableDefault: false, height: 25, width: 25});
                 addButton.find('div:first').addClass('jqx-icon-plus');
                 addButton.jqxTooltip({position: 'bottom', content: "添加"});
                 addButton.jqxButton({disabled: false});
@@ -160,6 +160,7 @@ $(function () {
                     height: 25,
                     width: 25
                 });
+
                 deleteButton.find('div:first').addClass('jqx-icon-delete');
                 deleteButton.jqxTooltip({position: 'bottom', content: "删除"});
 
@@ -249,7 +250,7 @@ $(function () {
 
                 // 点击新增按钮就新增弹出新增窗口
                 addButton.unbind('click').click(function () {
-                    if (! enCodeGroup) {
+                    if (!class_info.teacherName) {
                         $bs.error('请检索到正确课程信息后添加 !');
                         return;
                     }

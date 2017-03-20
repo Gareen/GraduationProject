@@ -62,4 +62,12 @@ public interface GroupManagementDao {
      * @return
      */
     Integer save(String groupId, String stuLeader, String stuMem, String groupNum, String score);
+
+    /**
+     * 通过学生学号查找到学生
+     *
+     * @param stuId
+     * @return
+     */
+    Student findStuById(String stuId);
 }

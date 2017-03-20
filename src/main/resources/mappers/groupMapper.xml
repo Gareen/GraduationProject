@@ -28,4 +28,7 @@
         INSERT into sams_group VALUES (#{0}, #{1}, #{2}, #{3}, #{4})
     </insert>
 
+    <select id="findStuById" parameterType="string" resultType="cn.sams.entity.Student">
+        SELECT * FROM sams_student WHERE stu_no = #{0}
+    </select>
 </mapper>

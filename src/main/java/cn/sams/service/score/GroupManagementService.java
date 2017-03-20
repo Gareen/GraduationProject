@@ -33,7 +33,7 @@ public class GroupManagementService {
         // 2017-02-13 一 00:00:00
         String date = req.getParameter("date");
 
-        if (! Chk.spaceCheck(courseKey) || ! Chk.spaceCheck(placeKey) || ! Chk.spaceCheck(date)) {
+        if (!Chk.spaceCheck(courseKey) || !Chk.spaceCheck(placeKey) || !Chk.spaceCheck(date)) {
             return new ReturnObj("error", "", null);
         }
 
@@ -56,7 +56,7 @@ public class GroupManagementService {
             return new ArrayList<>();
         }
 
-        List<SelectModel> list= new ArrayList<>();
+        List<SelectModel> list = new ArrayList<>();
         for (Student s : students) {
             SelectModel selectModel = new SelectModel();
             selectModel.setKey(s.getStu_no());
@@ -69,6 +69,7 @@ public class GroupManagementService {
 
     /**
      * 此处暂时返回教师的姓名, 以后需要返回的是一个学生列表
+     *
      * @param req
      * @return
      */
@@ -82,12 +83,12 @@ public class GroupManagementService {
         String dayOfWeek;
         // class_time
         String time;
-        if (!Chk.spaceCheck(courseKey) ||!Chk.spaceCheck(classPlace) ||!Chk.spaceCheck(classWeek) ||!Chk.spaceCheck(classTime)) {
+        if (!Chk.spaceCheck(courseKey) || !Chk.spaceCheck(classPlace) || !Chk.spaceCheck(classWeek) || !Chk.spaceCheck(classTime)) {
             return null;
         } else {
             String[] arr = classTime.split(",");
             dayOfWeek = arr[0];
-            time =  arr[1];
+            time = arr[1];
         }
         Course course = groupManagementDao.queryTeacherIdByInfo(courseKey, classPlace, classWeek, dayOfWeek, time);
         if (course == null) {
@@ -99,12 +100,11 @@ public class GroupManagementService {
     public List<Group> queryGroups(HttpServletRequest req) {
         String group_id = req.getParameter("id");
 
-        if (! Chk.spaceCheck(group_id)) {
+        if (!Chk.spaceCheck(group_id)) {
             return new ArrayList<>();
         }
         List<Group> groups = groupManagementDao.queryGroupsByGroupId(group_id);
-        Collections.sort(groups, (Group g1, Group g2) -> g1.getGroup_num().compareTo(g2.getGroup_num()));
-        return groups;
+        return showStuNameGroups(groups);
     }
 
 
@@ -112,7 +112,7 @@ public class GroupManagementService {
         String groupId = req.getParameter("id");
         String groupNum = req.getParameter("num");
 
-        if (! Chk.spaceCheck(groupId) || ! Chk.spaceCheck(groupNum)) {
+        if (!Chk.spaceCheck(groupId) || !Chk.spaceCheck(groupNum)) {
             return new ReturnObj("error", "删除异常 !", null);
         }
 
@@ -138,8 +138,8 @@ public class GroupManagementService {
         // 小组分数
         String group_score = req.getParameter("group_score");
 
-        if (! "add".equals(jud)) {
-            if (! "mod".equals(jud)) {
+        if (!"add".equals(jud)) {
+            if (!"mod".equals(jud)) {
                 return new ReturnObj("error", "请选择正确的操作 !", null);
             }
         }
@@ -147,7 +147,7 @@ public class GroupManagementService {
         if ("add".equals(jud)) {
             String group_id = getEncodeGroupid(req);
 
-            if (! Chk.spaceCheck(group_id)) {
+            if (!Chk.spaceCheck(group_id)) {
                 return new ReturnObj("", "", null);
             }
 
@@ -179,18 +179,75 @@ public class GroupManagementService {
 
     /**
      * 获取新增时候的groupid
+     *
      * @param
      * @return
      */
     private String getEncodeGroupid(HttpServletRequest req) {
-        String group_id =  req.getParameter("group_code");
+        String group_id = req.getParameter("group_code");
         // 保存的时候的分组编号是进行的一个组合, 组合的方式采用一种编码格式
         // 课程所在年份+课程号+课程周数+课程上课时间+课程地点编号+分组编号, 这个需要在页面上对控件的值进行获取
         // 2017 705058 402 1 tue 4
-        if (! Chk.spaceCheck(group_id)) {
+        if (!Chk.spaceCheck(group_id)) {
             return "";
         }
         return group_id;
+    }
+
+    /**
+     * 封装在页面上展示学生姓名的方法
+     *
+     * @param groups 查询出的分组序列
+     * @return
+     */
+    private List<Group> showStuNameGroups(List<Group> groups) {
+
+        if (groups == null || groups.size() == 0) {
+            return new ArrayList<>();
+        }
+
+        List<Group> newGroups = new ArrayList<>();
+
+        for (Group g : groups) {
+            Group group = new Group();
+            // 先将一些不需要变动的属性进行赋值
+            group.setGroup_id(g.getGroup_id());
+            group.setGroup_num(g.getGroup_num());
+            group.setGroup_score(g.getGroup_score());
+            group.setStu_is_leader(getStuNameByStuId(g.getStu_is_leader()));
+
+            String[] memberIds = g.getStu_is_member().split(",");
+            List<String> names = new ArrayList<>();
+
+            for (String id : memberIds) {
+                names.add(getStuNameByStuId(id));
+            }
+
+            String memberNames = String.join(", ", names);
+            group.setStu_is_member(memberNames);
+
+            // 将赋值成功的对象添加到序列中
+            newGroups.add(group);
+        }
+
+        // 将新的分组序列进行排序
+        Collections.sort(newGroups, (Group g1, Group g2) -> g1.getGroup_num().compareTo(g2.getGroup_num()));
+
+        return newGroups;
+    }
+
+    /**
+     * 通过学号查找到学生的姓名
+     *
+     * @param stuId 学生学号
+     * @return 学生姓名
+     */
+    private String getStuNameByStuId(String stuId) {
+        Student student = groupManagementDao.findStuById(stuId);
+        if (student == null) {
+            return "";
+        }
+        return Chk.spaceCheck(student.getStu_name()) ? student.getStu_name() : "";
     }
 
 }
