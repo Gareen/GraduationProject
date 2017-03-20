@@ -138,6 +138,10 @@ public class GroupManagementService {
         // 小组分数
         String group_score = req.getParameter("group_score");
 
+        if (!Chk.spaceCheck(group_num) || !Chk.spaceCheck(group_leader) || !Chk.spaceCheck(group_member) || !Chk.spaceCheck(group_score)) {
+            return new ReturnObj("error", "各项不可为空 !", null);
+        }
+
         if (!"add".equals(jud)) {
             if (!"mod".equals(jud)) {
                 return new ReturnObj("error", "请选择正确的操作 !", null);
