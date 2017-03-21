@@ -53,18 +53,12 @@
                                         </td>
 
                                         <td class="lb" style="padding-top: 12px;">
-                                            <label for="group_choose_class_place">上课地点: </label>
+                                            <label for="score_choose_class">选择课程: </label>
                                         </td>
                                         <td>
-                                            <div id="group_choose_class_place"></div>
+                                            <div id="score_choose_class"></div>
                                         </td>
 
-                                        <td class="lb" style="padding-top: 12px;">
-                                            <label for="group_choose_class_week">选择周数:</label>
-                                        </td>
-                                        <td>
-                                            <div id="group_choose_class_week"></div>
-                                        </td>
 
                                         <td class="lb" style="padding-top: 12px;">
                                             <label for="group_choose_classTime">上课时间:</label>

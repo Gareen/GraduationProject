@@ -68,4 +68,40 @@ public class SelectModelUtil {
     public static List<SelectModel> getClassTime() {
         return SelectModelUtil.getSelectModels("config/class_time.properties", false);
     }
+
+    /**
+     * 将一个普通的对象list集合转换成键值对集合
+     * <p>
+     * 暂时还未完成
+     *
+     * @param list   普通对象集合
+     * @param keyStr 对象中指定的key的属性名
+     * @param valStr 对象中指定作为value的属性名
+     * @return List<SelectModel>
+     */
+    public static List<SelectModel> objectListToSelectModelList(List<Object> list, Class<?> clz, String keyStr, String valStr) {
+
+        if (clz == null) {
+            // todo
+
+        }
+
+        if (list != null && list.size() != 0) {
+
+            // 先判断是不是该类的实例
+            if (!list.get(0).getClass().getClassLoader().getClass().getName().equals(
+                    clz.getClass().getClassLoader().getClass().getName())) {
+
+                // todo
+                return new ArrayList<>();
+            }
+            System.out.println(1);
+
+            for (Object obj : list) {
+
+            }
+
+        }
+        return new ArrayList<>();
+    }
 }

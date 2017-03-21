@@ -58,6 +58,7 @@ $(function () {
             datafields[datafields.length] = {name: text};
             columns[columns.length] = {text: text, datafield: text, width: 60, align: 'center'};
         }
+
         var source = {
             unboundmode: true,
             totalrecords: 100,
@@ -90,5 +91,39 @@ $(function () {
         $("#dataTable").jqxGrid('exportdata', 'xls', '学生成绩单', false);
     });
 
+
+    $.ajax({
+        url: "./queryTermSelectModels.do",
+        method: 'post',
+        success: function (rtn) {
+            $("#score_choose_term").jqxDropDownList({
+                source: rtn,
+                selectedIndex: 0,
+                width: '170',
+                height: '25',
+                theme: jqx_default_theme,
+                autoDropDownHeight: true,
+                displayMember: 'key',
+                valueMember: 'value'
+            });
+        }
+    })
+
+    $.ajax({
+        url: "./queryCourseSelectModels.do",
+        method: 'get',
+        success: function (rtn) {
+            $("#score_choose_class").jqxDropDownList({
+                source: rtn,
+                selectedIndex: 0,
+                width: '150',
+                height: '25',
+                theme: jqx_default_theme,
+                autoDropDownHeight: true,
+                displayMember: 'key',
+                valueMember: 'value'
+            });
+        }
+    })
 
 })
