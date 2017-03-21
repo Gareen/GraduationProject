@@ -188,7 +188,7 @@ $(function () {
                     './queryStu.do',
                     function (rtn) {
                         $("#group_leader").jqxDropDownList({
-                            placeHolder: "请选择:",
+                            placeHolder: "请选择",
                             source: rtn,
                             width: '150',
                             height: '25',
@@ -201,7 +201,7 @@ $(function () {
                         });
 
                         $("#group_member").jqxDropDownList({
-                            placeHolder: "请选择:",
+                            placeHolder: "请选择",
                             source: rtn,
                             selectedIndex: 0,
                             width: '250',
@@ -233,6 +233,10 @@ $(function () {
                     if (status == 'add') {
                         // 新建窗口初始化
                         $("#jud").val("").val("add");
+
+                        // 分组号允许修改
+                        $(" #group_num").jqxDropDownList({disabled: false});
+
                         $("#group_win_title").html("新增分组记录");
                         initWindow();
 
