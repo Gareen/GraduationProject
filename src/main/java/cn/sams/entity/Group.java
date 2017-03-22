@@ -8,12 +8,13 @@ import java.io.Serializable;
 public class Group implements Serializable {
 
     private String group_id;
-
     private String stu_is_leader;
-
     private String stu_is_member;
     private String group_num;
+    private String group_pre_score;
     private String group_score;
+    private String group_re_score;
+    private String score_result;
 
     public Group() {
     }
@@ -56,6 +57,30 @@ public class Group implements Serializable {
 
     public void setGroup_score(String group_score) {
         this.group_score = group_score;
+    }
+
+    public String getGroup_pre_score() {
+        return group_pre_score;
+    }
+
+    public void setGroup_pre_score(String group_pre_score) {
+        this.group_pre_score = group_pre_score;
+    }
+
+    public String getGroup_re_score() {
+        return group_re_score;
+    }
+
+    public void setGroup_re_score(String group_re_score) {
+        this.group_re_score = group_re_score;
+    }
+
+    public String getScore_result() {
+        return score_result;
+    }
+
+    public void setScore_result(String score_result) {
+        this.score_result = score_result;
     }
 
     @Override

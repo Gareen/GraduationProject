@@ -9,20 +9,20 @@ import java.io.Serializable;
  */
 public class ResourcesPath implements Serializable {
 
-    private Integer id;
+    private String id;
     private String title;
     private String path;
     private String icon;
 
     // level分为 1: 超级管理员可以访问, 2:教师访问 , 3:预留
-    private Integer level;
-    private Integer pid;
+    private String plevel;
+    private String pid;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -50,19 +50,19 @@ public class ResourcesPath implements Serializable {
         this.icon = icon;
     }
 
-    public Integer getLevel() {
-        return level;
+    public String getPlevel() {
+        return plevel;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setPlevel(String plevel) {
+        this.plevel = plevel;
     }
 
-    public Integer getPid() {
+    public String getPid() {
         return pid;
     }
 
-    public void setPid(Integer pid) {
+    public void setPid(String pid) {
         this.pid = pid;
     }
 
@@ -73,7 +73,7 @@ public class ResourcesPath implements Serializable {
                 ", title='" + title + '\'' +
                 ", path='" + path + '\'' +
                 ", icon='" + icon + '\'' +
-                ", level=" + level +
+                ", level=" + plevel +
                 ", pid=" + pid +
                 '}';
     }

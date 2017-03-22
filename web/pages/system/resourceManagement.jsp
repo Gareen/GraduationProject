@@ -2,14 +2,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <head>
-    <%@include file="../common/lib.jsp"%>
+    <%@include file="../common/lib.jsp" %>
 </head>
 
 
 <body>
-<%@include file="../common/index.jsp"%>
+<%@include file="../common/index.jsp" %>
 <div id="view-content">
-    <%@include file="../common/sidebar.jsp"%>
+    <%@include file="../common/sidebar.jsp" %>
     <script src="${ctx}/js/system/resourceManagement.js"></script>
 
     <div id="view-content-main">
@@ -44,63 +44,81 @@
 
         </div>
 
-    </div>
-</div>
+        <div class="modal fade" data-backdrop="static" id="createWin">
+            <div class="modal-dialog" style="width: auto;max-width: 500px;min-width: 350px;">
+                <div class="modal-content">
+                    <div class="modal-header">
 
-</div>
+                        <span type="button" class="close fa fa-close" data-dismiss="modal" aria-hidden="true"
+                              style="float: right; "></span>
 
+                        <%--弹出框的标题--%>
+                        <h5 class="modal-title" id="win_title"></h5>
+                    </div>
+                    <div class="modal-body clearfix">
+                        <table class="form" width="100%" id="info_form">
+                            <%--上级资源的id--%>
+                            <input type="hidden" id="pid">
+                            <input type="hidden" id="jud">
+                            <tr>
+                                <td class='text-right'>父级资源:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    <div id="parentNodeName" style="color: slategray"></div>
+                                </td>
+                            </tr>
+                            <tr style="height: 10px;"></tr>
+                            <tr>
+                                <td class='text-right'>资源编号:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    <input type="text" id="nodeNo">
+                                    <span style="color: red;">&nbsp;&nbsp;(输入格式: 10X | 20X)</span>
+                                </td>
+                            </tr>
+                            <tr style="height: 10px;"></tr>
+                            <tr>
+                                <td class='text-right'>资源名称:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    <input type="text" id="nodeName">
+                                </td>
+                            </tr>
+                            <tr style="height: 10px;"></tr>
+                            <tr>
+                                <td class='text-right'>资源路径:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    <input type="text" id="nodePath">
+                                </td>
+                            </tr>
+                            <tr style="height: 10px;"></tr>
+                            <tr>
+                                <td class='text-right'>资源图标:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    <input type="text" id="icon">
+                                </td>
+                            </tr>
+                            <tr style="height: 10px;"></tr>
+                            <tr>
+                                <td class='text-right'>资源等级:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    <select id="level">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
 
-
-<%--新建教师--%>
-<div class="modal fade" data-backdrop="static" id="modifyWin" >
-    <div class="modal-dialog" style="width: auto;max-width: 500px;min-width: 350px;">
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <span type="button" class="close fa fa-close" data-dismiss="modal" aria-hidden="true" style="float: right; "></span>
-
-                <%--弹出框的标题--%>
-                <h5 class="modal-title" id="tea_win_title"></h5>
-            </div>
-            <div class="modal-body clearfix" >
-                <table class="form" width="100%" id="form">
-                    <tr>
-                        <td class="text-right">
-                            上级资源目录:&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input id="pid" type="hidden" >
-                            <input id="id" type="hidden" >
-                        </td>
-                        <td id="pname"></td>
-                    </tr>
-                    <tr style="height: 10px;"></tr>
-                    <tr>
-                        <td class='text-right'>资源名称:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td><input type='text'  id="resourceName"/></td>
-                    </tr>
-                    <tr style="height: 10px;"></tr>
-                    <tr>
-                        <td  class="text-right">资源路径:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td><input type='text'  id="resourcePath"/></td>
-                    </tr>
-                    <tr style="height: 10px;"></tr>
-                    <tr>
-                        <td  class="text-right">图标:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td><input type="text"  id="resourceFlag" /></td>
-                    </tr>
-                    <tr style="height: 10px;"></tr>
-                    <tr>
-                        <td  class="text-right">备注:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td><input type="text"  id="resourceDescription"/></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="modal-footer">
-                <a class="btn btn-primary" id="createSubmit">提交</a>
-                <a class="btn btn-default" data-dismiss="modal">取消</a>
+                    <div class="modal-footer">
+                        <a class="btn btn-primary" id="submit">提交</a>
+                        <a class="btn btn-default" data-dismiss="modal">取消</a>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 </div>
+
+
 </body>
 </html>

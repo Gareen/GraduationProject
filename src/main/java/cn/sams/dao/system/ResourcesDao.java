@@ -19,7 +19,7 @@ public interface ResourcesDao {
      * @param password 新的密码
      * @return
      */
-    Integer updatePwd(String no, String password);
+    int updatePwd(String no, String password);
 
     /**
      * 根据父节点id查找导航标签
@@ -33,4 +33,44 @@ public interface ResourcesDao {
      * @return
      */
     List<ResourcesPath> queryResources();
+
+    /**
+     * 根据id查找根节点的名称
+     *
+     * @param id
+     * @return
+     */
+    String queryParentName(String id);
+
+    /**
+     * 根据id查找节点
+     *
+     * @param id
+     * @return
+     */
+    ResourcesPath queryNodeById(String id);
+
+    /**
+     * 保存资源路径
+     *
+     * @param path 资源路径对象
+     * @return
+     */
+    int save(ResourcesPath path);
+
+    /**
+     * 更新资源
+     *
+     * @param path 资源路径对象
+     * @return
+     */
+    int update(ResourcesPath path);
+
+    /**
+     * 删除资源
+     *
+     * @param id
+     * @return
+     */
+    int delete(String id);
 }

@@ -1,15 +1,16 @@
 $(function () {
 
+
     var rowk = null;
 
     var search = function () {
-        $(window).on("resize",function (){
+        $(window).on("resize", function () {
             $('#dataTable').jqxTreeGrid({
-                height : jqxUtil.getGridHeight(30,30,30)
+                height: jqxUtil.getGridHeight(30, 30, 30)
             });
         });
 
-        sidebar.callback = function (){
+        sidebar.callback = function () {
             $('#dataTable').jqxTreeGrid('render');
 
         };
@@ -21,7 +22,7 @@ $(function () {
                 {name: 'title', type: 'string'},
                 {name: 'path', type: 'string'},
                 {name: 'icon', type: 'string'},
-                {name: 'level', type: 'string'},
+                {name: 'plevel', type: 'string'},
                 {name: 'pid', type: 'string'}
             ],
             hierarchy: {
@@ -35,7 +36,7 @@ $(function () {
         var dataAdapter = new $.jqx.dataAdapter(source);
 
 
-        var getSelectionId = function (){
+        var getSelectionId = function () {
             var g = $("#dataTable");
             var selection = g.jqxTreeGrid('getSelection');
             for (var i = 0; i < selection.length; i++) {
@@ -44,32 +45,52 @@ $(function () {
             return null;
         };
 
+
         $("#dataTable").jqxTreeGrid({
-            theme : jqx_default_theme,
-            width:"100%",
-            source : dataAdapter,
-            height :  jqxUtil.getGridHeight(30,30,30),
+            theme: jqx_default_theme,
+            width: "100%",
+            source: dataAdapter,
+            height: jqxUtil.getGridHeight(30, 30, 30),
             selectionMode: "singleRow",
             filterable: true,
             filterMode: 'simple',
-            columns : [
-                {text: '资源名称',     dataField: 'title',           align: "center",      cellsAlign: 'left',       width: "30%"},
-                {text: '路径',      dataField: 'path',            align: "center",      cellsAlign: 'center',     width: "40%"},
-                {text: '图标',       dataField: 'icon',            align: "center",      cellsAlign: 'center',     width: "15%"},
-                {text: '资源等级',       dataField: 'level',            align: "center",      cellsAlign: 'center',     width: "15%"},
+            columns: [
+                {text: '资源名称', dataField: 'title', align: "center", cellsAlign: 'left', width: "20%"},
+                {text: '编号', dataField: 'id', align: "center", cellsAlign: 'center', width: "10%"},
+                {text: '路径', dataField: 'path', align: "center", cellsAlign: 'center', width: "40%"},
+                {text: '图标', dataField: 'icon', align: "center", cellsAlign: 'center', width: "15%"},
+                {text: '资源等级', dataField: 'plevel', align: "center", cellsAlign: 'center', width: "15%"},
             ],
 
             rendertoolbar: function () {
-               $("#filterdataTable").children().eq(0).html(" 搜索: ");
+                // 修改搜索框label标识
+                $("#filterdataTable").children().eq(0).html(" 搜索: ");
             },
 
-            ready: function (){
+            ready: function () {
+
+                // 选中行的数据
+                var rowData;
+                var mode;
+
+                $("#createWin :input").jqxInput({theme: jqx_default_theme, height: "25px"});
+                $("#nodeNo").jqxInput({width: "10%"});
+                $("#nodeName").jqxInput({width: "30%"});
+                $("#nodePath").jqxInput({width: "70%"});
+                $("#icon").jqxInput({width: "20%"});
+                $("#level").jqxDropDownList({
+                    theme: jqx_default_theme,
+                    width: "20%",
+                    height: '25',
+                    autoDropDownHeight: true
+                });
 
                 $("#dataTable").jqxTreeGrid("expandRow", 1);
                 var rows = $("#dataTable").jqxTreeGrid('getRows');
-                var traverseTree = function(rows) {
-                    for(var i = 0; i < rows.length; i++) {
-                        $("#dataTable").jqxTreeGrid("expandRow",rows[i].id);
+
+                var traverseTree = function (rows) {
+                    for (var i = 0; i < rows.length; i++) {
+                        $("#dataTable").jqxTreeGrid("expandRow", rows[i].id);
                         if (rows[i].records) {
                             traverseTree(rows[i].records);
                         }
@@ -77,115 +98,170 @@ $(function () {
                 };
 
 
-                $("#add").on("click",function (){
+                // 当资源目录为根目录的时候, 不可以修改 删除, 但可以新增, 而其他的节点不可以新增, 可以修改和删除
+                $('#dataTable').on('rowSelect', function (event) {
+                    // event args.
+                    var args = event.args;
+                    // row data.
+                    rowData = args.row;
+
+                    if (getSelectionId() == 100 || getSelectionId() == 200) {
+                        $('#edit, #delete').prop('disabled', true);
+                        $('#add').prop('disabled', false);
+                    } else {
+                        $('#edit, #delete').prop('disabled', false);
+                        $('#add').prop('disabled', true);
+
+                    }
+                });
+
+                $("#add").on("click", function () {
                     rowk = getSelectionId();
-                    console.log(rowk);
-                    if(rowk == null ){
-                        $bs.alert("请选择新增资源的上级节点");
+                    if (rowk == null) {
+                        $bs.alert("请选择新增资源的根节点");
                         return;
                     }
-
+                    $("#nodeNo").jqxInput({disabled: false});
+                    $("#nodeNo").val("");
+                    $("#nodeName").val("");
+                    $("#nodePath").val("");
+                    $("#icon").val("");
+                    $("#level").val("");
+                    $("#pid").val("");
                     openModifywin("add");
                 });
 
 
-                $("#edit").on("click",function (){
+                $("#edit").on("click", function () {
                     rowk = getSelectionId();
-                    if(rowk == null){
+                    if (rowk == null) {
                         $bs.alert("请选择需要修改的资源");
                         return;
                     }
-                    if(rowk == 1){
+                    if (rowk == 1) {
                         $bs.alert("无法修改根目录");
                         return;
                     }
-                    openModifywin("edit");
+                    $("#nodeNo").jqxInput({disabled: true});
+
+                    $.post(
+                        "./queryNodeById.do",
+                        {
+                            id: rowData.id
+                        },
+                        function (rtn) {
+                            if ("success" == rtn.status) {
+                                var data = rtn['data'];
+                                $("#nodeNo").val(data.id);
+                                $("#nodeName").val(data.title);
+                                $("#nodePath").val(data.path);
+                                $("#icon").val(data.icon);
+                                $("#level").val(data.plevel);
+                                $("#pid").val(data.pid);
+                            } else {
+                                $bs.error(rtn.msg);
+                                return;
+                            }
+                            openModifywin("mod");
+                        }
+                    )
                 });
 
 
+                $("#submit").unbind('click').on("click", function () {
 
-                $("#modifysubmit").on("click",function (){
                     $.post(
-                        "./saveOrUpdate",
-                        baseUtil.getFormValuesById("form"),
-                        function (rtn){
-                           /* if(Chk.isNumber(Number(rtn))){
-                                //更新或新增行数据在 列表中
-                                $.get("../../api/resource/" + rtn,function (res){
-                                    if(res && res.info.success){
-                                        var g = $("#dataTable");
-                                        var data = res.data;
-                                        var id = data.id;
-                                        if(g.jqxTreeGrid("getRow",id)){
-                                            g.jqxTreeGrid('updateRow', id,data);
-                                        }else{
-                                            g.jqxTreeGrid('addRow', id ,data,'last',rowk);
-                                        }
-                                    }
+                        "./saveOrUpdate.do?mode=" + mode,
+                        {
+                            id: $("#nodeNo").val(),
+                            title: $("#nodeName").val(),
+                            path: $("#nodePath").val(),
+                            icon: $("#icon").val(),
+                            plevel: $("#level").val("1"),
+                            pid: $("#pid").val(),
+                        },
+                        function (rtn) {
+                            // 点击关闭按钮
+                            $("#submit").next().unbind('click').click();
 
-                                    $("#modifyWin").modal("hide");
+                            if (rtn.status == "success") {
+                                $bs.success(rtn.msg);
+                            } else {
+                                $bs.error(rtn.msg);
+                            }
 
-                                    $bs.success("操作成功!");
-                                })
-
-                            }else{
-                                $bs.error(rtn);
-                            }*/
-
+                            destroyGrid("dataTable");
+                            search();
                         }
                     );
                 });
 
-                var openModifywin = function(mode){
-                    /*$.get("./queryResById?" + rowk ,function (rtn){
+                var openModifywin = function (m) {
 
-                        $(".form .jqxInput").each(function (){
-                            $(this).val("");
-                        });
+                    mode = m;
 
-                        if(rtn && rtn.info.success){
-                            if(mode == "add"){
-                                $("#modifyWin .modal-title").text("新增");
-                                $("#id").val("");
-                                $("#pid").val(rowk);
-                                $("#pname").html($("#dataTable").jqxTreeGrid('getCellValue', rowk, 'name'));
+                    if ('add' == mode) {
 
-                            }else if(mode == "edit"){
-                                $("#modifyWin .modal-title").text("修改");
-                                $("#id").val(rowk);
-                                $("#pid").val("");
-                                $("#pname").html($("#dataTable").jqxTreeGrid('getRow', rowk).parent.name);
-                                baseUtil.bindByName(rtn.data, $(".form"));
-                            }
-                            $("#modifyWin").modal("show");
-                        }else{
-                            $bs.error("该数据可能已被修改或删除,请重新查询");
+                        if (rowData.id != 100 && rowData.id != 200) {
+                            $bs.error("请选择根资源进行新增操作 !");
+                            return;
                         }
-                    });*/
-                    $("#modifyWin").modal("show");
+                        // 新增
+                        $("#win_title").html("新增资源节点");
+                        $("#parentNodeName").html("").html(rowData.title);
+                        $("#pid").val(rowData.id);
+                        $("#jud").val("add");
+
+                    } else {
+
+                        // 修改
+                        $("#win_title").html("修改资源节点");
+                        $("#pid").val(rowData.pid);
+                        $("#jud").val("mod");
+
+                        if (rowData.id == 100 || rowData.id == 200) {
+                            $bs.error("请选择非根资源进行修改操作 !");
+                            return;
+                        }
+                        $.post(
+                            './queryParentName.do',
+                            {
+                                id: rowData.pid
+                            },
+                            function (rtn) {
+                                $("#parentNodeName").html("").html(rtn);
+                            }
+                        )
+
+                    }
+
+                    $("#createWin").modal("show");
                 };
 
 
-                $("#delete").on("click",function (){
+                $("#delete").on("click", function () {
                     rowk = getSelectionId();
-                    if(rowk == null){
-                        $bs.alert("请选择需要删除的目录");
+                    if (rowk == null) {
+                        $bs.alert("请选择需要删除的资源");
                         return;
                     }
-                    if(rowk == Global.resourceRootId){
-                        $bs.alert("无法删除根目录");
+                    if (rowk == 100 || rowk == 200) {
+                        $bs.alert("无法删除根路径");
                         return;
                     }
 
-                    $bs.confirm("是否删除该目录?",function (){
+                    $bs.confirm("是否删除该资源?", function () {
                         $.post(
-                            "./delete?resourceId=" + rowk,
-                            function (rtn){
-                                if(rtn == "success"){
+                            "./delete.do",
+                            {
+                                id: rowData.id
+                            },
+                            function (rtn) {
+                                if (rtn.status == "success") {
                                     $("#dataTable").jqxTreeGrid('deleteRow', rowk);
-                                    $bs.success("删除成功!");
-                                }else{
-                                    $bs.error(rtn);
+                                    $bs.success(rtn.msg);
+                                } else {
+                                    $bs.error(rtn.msg);
                                 }
                             }
                         );

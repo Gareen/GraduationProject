@@ -12,6 +12,28 @@
     </select>
 
     <select id="queryResources" resultType="cn.sams.entity.ResourcesPath">
-        SELECT t.id, t.title, t.path, t.icon, t.level, t.pid FROM sams_path t
+        SELECT t.id, t.title, t.path, t.icon, t.plevel, t.pid FROM sams_path t
     </select>
+
+    <select id="queryParentName" parameterType="string" resultType="string">
+        SELECT t.title FROM sams_path t WHERE t.id = #{0}
+    </select>
+
+    <select id="queryNodeById" parameterType="string" resultType="cn.sams.entity.ResourcesPath">
+        SELECT t.* FROM sams_path t WHERE t.id = #{0}
+    </select>
+
+    <insert id="save" parameterType="cn.sams.entity.ResourcesPath">
+        INSERT INTO sams_path VALUES (#{id}, #{title}, #{path}, #{icon}, #{plevel}, #{pid})
+    </insert>
+
+    <update id="update" parameterType="cn.sams.entity.ResourcesPath">
+        UPDATE sams_path t SET t.title = #{title}, t.path = #{path},
+                               t.icon = #{icon}, t.plevel = #{plevel}, t.pid = #{pid}
+                           WHERE t.id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM sams_path WHERE id = #{0}
+    </delete>
 </mapper>

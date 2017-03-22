@@ -3,6 +3,7 @@ package cn.sams.controller.system;
 import cn.sams.common.util.Chk;
 import cn.sams.entity.ResourcesPath;
 import cn.sams.entity.Teacher;
+import cn.sams.entity.commons.ReturnObj;
 import cn.sams.service.system.ResourcesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,5 +84,30 @@ public class ResourcesController {
         }
         return resourcesService.findNav2ByPid(pid);
     }
+
+    @RequestMapping("queryParentName.do")
+    @ResponseBody
+    public String queryParentName(String id) {
+        return resourcesService.queryParentName(id);
+    }
+
+    @RequestMapping("queryNodeById.do")
+    @ResponseBody
+    public ReturnObj queryNodeById(String id) {
+        return resourcesService.queryNodeById(id);
+    }
+
+    @RequestMapping("saveOrUpdate.do")
+    @ResponseBody
+    public ReturnObj saveOrUpdate(HttpServletRequest req, ResourcesPath path) {
+        return resourcesService.saveOrUpdate(req, path);
+    }
+
+    @RequestMapping("delete.do")
+    @ResponseBody
+    public ReturnObj delete(HttpServletRequest req, String id) {
+        return resourcesService.delete(req, id);
+    }
+
 
 }
