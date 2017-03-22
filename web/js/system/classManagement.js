@@ -7,18 +7,18 @@ $(function () {
     var query_flag = true;
 
     // 页面调整大小后自动适配
-    $(window).on("resize", function (){
+    $(window).on("resize", function () {
         $('#dataTable').jqxGrid({
-            height : jqxUtil.getGridHeight(30,30,30)
+            height: jqxUtil.getGridHeight(30, 30, 30)
         });
     });
 
-    sidebar.callback = function (){
+    sidebar.callback = function () {
         $('#dataTable').jqxGrid("render");
     };
 
     // 此处的search方法是预留
-    var search = function() {
+    var search = function () {
 
         // 获取选中行的boundIndex
         var rowIndex = -1;
@@ -27,22 +27,20 @@ $(function () {
         var rowId = 0;
 
         // 此处是为了多次刷新准备的
-        if(!query_flag){
+        if (!query_flag) {
             return;
         }
         query_flag = false;
 
         // 设置数据源
         var source = {
-            url: "./queryTerms.do",
+            url: "./queryClasses.do",
             datatype: "json",
             type: "post",
-            id: 'term_id',
+            id: 'class_id',
             datafields: [
-                // 教师工号
-                {name: 'term_id', type: 'String'},
-                // 教师姓名
-                {name: 'term_name', type: 'String'},
+                {name: 'class_id', type: 'String'},
+                {name: 'class_name', type: 'String'},
             ],
         };
 
@@ -51,15 +49,15 @@ $(function () {
 
         $("#dataTable").jqxGrid({
             width: "100%",
-            height :  jqxUtil.getGridHeight(30,30,30),
-            source : dataAdapter,
-            theme:jqx_default_theme,
+            height: jqxUtil.getGridHeight(30, 30, 30),
+            source: dataAdapter,
+            theme: jqx_default_theme,
             altrows: true,
             filterable: true,
             showfilterrow: true,
-            columns : [
-                {text: '学期编号', 	    dataField: 'term_id', 			align: "center", 		cellsAlign: 'center', 		width: "50%"},
-                {text: '学期', 		dataField: 'term_name', 		align: "center", 		cellsAlign: 'center', 		width: "50%"},
+            columns: [
+                {text: '班级编号', dataField: 'class_id', align: "center", cellsAlign: 'center', width: "50%"},
+                {text: '班级名称', dataField: 'class_name', align: "center", cellsAlign: 'center', width: "50%"},
             ],
         }).on("bindingcomplete", function () {
             query_flag = true;

@@ -19,7 +19,7 @@
     <schema id="13" parent="1" name="world"/>
     <schema id="14" parent="1" name="springboot"/>
     <schema id="15" parent="1" name="test_mysql"/>
-    <table id="16" parent="2" name="sams_ check">
+    <table id="16" parent="2" name="sams_check">
       <Comment>考勤表</Comment>
     </table>
     <table id="17" parent="2" name="sams_class"/>
@@ -398,7 +398,7 @@
     <column id="100" parent="27" name="stu_class_id">
       <Position>4</Position>
       <Comment>学生所在班级id</Comment>
-      <DataType>int(10)|0</DataType>
+      <DataType>varchar(20)|0</DataType>
     </column>
     <key id="101" parent="27" name="PRIMARY">
       <ColNames>stu_no</ColNames>

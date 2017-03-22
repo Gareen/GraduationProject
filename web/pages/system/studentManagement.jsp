@@ -3,14 +3,14 @@
 
 <!DOCTYPE html>
 <head>
-    <%@include file="../common/lib.jsp"%>
+    <%@include file="../common/lib.jsp" %>
 </head>
 
 <body>
-<%@include file="../common/index.jsp"%>
+<%@include file="../common/index.jsp" %>
 <div id="view-content">
-    <%@include file="../common/sidebar.jsp"%>
-    <script src="${ctx}/js/system/termManagement.js"></script>
+    <%@include file="../common/sidebar.jsp" %>
+    <script src="${ctx}/js/system/studentManagement.js"></script>
 
     <div id="view-content-main">
 
@@ -19,7 +19,7 @@
                 <div class="col-md-12">
                     <div class="console-title console-title-border clearfix">
                         <div class="fl">
-                            <h5>学期管理</h5>
+                            <h5>学生管理</h5>
                         </div>
 
                         <div class="fr">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="alert alert-success margin-top">
                         <a href="#" class="close" data-dismiss="alert"><span class="fa fa-close"></span></a>
-                        <strong>提示！</strong>学期信息展示.<br/>
+                        <strong>提示！</strong>学生信息展示.<br/>
                     </div>
                 </div>
             </div>

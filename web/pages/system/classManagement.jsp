@@ -10,7 +10,7 @@
 <%@include file="../common/index.jsp"%>
   <div id="view-content">
     <%@include file="../common/sidebar.jsp"%>
-    <script src="${ctx}/js/system/teacherManagement.js"></script>
+      <script src="${ctx}/js/system/classManagement.js"></script>
 
     <div id="view-content-main">
 

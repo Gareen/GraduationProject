@@ -1,5 +1,14 @@
 $(function () {
 
+    let tip = {
+        tipText: "",
+        showTip: false
+    };
+
+    new Vue({
+        el: "#vue-ctl",
+        data: tip
+    });
 
     var rowk = null;
 
@@ -121,6 +130,13 @@ $(function () {
                         $bs.alert("请选择新增资源的根节点");
                         return;
                     }
+                    if (rowData.id == 100) {
+                        tip.tipText = "(输入格式: 100, 101...)"
+                    }
+                    if (rowData.id == 200) {
+                        tip.tipText = "(输入格式: 200, 201...)"
+                    }
+                    tip.showTip = true;
                     $("#nodeNo").jqxInput({disabled: false});
                     $("#nodeNo").val("");
                     $("#nodeName").val("");
@@ -144,6 +160,7 @@ $(function () {
                     }
                     $("#nodeNo").jqxInput({disabled: true});
 
+                    tip.showTip = false;
                     $.post(
                         "./queryNodeById.do",
                         {

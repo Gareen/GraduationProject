@@ -69,9 +69,9 @@
                             <tr style="height: 10px;"></tr>
                             <tr>
                                 <td class='text-right'>资源编号:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                <td>
+                                <td id="vue-ctl">
                                     <input type="text" id="nodeNo">
-                                    <span style="color: red;">&nbsp;&nbsp;(输入格式: 10X | 20X)</span>
+                                    <span style="color: red;" v-if="showTip">&nbsp;&nbsp;{{tipText}}</span>
                                 </td>
                             </tr>
                             <tr style="height: 10px;"></tr>

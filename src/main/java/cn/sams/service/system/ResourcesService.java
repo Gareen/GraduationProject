@@ -55,7 +55,7 @@ public class ResourcesService {
 
     public ReturnObj queryNodeById(String id) {
         ResourcesPath path = resourcesDao.queryNodeById(id);
-        return path == null ? new ReturnObj("error", "该节点可能已被删除, 请刷新页面重试", null) :
+        return path == null ? new ReturnObj("error", "该节点可能已被删除, 请刷新页面重试 !", null) :
                 new ReturnObj("success", "", path);
     }
 
@@ -103,7 +103,7 @@ public class ResourcesService {
             int count = resourcesDao.save(path);
 
             if (count != 0) {
-                return new ReturnObj("success", "新增路径成功, 刷新页面生效 !!", null);
+                return new ReturnObj("success", "新增路径成功, 刷新页面生效 !", null);
             } else {
                 return new ReturnObj("error", "新增失败: 发生错误!", null);
             }
@@ -119,7 +119,7 @@ public class ResourcesService {
             int count = resourcesDao.update(path);
 
             if (count != 0) {
-                return new ReturnObj("success", "修改路径成功, 刷新页面生效 !!", null);
+                return new ReturnObj("success", "修改路径成功, 刷新页面生效 !", null);
             } else {
                 return new ReturnObj("error", "修改失败: 发生错误!", null);
             }
@@ -132,11 +132,6 @@ public class ResourcesService {
     private boolean chkPremission(HttpServletRequest req) {
         HttpSession session = req.getSession();
         Teacher t = (Teacher) session.getAttribute("user");
-
-        if (t == null || !"1".equals(t.getTea_permission())) {
-            return false;
-        } else {
-            return true;
-        }
+        return (t != null && "1".equals(t.getTea_permission()));
     }
 }

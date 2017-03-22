@@ -14,7 +14,7 @@ public class Student implements Serializable {
     // 学生性别
     private String stu_gender;
     // 学生所在班级编号
-    private Integer stu_class_id;
+    private String stu_class_id;
 
     public String getStu_no() {
         return stu_no;
@@ -40,11 +40,11 @@ public class Student implements Serializable {
         this.stu_gender = stu_gender;
     }
 
-    public Integer getStu_class_id() {
+    public String getStu_class_id() {
         return stu_class_id;
     }
 
-    public void setStu_class_id(Integer stu_class_id) {
+    public void setStu_class_id(String stu_class_id) {
         this.stu_class_id = stu_class_id;
     }
 
