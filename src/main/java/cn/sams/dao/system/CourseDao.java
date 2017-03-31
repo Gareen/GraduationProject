@@ -46,4 +46,12 @@ public interface CourseDao {
      * @return
      */
     List<Course> queryCoursesByCourseKeyAndWeek(String key, String week);
+
+    /**
+     * 根据课程的编号, 查询到课程的信息
+     *
+     * @param couId
+     * @return
+     */
+    CourseInfo queryCourseInfoByCouId(String couId);
 }

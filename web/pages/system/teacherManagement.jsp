@@ -92,7 +92,7 @@
                         <td>
                             <select id="tea_permission">
                                 <option value="1">1:&nbsp;所有操作均可</option>
-                                <option value="2">2:&nbsp;不可新增教师</option>
+                                <option value="2">2:&nbsp;后台管理限制</option>
                             </select>
                         </td>
                     </tr>

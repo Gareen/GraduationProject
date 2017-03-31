@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.sams.dao.system.ClassManagementDao">
+
+    <select id="queryClasses" resultType="cn.sams.entity.Classes">
+        SELECT * FROM sams_class
+    </select>
+
+    <select id="queryClassByClassId" parameterType="string" resultType="cn.sams.entity.Classes">
+        SELECT * FROM sams_class WHERE class_id = #{0}
+    </select>
+
+</mapper>

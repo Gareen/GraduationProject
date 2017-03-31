@@ -12,6 +12,9 @@
         select * from sams_course_info
     </select>
 
+    <select id="queryCourseInfoByCouId" parameterType="string" resultType="cn.sams.entity.commons.CourseInfo">
+        select * from sams_course_info where course_id = #{0}
+    </select>
 
     <select id="queryCoursesByCourseKey" parameterType="string" resultType="cn.sams.entity.Course">
         SELECT * FROM sams_course t WHERE t.course_id = #{key}

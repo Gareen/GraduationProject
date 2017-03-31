@@ -19,7 +19,7 @@
               <div class="col-md-12">
                 <div class="console-title console-title-border clearfix">
                     <div class="fl">
-                          <h5>课程管理</h5>
+                        <h5>班级管理</h5>
                     </div>
                     <div class="fr">
                       <button class="btn btn-success" id="createTea">新增</button>

@@ -2,7 +2,6 @@
 
 <script src="${ctx}/js/common/sidebar.js"></script>
 
-<%--<script src="${ctx}/js/common/test.js"></script>--%>
 <style>
     #view-content-left {
         width: 50px;

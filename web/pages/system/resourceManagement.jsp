@@ -29,7 +29,7 @@
                     </div>
                     <div class="alert alert-success margin-top">
                         <a href="#" class="close" data-dismiss="alert"><span class="fa fa-close"></span></a>
-                        <strong>提示！</strong>可以进行目前系统中所有的资源模块的查看和管理.<br/>
+                        <strong>提示！</strong>可以进行目前系统中所有的资源模块的查看和管理, 非开发需求请不要随意改动.<br/>
                     </div>
 
                 </div>

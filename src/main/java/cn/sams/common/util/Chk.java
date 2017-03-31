@@ -9,12 +9,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-/**
- * 
- * @author wangsq
- *
- */
 public class Chk {
 
 	public static boolean isDirection(String direction){

@@ -39,9 +39,7 @@ $(function () {
             type: "post",
             id: 'term_id',
             datafields: [
-                // 教师工号
                 {name: 'term_id', type: 'String'},
-                // 教师姓名
                 {name: 'term_name', type: 'String'},
             ],
         };
