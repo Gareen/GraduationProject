@@ -70,18 +70,18 @@ JDK版本: 1.8
 html5, css3, javascript (es5, es6)
 >框架/插件列表:
 
-1.bootstarp  
-2.jqxWidgets控件  
-3.Vue  
-4.fontAwesome 字体UI
+* bootstarp  
+* jqxWidgets控件  
+* Vue  
+* fontAwesome(字体UI)
 
 ### 服务端技术栈
 JAVA
 >框架/插件列表  
 
-1.项目整体框架: Spring + SpringMVC + Mybaits  
-2.连接池: dbcp  
-3.日志插件: log4j
+* 项目整体框架: Spring + SpringMVC + Mybaits  
+* 连接池: dbcp  
+* 日志: log4j
 
     
 
