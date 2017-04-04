@@ -12,4 +12,6 @@ import java.util.List;
 public interface TermManagementDao {
 
     List<Term> queryTerms();
+
+    Term queryTermByYearAndMonth(String year, String month);
 }

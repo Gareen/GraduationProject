@@ -12,17 +12,13 @@ $(function (){
             },
             function (rtn){
                 lb.removeAttr("disabled");
-                if("success" == rtn){
+                if (rtn.status === 'success') {
+                    // 将教师信息保存在localStorage, 以便后续调用
+                    store.setItem("teacher", JSON.stringify(rtn.data));
                     // 设置默认的跳转页面
-                    window.location.href = "../../score/groupManagement/toIndex.do";
+                    window.location.href = "../../score/groupInitManagement/toIndex.do";
                 }else{
-                    if("empty" == rtn) {
-                        $bs.error("工号/密码不能为空 !");
-                    } else if("notFound" == rtn) {
-                        $bs.error("工号错误 !");
-                    } else if("pwdError" == rtn) {
-                        $bs.error("密码错误 !");
-                    }
+                    $bs.error(rtn.msg);
                 }
             }
         )
@@ -36,6 +32,8 @@ $(function (){
             login();
         }
     });
+
+    $("#loginName").val('12312316');
 
     $("#loginName").focus();
 

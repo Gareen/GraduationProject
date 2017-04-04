@@ -50,6 +50,9 @@ public class Constant {
 
     public final static String USER_CONFIG = "loginUserConfig";
 
+    // 上学期和下学期的开始月份
+    public final static Integer FIRST_TERM_MONTH = 2;
+    public final static Integer SECOND_TERM_MONTH = 9;
 
 
     /**

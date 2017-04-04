@@ -283,6 +283,8 @@ $(function (){
                 function (rtn) {
                     if (rtn == "success") {
                         window.location.href = "../../system/login/index.do";
+                        // 从localStorage中移除teacher
+                        store.removeItem("teacher");
                     } else {
                         $bs.error(rtn);
                     }

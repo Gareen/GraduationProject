@@ -3,6 +3,7 @@
  */
 $(function () {
 
+    /*vue
     var class_info = {
         teacherName: "",
         className: "",
@@ -13,8 +14,9 @@ $(function () {
     new Vue({
         el: "#group_class_info",
         data: class_info
-    });
+     });*/
 
+    var teacher = $getTea();
 
     // 页面调整大小后自动适配
     $(window).on("resize", function () {
@@ -55,9 +57,7 @@ $(function () {
                 var tea_name = rtn['tea_name'];
                 if (tea_name) {
                     // 使用vue.js来改变教师姓名的展示
-                    class_info.teacherName = tea_name;
                 } else {
-                    class_info.teacherName = '';
                     $bs.error('请选择正确的检索信息 !');
                 }
             }
@@ -274,14 +274,14 @@ $(function () {
                         )
                     }
                     $("#createWin").modal("show");
-
                 }
 
 
                 // 点击新增按钮就新增弹出新增窗口
                 addButton.unbind('click').click(function () {
-                    if (!class_info.teacherName) {
-                        $bs.error('请检索到正确课程信息后添加 !');
+                    // 管理员不能对当前的面板进行操作
+                    if (teacher.tea_no === '10000') {
+                        $bs.error('请登录具体老师后重试 !');
                         return;
                     }
                     createGroupWindow('add');

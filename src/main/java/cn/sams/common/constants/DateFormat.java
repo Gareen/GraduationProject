@@ -12,8 +12,9 @@ public class DateFormat {
 	public static final String yM = "yyyy-MM";
 	public static final String Md = "MM-dd";
 	public static final String Hm= "HH:mm";
-	public static final String ms = "mm:ss";
-	public static final String y = "yyyy";
+    public static final String Hms = "HH:mm:ss";
+    public static final String ms = "mm:ss";
+    public static final String y = "yyyy";
 	public static final String M = "MM";
 	public static final String d = "dd";
 	public static final String h = "HH";

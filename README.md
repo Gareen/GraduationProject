@@ -3,7 +3,8 @@
 >开发环境: windows 8.1  
 JDK版本: 1.8  
 开发工具: Intellij idea 2017.1  
-数据库:Mysql5.6
+数据库:Mysql5.6  
+调试浏览器:Chrome 56
 
 
 本系统分为学生成绩管理和后台资源管理
@@ -68,7 +69,7 @@ JDK版本: 1.8
 ### 前端技术栈:  
 
 html5, css3, javascript (es5, es6)
->框架/插件列表:
+>框架/插件列表
 
 * bootstarp  
 * jqxWidgets控件  

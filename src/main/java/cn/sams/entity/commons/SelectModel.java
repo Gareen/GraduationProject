@@ -9,9 +9,9 @@ package cn.sams.entity.commons;
  */
 public class SelectModel  {
 
-    // 选项的key
+    // 选项的key  displayMember
     private String key;
-    // 选项的value
+    // 选项的value valueMember
     private String value;
 
     public String getKey() {

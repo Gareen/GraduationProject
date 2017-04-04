@@ -10,6 +10,8 @@ public class Term implements Serializable {
 
     private String term_id;
     private String term_name;
+    private String term_year;
+    private String term_month;
 
     public String getTerm_id() {
         return term_id;
@@ -25,6 +27,22 @@ public class Term implements Serializable {
 
     public void setTerm_name(String term_name) {
         this.term_name = term_name;
+    }
+
+    public String getTerm_year() {
+        return term_year;
+    }
+
+    public void setTerm_year(String term_year) {
+        this.term_year = term_year;
+    }
+
+    public String getTerm_month() {
+        return term_month;
+    }
+
+    public void setTerm_month(String term_month) {
+        this.term_month = term_month;
     }
 
     @Override

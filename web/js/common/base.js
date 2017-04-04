@@ -113,8 +113,15 @@ $(function (){
 //设置浏览器不使用缓存获取数据。防止陆帅峰框架get api 缓存数据
 $.ajaxSetup ({cache: false});
 
-
-
+// localStorage
+var $getTea = function () {
+    var teacher = store.getItem('teacher');
+    if (teacher) {
+        return JSON.parse(teacher);
+    } else {
+        return {};
+    }
+}
 
 var dateFormat = {
     yMd: "yyyy-MM-dd",

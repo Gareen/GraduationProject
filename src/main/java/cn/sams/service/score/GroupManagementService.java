@@ -277,8 +277,8 @@ public class GroupManagementService {
             newGroups.add(group);
         }
 
-        // 将新的分组序列进行排序
-        Collections.sort(newGroups, (Group g1, Group g2) -> g1.getGroup_num().compareTo(g2.getGroup_num()));
+        // 将新的分组序列进行排序 (Group g1, Group g2) -> g1.getGroup_num().compareTo(g2.getGroup_num())
+        Collections.sort(newGroups, Comparator.comparing(Group::getGroup_num));
 
         return newGroups;
     }

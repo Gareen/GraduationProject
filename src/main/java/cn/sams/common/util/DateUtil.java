@@ -11,11 +11,27 @@ import java.util.Date;
 
 public class DateUtil {
 
-    public static Long getDaysBetween(String date1,String date2,String format){
-        return  ( parse(date1,format).getTime() - parse(date2,format).getTime() ) / (1000 * 60 * 60 * 24);
+    /**
+     * 计算两个日期之间的时间差
+     *
+     * @param date1
+     * @param date2
+     * @param format 格式
+     * @return
+     */
+    public static Long getDaysBetween(String date1, String date2, String format) {
+        return (parse(date1, format).getTime() - parse(date2, format).getTime()) / (1000 * 60 * 60 * 24);
     }
 
-    public static String convertFormat(String date,String fromFormat,String toFormat){
+    /**
+     * 将格式化日期重新格式化
+     *
+     * @param date
+     * @param fromFormat 旧格式
+     * @param toFormat   新格式
+     * @return
+     */
+    public static String convertFormat(String date, String fromFormat, String toFormat) {
         if(Chk.spaceCheck(date) && Chk.spaceCheck(fromFormat) && Chk.spaceCheck(toFormat)){
             return getDateString(parse(date, fromFormat), toFormat);
         }else{
@@ -24,7 +40,14 @@ public class DateUtil {
     }
 
 
-    public static String getDateString(Date date,String format){
+    /**
+     * 获取
+     *
+     * @param date
+     * @param format
+     * @return
+     */
+    public static String getDateString(Date date, String format) {
         if(date == null || !Chk.spaceCheck(format)){
             return "";
         }
@@ -49,19 +72,42 @@ public class DateUtil {
         return getDateString(d, format);
     }
 
-    public static String getDateString(Date date){
+    /**
+     * 返回时间格式化字符串, 如果isFormat为false, 那么就默认为"yyyy-MM-dd HH:mm:ss" 格式
+     *
+     * @param date
+     * @param isFormat
+     * @param format
+     * @return
+     */
+    public static String getDateString(Date date, boolean isFormat, String format) {
         if(date == null){
-            return  null;
+            return null;
         }
-        return getFormat("yyyy-MM-dd HH:mm:ss").format(date);
+        if (isFormat) {
+            return getFormat(format).format(date);
+        }
+        return getFormat(DateFormat.yMd_Hms).format(date);
     }
 
-    public static String getYyyymmdd(Date date){
-        return getFormat("yyyy-MM-dd").format(date);
+    /**
+     * 返回格式化后的日期字符串 yyyy-MM-dd
+     *
+     * @param date
+     * @return
+     */
+    public static String getYyyymmdd(Date date) {
+        return getFormat(DateFormat.yMd).format(date);
     }
 
-    public static String getHHmmss(Date date){
-        return getFormat("HH:mm:ss").format(date);
+    /**
+     * 返回格式化后的时间字符串 HH:mm:ss
+     *
+     * @param date
+     * @return
+     */
+    public static String getHHmmss(Date date) {
+        return getFormat(DateFormat.Hms).format(date);
     }
 
     public static String formatStartDate(String yyyymmdd){
@@ -78,13 +124,22 @@ public class DateUtil {
         return yyyymmdd + " 23:59:59";
     }
 
-    public static String getDateString(){
-        return getDateString(new Date());
+    public static String getDateString() {
+        return getDateString(new Date(), false, "");
     }
+
+    /**
+     * 获得当前日期的格式化后的字符串
+     * @return
+     */
     public static String getYyyymmdd(){
         return getYyyymmdd(new Date());
     }
 
+    /**
+     * 获得当前时间的格式化后的字符串
+     * @return
+     */
     public static String getHHmmss(){
         return getHHmmss(new Date());
     }
@@ -93,7 +148,14 @@ public class DateUtil {
         return new SimpleDateFormat(format);
     }
 
-    public static Date parse(String date,String format){
+    /**
+     * 将日期字符串根据指定的格式转换成日期对象
+     *
+     * @param date   日期字符串
+     * @param format 格式
+     * @return
+     */
+    public static Date parse(String date, String format){
         try {
             return new SimpleDateFormat(format).parse(date);
         } catch (ParseException e) {
@@ -104,7 +166,15 @@ public class DateUtil {
     }
 
 
-    public static String []  getBetweenDate(String format,String offSetDay,String offSetHour){
+    /**
+     * 获得当前日期偏移量中的全部格式化日期字符串
+     *
+     * @param format     格式
+     * @param offSetDay
+     * @param offSetHour
+     * @return
+     */
+    public static String[] getBetweenDate(String format, String offSetDay, String offSetHour){
 
         String [] rtn = new String [] {"",""};
         if(!Chk.spaceCheck(format) || !Chk.integerCheck(offSetHour) || !Chk.integerCheck(offSetHour)){
@@ -238,11 +308,10 @@ public class DateUtil {
     public static String addDay(String date,int d,String format){
         return add(date, Calendar.DAY_OF_MONTH, d, format);
     }
+
     public static String addMin(String date,int min,String format){
         return add(date, Calendar.MINUTE, min, format);
     }
-
-
 
     public static String  getFormatDateBetween(String startTime,String endTime,String ...format){
         String f = DateFormat.yMd_Hms;

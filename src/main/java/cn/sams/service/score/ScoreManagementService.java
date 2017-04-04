@@ -60,7 +60,6 @@ public class ScoreManagementService {
 
         for (CourseInfo c : courseInfos) {
             SelectModel selectModel = new SelectModel();
-
             selectModel.setKey(c.getCourse_name());
             selectModel.setValue(c.getCourse_id().toString());
             s.add(selectModel);

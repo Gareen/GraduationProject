@@ -16,7 +16,10 @@
 <script src="${ctx}/framework/jqwidgets/globalization/globalize.culture.zh-CN.js"></script>
 <script src="${ctx}/framework/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="${ctx}/framework/bootstrap/js/modal.js"></script>
-
+<script>
+    var store = window.localStorage;
+</script>
 <script src="${ctx}/js/common/base.js"></script>
 <script src="${ctx}/js/common/packageJqx.js"></script>
 <script src="${ctx}/js/common/commonsJqx.js"></script>
+

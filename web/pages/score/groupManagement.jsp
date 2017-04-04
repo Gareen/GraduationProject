@@ -24,14 +24,14 @@
                 <div class="col-md-12">
                     <div class="console-title console-title-border clearfix">
                         <div class="fl">
-                            <h5>实验分组管理</h5>
+                            <h5>分组成绩管理</h5>
                         </div>
-                        <div class="fr" id="group_class_info">
+                        <%--<div class="fr" id="group_class_info">
                             <h6 class="fr ml10" >上课教师:
                                 <span v-if="teacherName?showTea:false" >{{teacherName}}</span>
                                 <span v-else>暂无</span>
                             </h6>
-                        </div>
+                        </div>--%>
                     </div>
 
                 </div>
