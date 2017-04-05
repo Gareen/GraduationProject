@@ -2,6 +2,7 @@ package cn.sams.dao.score;
 
 import cn.sams.entity.Classes;
 import cn.sams.entity.Course;
+import cn.sams.entity.Group;
 import cn.sams.entity.commons.SelectModel;
 import org.springframework.stereotype.Repository;
 
@@ -31,4 +32,12 @@ public interface GroupInitManagementDao {
      * @return
      */
     List<Classes> queryClasses(String teaNo, String termId, String courseId);
+
+    /**
+     * 根据group的encodeId查询出分组列表
+     *
+     * @param id
+     * @return
+     */
+    List<Group> queryGroupsByGroupId(String id);
 }

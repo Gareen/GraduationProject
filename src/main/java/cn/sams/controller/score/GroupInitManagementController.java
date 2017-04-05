@@ -1,9 +1,14 @@
 package cn.sams.controller.score;
 
+import cn.sams.entity.Classes;
+import cn.sams.entity.Group;
 import cn.sams.entity.Term;
+import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
 import cn.sams.service.score.GroupInitManagementService;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -59,5 +64,23 @@ public class GroupInitManagementController {
     @ResponseBody
     public Set<SelectModel> queryClasses(HttpServletRequest req) {
         return groupInitManagementService.queryClasses(req);
+    }
+
+    @RequestMapping("query.do")
+    @ResponseBody
+    public List<Group> queryGroups(HttpServletRequest req) {
+        return groupInitManagementService.queryGroups(req);
+    }
+
+    @RequestMapping("queryStudentsByClassId.do")
+    @ResponseBody
+    public Set<SelectModel> queryStudentsByClassId(HttpServletRequest req) {
+        return groupInitManagementService.queryStudentsByClassId(req);
+    }
+
+    @RequestMapping("saveOrUpdate.do")
+    @ResponseBody
+    public ReturnObj saveOrUpdate(HttpServletRequest req) {
+        return new ReturnObj();
     }
 }

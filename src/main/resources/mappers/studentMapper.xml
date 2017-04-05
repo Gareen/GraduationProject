@@ -7,4 +7,8 @@
         SELECT * FROM sams_student
     </select>
 
+    <select id="queryStudentsByClassId" resultType="cn.sams.entity.Student" parameterType="string">
+        SELECT * FROM sams_student t WHERE t.stu_class_id = #{0}
+    </select>
+
 </mapper>

@@ -7,10 +7,9 @@ import cn.sams.common.util.DateUtil;
 import cn.sams.dao.score.GroupInitManagementDao;
 import cn.sams.dao.system.ClassManagementDao;
 import cn.sams.dao.system.CourseDao;
+import cn.sams.dao.system.StudentManagementDao;
 import cn.sams.dao.system.TermManagementDao;
-import cn.sams.entity.Classes;
-import cn.sams.entity.Course;
-import cn.sams.entity.Term;
+import cn.sams.entity.*;
 import cn.sams.entity.commons.SelectModel;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +37,9 @@ public class GroupInitManagementService {
 
     @Resource
     private ClassManagementDao classManagementDao;
+
+    @Resource
+    private StudentManagementDao studentManagementDao;
 
     /**
      * 获取当前的系统时间所表示的学期
@@ -164,4 +166,85 @@ public class GroupInitManagementService {
 
         return new TreeSet<>();
     }
+
+    public List<Group> queryGroups(HttpServletRequest req) {
+
+        String groupId = getEncodeGroupId(req);
+
+        if (!Chk.spaceCheck(groupId)) {
+            return new ArrayList<>();
+        }
+
+        List<Group> groups = groupInitManagementDao.queryGroupsByGroupId(groupId);
+
+        if (Chk.emptyCheck(groups)) {
+            return groups;
+        }
+
+        return new ArrayList<>();
+    }
+
+
+    public Set<SelectModel> queryStudentsByClassId(HttpServletRequest req) {
+        String classId = req.getParameter("classId");
+
+        Set<SelectModel> set = new TreeSet<>(Comparator.comparing(SelectModel::getValue));
+
+        if (!Chk.spaceCheck(classId)) {
+            return new TreeSet<>();
+        }
+
+        List<Student> students = studentManagementDao.queryStudentsByClassId(classId);
+
+        if (Chk.emptyCheck(students)) {
+            for (Student student : students) {
+                SelectModel selectModel = new SelectModel();
+                String stuNo = student.getStu_no();
+
+                selectModel.setKey(stuNo + " " + student.getStu_name());
+                selectModel.setValue(stuNo);
+
+                set.add(selectModel);
+            }
+        }
+
+        if (Chk.emptyCheck(set)) {
+            return set;
+        } else {
+            return new TreeSet<>();
+        }
+    }
+
+    /**
+     * 对小组进行编码
+     * <p>
+     * 编码规则
+     * 教师工号+T+课程号+T+班级id+T+学期编号
+     *
+     * @param req
+     * @return 小组id
+     */
+    private String getEncodeGroupId(HttpServletRequest req) {
+        String teaNo = req.getParameter("teaNo");
+        String termId = req.getParameter("termId");
+        String courseId = req.getParameter("courseId");
+        String classId = req.getParameter("classId");
+
+        // 如果一项为空直接返回空
+        if (!Chk.spaceCheck(teaNo) || !Chk.spaceCheck(termId) || !Chk.spaceCheck(courseId) || !Chk.spaceCheck(classId)) {
+            return "";
+        }
+        return teaNo + "T" + termId + "T" + courseId + "T" + classId;
+    }
+
+    /**
+     * 解码小组编号
+     *
+     * @param groupId 小组编号
+     * @return
+     */
+    private String[] decodeGroupId(String groupId) {
+        return groupId.split("T");
+    }
+
 }

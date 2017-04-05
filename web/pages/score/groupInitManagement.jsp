@@ -96,7 +96,7 @@
                                   style="float: right; "></span>
 
                             <%--弹出框的标题--%>
-                            <h5 class="modal-title" id="group_win_title">更改学期</h5>
+                            <h5 class="modal-title">更改学期</h5>
                         </div>
                         <div class="modal-body clearfix">
                             <table class="form" width="100%" id="info_form">
@@ -111,6 +111,56 @@
 
                         <div class="modal-footer">
                             <a class="btn btn-primary" data-dismiss="modal" id="termSub">确定</a>
+                            <a class="btn btn-default" data-dismiss="modal">取消</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%--分组信息模态框--%>
+            <div class="modal fade" data-backdrop="static" id="groupWin">
+                <div class="modal-dialog" style="width: auto;max-width: 500px;min-width: 350px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span type="button" class="close fa fa-close" data-dismiss="modal" aria-hidden="true"
+                                  style="float: right; "></span>
+
+                            <%--弹出框的标题--%>
+                            <h5 class="modal-title" id="group_win_title"></h5>
+                        </div>
+                        <div class="modal-body clearfix">
+                            <table class="form" width="100%">
+                                <tr>
+                                    <td class="text-right">
+                                        <label for="group_num">分组编号:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    </td>
+                                    <td>
+                                        <div id="group_num"></div>
+                                    </td>
+                                </tr>
+                                <tr style="height: 10px;"></tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <label for="group_leader">小组组长:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    </td>
+                                    <td>
+                                        <div id="group_leader"></div>
+                                    </td>
+                                </tr>
+                                <tr style="height: 10px;"></tr>
+                                <tr>
+                                    <td class="text-right">
+                                        <label for="group_members">小组成员:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    </td>
+                                    <td>
+                                        <div id="group_members"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="modal-footer">
+                            <a class="btn btn-primary" data-dismiss="modal" id="submit">确定</a>
                             <a class="btn btn-default" data-dismiss="modal">取消</a>
                         </div>
                     </div>

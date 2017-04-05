@@ -33,7 +33,7 @@ $(function (){
         }
     });
 
-    $("#loginName").val('12312316');
+    $("#loginName").val('12315601');
 
     $("#loginName").focus();
 

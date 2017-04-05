@@ -12,4 +12,8 @@
         SELECT * FROM sams_course_class t WHERE t.tea_no = #{0} AND t.term_id = #{1} AND t.cou_no = #{2}
     </select>
 
+    <select id="queryGroupsByGroupId" parameterType="string" resultType="cn.sams.entity.Group">
+        SELECT * FROM sams_group t WHERE t.group_id = #{0}
+    </select>
+
 </mapper>

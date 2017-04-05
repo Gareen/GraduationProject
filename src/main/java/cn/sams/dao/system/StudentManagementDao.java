@@ -12,4 +12,12 @@ import java.util.List;
 public interface StudentManagementDao {
 
     List<Student> queryStudents();
+
+    /**
+     * 根据班级的id查找到所有的学生
+     *
+     * @param classId
+     * @return
+     */
+    List<Student> queryStudentsByClassId(String classId);
 }
