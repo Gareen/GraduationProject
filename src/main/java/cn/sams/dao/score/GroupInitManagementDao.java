@@ -40,4 +40,24 @@ public interface GroupInitManagementDao {
      * @return
      */
     List<Group> queryGroupsByGroupId(String id);
+
+    /**
+     * 根据小组id和小组组号来找到这个分组
+     *
+     * @param groupId
+     * @param groupNum
+     * @return
+     */
+    Group findGroupByGroupIdAndGroupNum(String groupId, String groupNum);
+
+    /**
+     * 保存分组
+     *
+     * @param groupId
+     * @param groupLeader
+     * @param groupMemers
+     * @param groupNum
+     * @return
+     */
+    Integer save(String groupId, String groupLeader, String groupMemers, String groupNum);
 }

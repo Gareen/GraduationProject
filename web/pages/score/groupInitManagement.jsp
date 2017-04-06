@@ -64,7 +64,7 @@
                                         <td class="lb"></td>
                                         <td>
                                             <button class="btn btn-primary" id="query_button"
-                                                    style="width: 60px; height: 30px;">确认
+                                                    style="width: 60px; height: 30px;">搜索
                                             </button>
                                         </td>
                                     </tr>
@@ -124,7 +124,6 @@
                         <div class="modal-header">
                             <span type="button" class="close fa fa-close" data-dismiss="modal" aria-hidden="true"
                                   style="float: right; "></span>
-
                             <%--弹出框的标题--%>
                             <h5 class="modal-title" id="group_win_title"></h5>
                         </div>

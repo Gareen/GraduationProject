@@ -20,4 +20,12 @@ public interface StudentManagementDao {
      * @return
      */
     List<Student> queryStudentsByClassId(String classId);
+
+    /**
+     * 根据学生学号查找学生
+     *
+     * @param stuId 学生学号
+     * @return
+     */
+    Student queryStudentByStuId(String stuId);
 }

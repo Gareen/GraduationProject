@@ -11,4 +11,8 @@
         SELECT * FROM sams_student t WHERE t.stu_class_id = #{0}
     </select>
 
+    <select id="queryStudentByStuId" parameterType="string" resultType="cn.sams.entity.Student">
+        SELECT t.* FROM sams_student t WHERE t.stu_no = #{0}
+    </select>
+
 </mapper>

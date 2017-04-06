@@ -10,6 +10,7 @@ import cn.sams.dao.system.CourseDao;
 import cn.sams.dao.system.StudentManagementDao;
 import cn.sams.dao.system.TermManagementDao;
 import cn.sams.entity.*;
+import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
 import org.springframework.stereotype.Service;
 
@@ -153,7 +154,6 @@ public class GroupInitManagementService {
             }
         }
 
-
         if (Chk.emptyCheck(set)) {
             return set;
         }
@@ -171,6 +171,8 @@ public class GroupInitManagementService {
 
         String groupId = getEncodeGroupId(req);
 
+        List<Group> list = new ArrayList<>();
+
         if (!Chk.spaceCheck(groupId)) {
             return new ArrayList<>();
         }
@@ -178,10 +180,39 @@ public class GroupInitManagementService {
         List<Group> groups = groupInitManagementDao.queryGroupsByGroupId(groupId);
 
         if (Chk.emptyCheck(groups)) {
-            return groups;
+
+            StringBuilder builder = new StringBuilder("");
+
+            for (Group group : groups) {
+                Group g = new Group();
+                g.setGroup_id(group.getGroup_id());
+                g.setGroup_num(group.getGroup_num());
+
+                String leaderId = group.getStu_is_leader();
+                Student student = studentManagementDao.queryStudentByStuId(leaderId);
+                g.setStu_is_leader(student.getStu_name());
+
+                String[] ids = group.getStu_is_member().split(",");
+
+                // 如果成员的人数不为空
+                if (ids.length != 0) {
+                    for (String id : ids) {
+                        builder.append(",").append(studentManagementDao.queryStudentByStuId(id).getStu_name());
+                    }
+                    // 把首,去除掉
+                    String names = builder.toString().substring(1);
+                    g.setStu_is_member(names);
+                    // 清空StringBuilder
+                    builder.delete(0, builder.length());
+                } else {
+                    g.setStu_is_member("");
+                }
+
+                list.add(g);
+            }
         }
 
-        return new ArrayList<>();
+        return list;
     }
 
 
@@ -214,6 +245,50 @@ public class GroupInitManagementService {
             return new TreeSet<>();
         }
     }
+
+    public synchronized ReturnObj saveOrUpdate(HttpServletRequest req) {
+        String groupId = getEncodeGroupId(req);
+        String jud = req.getParameter("jud");
+        String groupNum = req.getParameter("group_num");
+        String groupLea = req.getParameter("group_leader");
+        String groupMem = req.getParameter("group_member");
+
+        if (!Chk.spaceCheck(groupId)) {
+            return new ReturnObj("error", "编码id失败, 请先进行搜索 !", null);
+
+        }
+
+        if (!Chk.spaceCheck(jud) || !Chk.spaceCheck(groupNum)
+                || !Chk.spaceCheck(groupLea) || !Chk.spaceCheck(groupMem)) {
+            return new ReturnObj("error", "各项不可为空 !", null);
+
+        }
+
+        if ("add".equals(jud)) {
+
+            // 先进行判断, 如果id和小组组长重复就提示不可以新增
+            Group g = groupInitManagementDao.findGroupByGroupIdAndGroupNum(groupId, groupNum);
+
+            if (g != null) {
+                return new ReturnObj("error", "新增分组失败: 分组已存在 !", null);
+            }
+
+            int count = groupInitManagementDao.save(groupId, groupLea, groupMem, groupNum);
+
+            if (count != 0) {
+                return new ReturnObj("success", "新增分组成功 !", null);
+            } else {
+                return new ReturnObj("error", "新增分组失败: 数据库异常 !", null);
+            }
+        }
+
+        if ("mod".equals(jud)) {
+            //todo 修改方法待完成
+        }
+
+        return new ReturnObj();
+    }
+
 
     /**
      * 对小组进行编码

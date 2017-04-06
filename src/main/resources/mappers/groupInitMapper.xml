@@ -13,7 +13,14 @@
     </select>
 
     <select id="queryGroupsByGroupId" parameterType="string" resultType="cn.sams.entity.Group">
-        SELECT * FROM sams_group t WHERE t.group_id = #{0}
+        SELECT t.* FROM sams_group t WHERE t.group_id = #{0}
     </select>
 
+    <select id="findGroupByGroupIdAndGroupNum" parameterType="string" resultType="cn.sams.entity.Group">
+        SELECT t.* FROM sams_group t WHERE t.group_id = #{0} AND t.group_num = #{1}
+    </select>
+
+    <insert id="save" parameterType="string">
+        INSERT INTO sams_group VALUES (#{0}, #{1}, #{2}, #{3}, '', '', '', '')
+    </insert>
 </mapper>

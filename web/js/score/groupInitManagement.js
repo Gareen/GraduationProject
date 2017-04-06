@@ -29,6 +29,8 @@ $(function () {
 
     var query_flag = true;
 
+    var mod = "";
+
     $.post(
         './queryCurrentTime.do',
         function (rtn) {
@@ -174,7 +176,6 @@ $(function () {
             url: './query.do',
             datatype: "json",
             type: "post",
-            id: 'group_id',
             data: data,
             datafields: [
                 {name: 'group_num', type: 'String'},
@@ -234,8 +235,8 @@ $(function () {
             selectionmode: 'singlerow',
             columns: [
                 {text: '小组编号', dataField: 'group_num', align: "center", cellsAlign: 'center', width: "10%"},
-                {text: '小组组长', dataField: 'stu_is_leader', align: "center", cellsAlign: 'center', width: "30%"},
-                {text: '组员姓名', dataField: 'stu_is_member', align: "center", cellsAlign: 'center', width: "60%"}
+                {text: '小组组长', dataField: 'stu_is_leader', align: "center", cellsAlign: 'center', width: "20%"},
+                {text: '组员姓名', dataField: 'stu_is_member', align: "center", cellsAlign: 'center', width: "70%"}
             ],
             renderToolbar: function (toolBar) {
                 var container = $("<div style='overflow: hidden; position: relative; height: 100%; width: 100%;'></div>");
@@ -244,7 +245,7 @@ $(function () {
                 var deleteButton = $(buttonTemplate);
                 container.append(addButton);
                 container.append(deleteButton);
-                container.append("<span style='padding: 3px; margin: 2px;line-height: 33px;'>&nbsp;&nbsp;&nbsp;提示:&nbsp;请双击一条记录进行修改</span>");
+                container.append("<span style='padding: 3px; margin: 2px;line-height: 33px;'>&nbsp;&nbsp;&nbsp;提示:&nbsp;1.请先设置好搜索条件进行搜索;&nbsp;2.请双击一条记录进行修改;</span>");
 
                 toolBar.append(container);
 
@@ -280,7 +281,8 @@ $(function () {
 
                 // 初始化窗口
                 function initWindow() {
-                    $(" #group_num").jqxDropDownList({selectedIndex: -1}).jqxDropDownList('uncheckAll');
+                    $(" #group_num").jqxDropDownList({selectedIndex: -1});
+                    $("#group_members").jqxDropDownList('uncheckAll');
                     var selectIndex = $("#group_leader").jqxDropDownList('getSelectedIndex');
                     $("#group_leader").jqxDropDownList('unselectIndex', selectIndex);
                 }
@@ -289,14 +291,13 @@ $(function () {
                 function createGroupWindow(status) {
                     if (status === 'add') {
                         // 新建窗口初始化
-                        $("#jud").val("").val("add");
-
+                        mod = "add";
                         $("#group_win_title").html("新增分组记录");
                         initWindow();
 
                     } else {
                         // 修改窗口初始化
-                        $("#jud").val("").val("mod");
+                        mod = "mod";
                         $("#group_win_title").html("修改分组记录");
 
                         initWindow();
@@ -335,7 +336,6 @@ $(function () {
                                 } else {
                                     $bs.error(rtn.msg);
                                 }
-                                reDrawGrid();
                             }
                         );
                     })
@@ -348,27 +348,34 @@ $(function () {
 
                 $("#submit").unbind('click').click(function () {
 
+                    console.log(teacher["tea_no"])
+
                     // 获取小组成员的学号, 按照数组的形式传递到后台
-                    var group = {
-                        jud: $("#jud").val(),
-                        group_num: $("#group_num").val(),
-                        group_leader: $("#group_leader").val(),
-                        group_member: $("#group_members").val(),
-                        data
-                    };
-
-
                     $.post(
-                        "./saveorupdate.do",
-                        group,
+                        "./saveOrUpdate.do",
+                        {
+                            jud: mod,
+                            group_num: $groupNum.val(),
+                            group_leader: $("#group_leader").val(),
+                            group_member: $("#group_members").val(),
+                            teaNo: teacher["tea_no"],
+                            termId: term_Id,
+                            courseId: $chooseCourse.val(),
+                            classId: $chooseClass.val()
+                        },
                         function (rtn) {
-
+                            if (rtn.status === 'success') {
+                                $bs.success(rtn.msg);
+                            } else {
+                                $bs.error(rtn.msg);
+                            }
+                            destroyGrid('dataTable');
+                            search();
                         }
                     );
 
                     // 点击关闭按钮
                     $("#createSubmit").next().unbind('click').click();
-
                 })
             },
         }).on("bindingcomplete", function () {
