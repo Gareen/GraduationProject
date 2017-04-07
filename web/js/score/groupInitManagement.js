@@ -178,6 +178,7 @@ $(function () {
             type: "post",
             data: data,
             datafields: [
+                {name: 'group_id', type: 'String'},
                 {name: 'group_num', type: 'String'},
                 {name: 'stu_is_leader', type: 'String'},
                 {name: 'stu_is_member', type: 'String'},
@@ -191,7 +192,7 @@ $(function () {
                 classId: $chooseClass.val()
             },
             function (rtn) {
-                console.log(JSON.stringify(rtn));
+                // console.log(JSON.stringify(rtn));
                 $("#group_leader").jqxDropDownList({
                     placeHolder: "选择组长",
                     source: rtn,
@@ -210,7 +211,7 @@ $(function () {
                     filterPlaceHolder: "学生学号",
                     selectedIndex: 0,
                     checkboxes: true,
-                    width: '200',
+                    width: '230',
                     height: '25',
                     theme: jqx_default_theme,
                     filterable: true,
@@ -245,7 +246,8 @@ $(function () {
                 var deleteButton = $(buttonTemplate);
                 container.append(addButton);
                 container.append(deleteButton);
-                container.append("<span style='padding: 3px; margin: 2px;line-height: 33px;'>&nbsp;&nbsp;&nbsp;提示:&nbsp;1.请先设置好搜索条件进行搜索;&nbsp;2.请双击一条记录进行修改;</span>");
+                container.append("<span style='padding: 3px; margin: 2px;line-height: 33px;'>&nbsp;&nbsp;&nbsp;提示:&nbsp;1.请先设置好搜索条件进行搜索;&nbsp;" +
+                    "2.请双击一条记录进行修改;&nbsp;<span style='color: red;'>3.想要修改分组号请删除记录重建;</span></span>");
 
                 toolBar.append(container);
 
@@ -285,6 +287,7 @@ $(function () {
                     $("#group_members").jqxDropDownList('uncheckAll');
                     var selectIndex = $("#group_leader").jqxDropDownList('getSelectedIndex');
                     $("#group_leader").jqxDropDownList('unselectIndex', selectIndex);
+                    $("#group_members,#group_leader").jqxDropDownList('clearFilter');
                 }
 
                 // 创建窗口信息('add'新增, 'mod'修改)
@@ -293,6 +296,7 @@ $(function () {
                         // 新建窗口初始化
                         mod = "add";
                         $("#group_win_title").html("新增分组记录");
+                        $(" #group_num").jqxDropDownList({disabled: false});
                         initWindow();
 
                     } else {
@@ -303,11 +307,39 @@ $(function () {
                         initWindow();
 
                         // 打开窗口后, 将信息回填
+                        //rowSelectData {group_id: "12315601T1T625058T10000", group_num: "5", stu_is_leader: "孙蕾",
+                        // stu_is_member: "李伟铭 ,李明航,周华婕,黄业涯,杨帆", uid: 4…}
+                        var gid = rowSelectData["group_id"];
+                        var gnm = rowSelectData["group_num"];
 
+                        $.post(
+                            "./queryGroupByGidAndGnm.do",
+                            {
+                                group_id: gid,
+                                group_num: gnm
+                            },
+                            function (rtn) {
+                                // 禁止修改分组编号
+                                $("#group_num").val(rtn["group_num"]);
+                                $(" #group_num").jqxDropDownList({disabled: true});
+                                $("#group_leader").val(rtn["stu_is_leader"]);
+
+                                var members = rtn["stu_is_member"].split(",");
+
+                                var $m = $("#group_members");
+                                for (var i = 0; i < members.length; i++) {
+                                    $m.jqxDropDownList('checkItem', members[i]);
+                                }
+                            }
+                        )
                     }
                     $("#groupWin").modal("show");
                 }
 
+                $("#clearChecked").unbind('click').click(function () {
+                    $("#group_members").jqxDropDownList('uncheckAll');
+
+                });
 
                 // 点击新增按钮就新增弹出新增窗口
                 addButton.unbind('click').click(function () {
@@ -325,10 +357,10 @@ $(function () {
                     }
                     $bs.confirm("确定删除该条记录吗 ?", function () {
                         $.post(
-                            './deleteRowByIdAndNum.do',
+                            './deleteGroupByIdAndNum.do',
                             {
-                                id: $("#group_id").val(),
-                                num: rowSelectData.group_num
+                                group_id: rowSelectData['group_id'],
+                                group_num: rowSelectData.group_num
                             },
                             function (rtn) {
                                 if (rtn.status == 'success') {
@@ -336,6 +368,8 @@ $(function () {
                                 } else {
                                     $bs.error(rtn.msg);
                                 }
+                                destroyGrid('dataTable');
+                                search();
                             }
                         );
                     })
@@ -348,9 +382,6 @@ $(function () {
 
                 $("#submit").unbind('click').click(function () {
 
-                    console.log(teacher["tea_no"])
-
-                    // 获取小组成员的学号, 按照数组的形式传递到后台
                     $.post(
                         "./saveOrUpdate.do",
                         {

@@ -51,8 +51,16 @@ public interface GroupInitManagementDao {
     Group findGroupByGroupIdAndGroupNum(String groupId, String groupNum);
 
     /**
-     * 保存分组
+     * 根据分组id和小组长的id找到分组
      *
+     * @param groupId
+     * @param groupLea
+     * @return
+     */
+    List<Group> findGroupByGroupIdAndLeader(String groupId, String groupLea);
+
+    /**
+     * 保存分组
      * @param groupId
      * @param groupLeader
      * @param groupMemers
@@ -60,4 +68,24 @@ public interface GroupInitManagementDao {
      * @return
      */
     Integer save(String groupId, String groupLeader, String groupMemers, String groupNum);
+
+    /**
+     * 更新分组
+     *
+     * @param groupId
+     * @param groupLeader
+     * @param groupMemers
+     * @param groupNum
+     * @return
+     */
+    Integer update(String groupId, String groupLeader, String groupMemers, String groupNum);
+
+    /**
+     * 删除记录
+     *
+     * @param groupId
+     * @param groupNum
+     * @return
+     */
+    Integer delete(String groupId, String groupNum);
 }

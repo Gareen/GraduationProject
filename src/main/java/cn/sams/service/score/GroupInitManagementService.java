@@ -72,6 +72,17 @@ public class GroupInitManagementService {
         return termManagementDao.queryTermByYearAndMonth(dateYear, dateMonth);
     }
 
+    public Group queryGroupByGidAndGnm(HttpServletRequest req) {
+        String gid = req.getParameter("group_id");
+        String gnm = req.getParameter("group_num");
+
+        if (!Chk.spaceCheck(gid) || !Chk.spaceCheck(gnm)) {
+            return new Group();
+        }
+
+        return groupInitManagementDao.findGroupByGroupIdAndGroupNum(gid, gnm);
+    }
+
     /**
      * 获取全部的学期
      *
@@ -190,14 +201,15 @@ public class GroupInitManagementService {
 
                 String leaderId = group.getStu_is_leader();
                 Student student = studentManagementDao.queryStudentByStuId(leaderId);
-                g.setStu_is_leader(student.getStu_name());
+                g.setStu_is_leader(student.getStu_no() + "   " + student.getStu_name());
 
                 String[] ids = group.getStu_is_member().split(",");
 
                 // 如果成员的人数不为空
                 if (ids.length != 0) {
                     for (String id : ids) {
-                        builder.append(",").append(studentManagementDao.queryStudentByStuId(id).getStu_name());
+                        Student s = studentManagementDao.queryStudentByStuId(id);
+                        builder.append(",").append(s.getStu_no()).append("   ").append(s.getStu_name());
                     }
                     // 把首,去除掉
                     String names = builder.toString().substring(1);
@@ -255,7 +267,6 @@ public class GroupInitManagementService {
 
         if (!Chk.spaceCheck(groupId)) {
             return new ReturnObj("error", "编码id失败, 请先进行搜索 !", null);
-
         }
 
         if (!Chk.spaceCheck(jud) || !Chk.spaceCheck(groupNum)
@@ -264,13 +275,20 @@ public class GroupInitManagementService {
 
         }
 
+        List<Group> g1 = groupInitManagementDao.findGroupByGroupIdAndLeader(groupId, groupLea);
+
         if ("add".equals(jud)) {
 
-            // 先进行判断, 如果id和小组组长重复就提示不可以新增
+            // 先进行判断, 如果id和小组编号重复就提示不可以新增
             Group g = groupInitManagementDao.findGroupByGroupIdAndGroupNum(groupId, groupNum);
 
             if (g != null) {
                 return new ReturnObj("error", "新增分组失败: 分组已存在 !", null);
+            }
+
+            // 查找小组长, 如果小组长存在, 也返回不可以新增
+            if (!Chk.emptyCheck(g1)) {
+                return new ReturnObj("error", "新增分组失败: 小组长已存在 !", null);
             }
 
             int count = groupInitManagementDao.save(groupId, groupLea, groupMem, groupNum);
@@ -284,9 +302,46 @@ public class GroupInitManagementService {
 
         if ("mod".equals(jud)) {
             //todo 修改方法待完成
+            // 根据groupid和groupnum来确定唯一的分组, 所以修改分组号就是需要删除再新增
+            // 所以先进行查询, 如果查找不到, 那就返回没有找到分组
+            Group g = groupInitManagementDao.findGroupByGroupIdAndGroupNum(groupId, groupNum);
+
+            if (g == null) {
+                return new ReturnObj("error", "修改失败: 没有找到指定的分组 !", null);
+            }
+
+            if (!Chk.emptyCheck(g1) && g1.size() > 1) {
+                return new ReturnObj("error", "修改分组失败: 小组长已存在 !", null);
+            }
+
+            int count = groupInitManagementDao.update(groupId, groupLea, groupMem, groupNum);
+
+            if (count != 0) {
+                return new ReturnObj("success", "修改分组成功 !", null);
+            } else {
+                return new ReturnObj("error", "修改分组失败: 数据库异常 !", null);
+            }
         }
 
-        return new ReturnObj();
+        // 如果不是add或者mod, 那就是被人篡改了
+        return new ReturnObj("error", "请选择正确的操作模式 !", null);
+    }
+
+    public ReturnObj deleteGroupByIdAndNum(HttpServletRequest req) {
+        String gid = req.getParameter("group_id");
+        String gnm = req.getParameter("group_num");
+
+        if (!Chk.spaceCheck(gid) || !Chk.spaceCheck(gnm)) {
+            return new ReturnObj("error", "删除失败: 数据不足 !", null);
+        }
+
+        int count = groupInitManagementDao.delete(gid, gnm);
+
+        if (count != 0) {
+            return new ReturnObj("success", "删除成功 !", null);
+        } else {
+            return new ReturnObj("error", "删除失败: 数据库异常 !", null);
+        }
     }
 
 

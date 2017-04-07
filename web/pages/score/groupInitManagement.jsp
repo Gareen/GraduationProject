@@ -151,8 +151,9 @@
                                     <td class="text-right">
                                         <label for="group_members">小组成员:&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                     </td>
-                                    <td>
+                                    <td style="position: relative">
                                         <div id="group_members"></div>
+                                        <a id="clearChecked" style="position: absolute; left: 240px; top: 3px;">清除所选</a>
                                     </td>
                                 </tr>
                             </table>

@@ -78,6 +78,18 @@ public class GroupInitManagementController {
         return groupInitManagementService.queryStudentsByClassId(req);
     }
 
+    @RequestMapping("queryGroupByGidAndGnm.do")
+    @ResponseBody
+    public Group queryGroupByGidAndGnm(HttpServletRequest req) {
+        return groupInitManagementService.queryGroupByGidAndGnm(req);
+    }
+
+    @RequestMapping("deleteGroupByIdAndNum.do")
+    @ResponseBody
+    public ReturnObj deleteGroupByIdAndNum(HttpServletRequest req) {
+        return groupInitManagementService.deleteGroupByIdAndNum(req);
+    }
+
     @RequestMapping("saveOrUpdate.do")
     @ResponseBody
     public ReturnObj saveOrUpdate(HttpServletRequest req) {
