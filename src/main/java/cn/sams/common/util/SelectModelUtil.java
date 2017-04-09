@@ -82,7 +82,6 @@ public class SelectModelUtil {
     public static List<SelectModel> objectListToSelectModelList(List<Object> list, Class<?> clz, String keyStr, String valStr) {
 
         if (clz == null) {
-            // todo
 
         }
 
@@ -92,7 +91,6 @@ public class SelectModelUtil {
             if (!list.get(0).getClass().getClassLoader().getClass().getName().equals(
                     clz.getClass().getClassLoader().getClass().getName())) {
 
-                // todo
                 return new ArrayList<>();
             }
             System.out.println(1);

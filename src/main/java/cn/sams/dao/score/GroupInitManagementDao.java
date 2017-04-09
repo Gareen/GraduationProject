@@ -55,7 +55,7 @@ public interface GroupInitManagementDao {
      *
      * @param groupId
      * @param groupLea
-     * @return
+     * @return 返回list是因为用来检测是不是存在重复的
      */
     List<Group> findGroupByGroupIdAndLeader(String groupId, String groupLea);
 

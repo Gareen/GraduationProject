@@ -27,6 +27,9 @@ public class ScoreManagementController {
     @Resource
     private ScoreManagementService scoreManagementService;
 
+    @Resource
+    private TermManagementService termManagementService;
+
     @RequestMapping("toIndex.do")
     public String index(HttpServletRequest req) {
         return "score/scoreManagement";
@@ -36,7 +39,7 @@ public class ScoreManagementController {
     @RequestMapping("queryTermSelectModels.do")
     @ResponseBody
     public List<SelectModel> queryTerms() {
-        return scoreManagementService.queryTermsSelectModels();
+        return termManagementService.queryTermsSelectModels();
     }
 
     @RequestMapping("queryCourseSelectModels.do")

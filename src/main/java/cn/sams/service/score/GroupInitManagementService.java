@@ -12,6 +12,7 @@ import cn.sams.dao.system.TermManagementDao;
 import cn.sams.entity.*;
 import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
+import cn.sams.service.system.TermManagementService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,10 +26,7 @@ import java.util.*;
 public class GroupInitManagementService {
 
     @Resource
-    private TermManagementDao termManagementDao;
-
-    @Resource
-    private ScoreManagementService scoreManagementService;
+    private TermManagementService termManagementService;
 
     @Resource
     private GroupInitManagementDao groupInitManagementDao;
@@ -42,35 +40,7 @@ public class GroupInitManagementService {
     @Resource
     private StudentManagementDao studentManagementDao;
 
-    /**
-     * 获取当前的系统时间所表示的学期
-     *
-     * @return term
-     */
-    public Term queryCurrentTerm() {
-        Date date = new Date();
-        // 2017-04
-        String dateStr = DateUtil.getDateString(date, true, DateFormat.yM);
-        String[] d = dateStr.split("-");
 
-        String dateYear = d[0];
-        String dateMonth = d[1];
-
-        // 上学期一般是2月份开学, 下学期一般是9月份开学, 所以需要判断是该年的上学期还是下学期
-        int end = Integer.parseInt(dateMonth);
-
-        // 2 - 9月份都是上半学期
-        if (end >= Constant.FIRST_TERM_MONTH && end < Constant.SECOND_TERM_MONTH) {
-            dateMonth = "02";
-        }
-
-        // 9 - 2月份都是下半学期, 因为系统时间也不会大于12, 所以不做大于12的判断
-        if (end < Constant.FIRST_TERM_MONTH || end >= Constant.SECOND_TERM_MONTH) {
-            dateMonth = "09";
-        }
-
-        return termManagementDao.queryTermByYearAndMonth(dateYear, dateMonth);
-    }
 
     public Group queryGroupByGidAndGnm(HttpServletRequest req) {
         String gid = req.getParameter("group_id");
@@ -89,7 +59,7 @@ public class GroupInitManagementService {
      * @return
      */
     public List<SelectModel> queryAllTerms() {
-        return scoreManagementService.queryTermsSelectModels();
+        return termManagementService.queryTermsSelectModels();
     }
 
     /**
@@ -287,7 +257,7 @@ public class GroupInitManagementService {
             }
 
             // 查找小组长, 如果小组长存在, 也返回不可以新增
-            if (!Chk.emptyCheck(g1)) {
+            if (Chk.emptyCheck(g1)) {
                 return new ReturnObj("error", "新增分组失败: 小组长已存在 !", null);
             }
 
@@ -349,7 +319,7 @@ public class GroupInitManagementService {
      * 对小组进行编码
      * <p>
      * 编码规则
-     * 教师工号+T+课程号+T+班级id+T+学期编号
+     * 教师工号+T+学期号+T+课程编号+T+班级编号
      *
      * @param req
      * @return 小组id

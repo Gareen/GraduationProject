@@ -30,24 +30,6 @@ public class ScoreManagementService {
     @Resource
     private CourseService courseService;
 
-    public List<SelectModel> queryTermsSelectModels() {
-        List<Term> terms = termManagementService.queryTerms();
-
-        List<SelectModel> s = new ArrayList<>();
-
-        if (!Chk.emptyCheck(terms)) {
-            return new ArrayList<>();
-        }
-
-        for (Term t : terms) {
-            SelectModel selectModel = new SelectModel();
-
-            selectModel.setKey(t.getTerm_name());
-            selectModel.setValue(t.getTerm_id());
-            s.add(selectModel);
-        }
-        return s;
-    }
 
     public List<SelectModel> queryCoursesSelectModels() {
         List<CourseInfo> courseInfos = courseDao.queryCourseInfo();

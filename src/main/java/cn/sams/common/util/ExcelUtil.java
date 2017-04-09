@@ -28,7 +28,6 @@ public class ExcelUtil {
 			fs = new POIFSFileSystem(is);
 			wb = new HSSFWorkbook(fs);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
@@ -45,7 +44,6 @@ public class ExcelUtil {
 	     try {
 			xlsName = URLEncoder.encode(xlsName,"utf-8");
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	     
@@ -73,7 +71,6 @@ public class ExcelUtil {
 	     try {
 			xlsName = URLEncoder.encode(xlsName,"utf-8");
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	     

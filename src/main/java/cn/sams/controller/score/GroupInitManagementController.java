@@ -6,6 +6,7 @@ import cn.sams.entity.Term;
 import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
 import cn.sams.service.score.GroupInitManagementService;
+import cn.sams.service.system.TermManagementService;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,9 @@ public class GroupInitManagementController {
     @Resource
     private GroupInitManagementService groupInitManagementService;
 
+    @Resource
+    private TermManagementService termManagementService;
+
     @RequestMapping("toIndex.do")
     public String toIndex() {
         return "score/groupInitManagement";
@@ -39,7 +43,7 @@ public class GroupInitManagementController {
     public Term queryTermTimes(HttpServletRequest req) {
 
         // 查找当前系统时间的学期
-        Term term = groupInitManagementService.queryCurrentTerm();
+        Term term = termManagementService.queryCurrentTerm();
 
         if (term != null) {
             return term;
