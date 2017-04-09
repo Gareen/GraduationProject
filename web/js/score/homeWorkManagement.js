@@ -245,13 +245,7 @@ $(function () {
                     align: "center",
                     cellsAlign: 'center',
                     width: "10%",
-                    cellsrenderer: cellrenderer,
-                    validateeverpresentrowwidgetvalue: function (datafield, value, rowValues) {
-                        if (isNaN(value)) {
-                            return {message: "请填写数字", result: false};
-                        }
-                        return true;
-                    }
+                    cellsrenderer: cellrenderer
                 },
                 {
                     text: '作业次数',
@@ -289,7 +283,6 @@ $(function () {
                 $dataTable.on('cellvaluechanged', function (event) {
                     // event arguments.
                     var args = event.args;
-
                     var value = args.newvalue;
 
                     $.post(
@@ -302,6 +295,8 @@ $(function () {
                         },
                         function (rtn) {
                             if (rtn.status === 'error') {
+                                // 恢复原来的值
+                                $dataTable.jqxGrid('setcellvalue', args.rowindex, "work_score", args.oldvalue);
                                 $bs.error(rtn.msg);
                             }
                         }

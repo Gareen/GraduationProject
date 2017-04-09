@@ -86,9 +86,6 @@ public class HomeWorkManagementService {
             String stuNo = homework.getWork_stu_id();
             map.put("stu_id", stuNo);
 
-            // todo 待优化, 是采用查出数据list进行遍历快还是每次都去数据库查询快
-            // Student student = studentManagementDao.queryStudentByStuId(stuNo);
-
             map.put("stu_name", "");
             for (Student student : students) {
                 String no = student.getStu_no();
@@ -125,6 +122,10 @@ public class HomeWorkManagementService {
             s = Double.parseDouble(score);
         } catch (Exception e) {
             return new ReturnObj("error", "请填写数字 !", null);
+        }
+
+        if (s > 100 || s < 0) {
+            return new ReturnObj("error", "保存失败! 请输入0-100以内的数字 !", null);
         }
 
         Map<String, Object> args = new HashMap<>();
