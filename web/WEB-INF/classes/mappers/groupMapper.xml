@@ -3,41 +3,21 @@
         "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="cn.sams.dao.score.GroupManagementDao">
 
-    <select id="queryStu" resultType="cn.sams.entity.Student">
-        SELECT * FROM sams_student
+    <select id="queryGroupsByGroupIdAndExpIndex" parameterType="string" resultType="cn.sams.entity.Group">
+        SELECT * FROM sams_group_score WHERE group_id = #{0} AND ex_index = #{1}
     </select>
 
-    <select id="queryTeacherIdByInfo" parameterType="string" resultType="cn.sams.entity.Course">
-        SELECT t.cou_tea_no FROM sams_course t WHERE t.course_id = #{0} AND t.cou_place_id = #{1} AND t.cou_week = #{2}
-        AND t.cou_day_of_week = #{3} AND t.cou_time = #{4}
+    <select id="queryGroupScore" parameterType="string" resultType="cn.sams.entity.Group">
+        SELECT * FROM sams_group_score t WHERE t.group_id = #{groupid} AND t.group_num = #{groupNum}
+        AND t.ex_index = #{expindex}
     </select>
 
-    <select id="queryTeacherName" parameterType="string" resultType="cn.sams.entity.Teacher">
-        select tea_name from sams_teacher where tea_no = #{0}
-    </select>
-
-    <select id="queryGroupsByGroupId" parameterType="string" resultType="cn.sams.entity.Group">
-        SELECT * FROM sams_group WHERE group_id = #{0}
-    </select>
-
-    <delete id="deleteRowByIdAndNum" parameterType="string">
-        DELETE FROM  sams_group WHERE group_id = #{0} AND group_num = #{1}
-    </delete>
-
-    <insert id="save" parameterType="string">
-        INSERT into sams_group VALUES (#{0}, #{1}, #{2}, #{3}, #{4})
-    </insert>
-
-    <select id="findStuById" parameterType="string" resultType="cn.sams.entity.Student">
-        SELECT * FROM sams_student WHERE stu_no = #{0}
-    </select>
-
-    <select id="queryGroupInfoByIdAndNum" parameterType="string" resultType="cn.sams.entity.Group">
-        SELECT * FROM sams_group WHERE group_id = #{0} AND group_num = #{1};
-    </select>
-
-    <update id="update" parameterType="string">
-        UPDATE sams_group SET stu_is_leader = #{1}, stu_is_member = #{2}, group_score = #{4}
-        WHERE group_id = #{0} AND group_num = #{3}
+    <!--动态对字段进行赋值-->
+    <update id="save" parameterType="java.util.Map" statementType="STATEMENT">
+        <![CDATA[
+        UPDATE sams_group_score SET ${datafield} = ${score}, score = ${result}
+        WHERE group_id = ${groupId} AND group_num = ${groupNum} AND ex_index = ${exIndex}
+        ]]>
     </update>
+
 </mapper>

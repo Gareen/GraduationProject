@@ -324,7 +324,7 @@ public class GroupInitManagementService {
      * @param req
      * @return 小组id
      */
-    private String getEncodeGroupId(HttpServletRequest req) {
+    public String getEncodeGroupId(HttpServletRequest req) {
         String teaNo = req.getParameter("teaNo");
         String termId = req.getParameter("termId");
         String courseId = req.getParameter("courseId");

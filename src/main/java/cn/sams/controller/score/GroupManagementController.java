@@ -3,10 +3,13 @@ package cn.sams.controller.score;
 import cn.sams.common.util.Chk;
 import cn.sams.entity.Group;
 import cn.sams.entity.Teacher;
+import cn.sams.entity.Term;
 import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
+import cn.sams.service.score.GroupInitManagementService;
 import cn.sams.service.score.GroupManagementService;
 import cn.sams.service.system.CourseService;
+import cn.sams.service.system.TermManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -28,7 +32,13 @@ public class GroupManagementController {
     @Resource(name = "courseService")
     private CourseService courseService;
 
-    @Autowired
+    @Resource
+    private GroupInitManagementService groupInitManagementService;
+
+    @Resource
+    private TermManagementService termManagementService;
+
+    @Resource
     private GroupManagementService groupManagementService;
 
     @RequestMapping("toIndex.do")
@@ -36,71 +46,53 @@ public class GroupManagementController {
         return "score/groupManagement";
     }
 
-    @RequestMapping("queryGroupClassList.do")
+    @RequestMapping("queryCurrentTime.do")
     @ResponseBody
-    public List<SelectModel> queryGroupClassList() {
-        return courseService.queryCourseInfo();
+    public Term queryCurrentTime() {
+
+        // 查找当前系统时间的学期
+        Term term = termManagementService.queryCurrentTerm();
+
+        if (term != null) {
+            return term;
+        }
+
+        return null;
     }
 
-    @RequestMapping("queryClassPlaceByCourseKey.do")
+    @RequestMapping("queryCoursesByTeacherIdAndTerm.do")
     @ResponseBody
-    public Set<SelectModel> queryClassPlaceByCourseKey(HttpServletRequest req) {
-        return courseService.queryClassPlaceByCourseKey(req);
+    public Set<SelectModel> queryCoursesByTeacherIdAndTerm(HttpServletRequest req) {
+        return groupInitManagementService.queryCoursesByTeacherIdAndTerm(req);
     }
 
-    @RequestMapping("queryCourseTeacher.do")
+    @RequestMapping("queryClasses.do")
     @ResponseBody
-    public ReturnObj queryCourseTeacher(HttpServletRequest req) {
-        return groupManagementService.queryCourseTeacher(req);
+    public Set<SelectModel> queryClasses(HttpServletRequest req) {
+        return groupInitManagementService.queryClasses(req);
     }
 
-    @RequestMapping("queryStu.do")
+    @RequestMapping("queryStudentsByClassId.do")
     @ResponseBody
-    public List<SelectModel> queryStu() {
-        return groupManagementService.queryStu();
+    public Set<SelectModel> queryStudentsByClassId(HttpServletRequest req) {
+        return groupInitManagementService.queryStudentsByClassId(req);
     }
 
-    @RequestMapping("queryClassWeekByCourseKey.do")
+    @RequestMapping("queryAllTerms.do")
     @ResponseBody
-    public Set<SelectModel> queryClassWeekByCourseKey(HttpServletRequest req) {
-        return courseService.queryClassWeekByCourseKey(req);
+    public List<SelectModel> queryAllTerms() {
+        return termManagementService.queryTermsSelectModels();
     }
 
-    @RequestMapping("queryClassTimeByCourseKeyAndWeek.do")
+    @RequestMapping("query.do")
     @ResponseBody
-    public Set<SelectModel> queryClassTimeByCourseKeyAndWeek(HttpServletRequest req) {
-        return courseService.queryClassTimeByCourseKeyAndWeek(req);
+    public List<Map<String, String>> query(HttpServletRequest req) {
+        return groupManagementService.query(req);
     }
 
-    @RequestMapping("queryTeacherName.do")
+    @RequestMapping("save.do")
     @ResponseBody
-    public Teacher queryTeacherName(HttpServletRequest req) {
-        return groupManagementService.queryTeacherByInfo(req);
-    }
-
-
-    @RequestMapping("queryGroups.do")
-    @ResponseBody
-    public List<Group> queryGroups(HttpServletRequest req) {
-        return groupManagementService.queryGroups(req);
-    }
-
-    @RequestMapping("deleteRowByIdAndNum.do")
-    @ResponseBody
-    public ReturnObj deleteRowByIdAndNum(HttpServletRequest req) {
-        return groupManagementService.deleteRowByIdAndNum(req);
-    }
-
-    @RequestMapping("queryGroupInfoByIdAndNum.do")
-    @ResponseBody
-    public Group queryGroupInfoByIdAndNum(HttpServletRequest req) {
-        return groupManagementService.queryGroupInfoByIdAndNum(req);
-    }
-
-
-    @RequestMapping("saveorupdate.do")
-    @ResponseBody
-    public ReturnObj saveorupdate(HttpServletRequest req) {
-        return groupManagementService.saveorupdate(req);
+    public ReturnObj save(HttpServletRequest req) {
+        return groupManagementService.save(req);
     }
 }

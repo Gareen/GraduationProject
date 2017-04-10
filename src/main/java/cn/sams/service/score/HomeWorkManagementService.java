@@ -105,7 +105,7 @@ public class HomeWorkManagementService {
         return infos;
     }
 
-    public ReturnObj save(HttpServletRequest req) {
+    public synchronized ReturnObj save(HttpServletRequest req) {
         String workId = req.getParameter("workid");
         String stuId = req.getParameter("stuId");
         String workIndex = req.getParameter("workIndex");

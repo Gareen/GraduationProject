@@ -11,10 +11,11 @@ public class Group implements Serializable {
     private String stu_is_leader;
     private String stu_is_member;
     private String group_num;
-    private String group_pre_score;
-    private String group_score;
-    private String group_re_score;
-    private String score_result;
+    private String ex_index;
+    private String pre_score;
+    private String ex_score;
+    private String re_score;
+    private String score;
 
     public Group() {
     }
@@ -51,36 +52,44 @@ public class Group implements Serializable {
         this.group_num = group_num;
     }
 
-    public String getGroup_score() {
-        return group_score;
+    public String getEx_index() {
+        return ex_index;
     }
 
-    public void setGroup_score(String group_score) {
-        this.group_score = group_score;
+    public void setEx_index(String ex_index) {
+        this.ex_index = ex_index;
     }
 
-    public String getGroup_pre_score() {
-        return group_pre_score;
+    public String getPre_score() {
+        return pre_score;
     }
 
-    public void setGroup_pre_score(String group_pre_score) {
-        this.group_pre_score = group_pre_score;
+    public void setPre_score(String pre_score) {
+        this.pre_score = pre_score;
     }
 
-    public String getGroup_re_score() {
-        return group_re_score;
+    public String getEx_score() {
+        return ex_score;
     }
 
-    public void setGroup_re_score(String group_re_score) {
-        this.group_re_score = group_re_score;
+    public void setEx_score(String ex_score) {
+        this.ex_score = ex_score;
     }
 
-    public String getScore_result() {
-        return score_result;
+    public String getRe_score() {
+        return re_score;
     }
 
-    public void setScore_result(String score_result) {
-        this.score_result = score_result;
+    public void setRe_score(String re_score) {
+        this.re_score = re_score;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 
     @Override
@@ -108,7 +117,7 @@ public class Group implements Serializable {
                 ", stu_is_leader='" + stu_is_leader + '\'' +
                 ", stu_is_member='" + stu_is_member + '\'' +
                 ", group_num='" + group_num + '\'' +
-                ", group_score='" + group_score + '\'' +
+                ", group_score='" + '\'' +
                 '}';
     }
 }
