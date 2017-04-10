@@ -22,7 +22,7 @@ public class BatchUpdateUtil {
 
     /**
      * 执行批量更新
-     * <p>
+     *
      * 参数列表: 需要用数组的形式封装一条要插入的信息所有的数据
      *
      * @param updateSQL 更新的sql
