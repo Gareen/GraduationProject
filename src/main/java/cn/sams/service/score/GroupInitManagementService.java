@@ -5,6 +5,7 @@ import cn.sams.common.constants.DateFormat;
 import cn.sams.common.util.Chk;
 import cn.sams.common.util.DateUtil;
 import cn.sams.dao.score.GroupInitManagementDao;
+import cn.sams.dao.score.GroupManagementDao;
 import cn.sams.dao.system.ClassManagementDao;
 import cn.sams.dao.system.CourseDao;
 import cn.sams.dao.system.StudentManagementDao;
@@ -40,6 +41,8 @@ public class GroupInitManagementService {
     @Resource
     private StudentManagementDao studentManagementDao;
 
+    @Resource
+    private GroupManagementDao groupManagementDao;
 
 
     public Group queryGroupByGidAndGnm(HttpServletRequest req) {
@@ -271,7 +274,6 @@ public class GroupInitManagementService {
         }
 
         if ("mod".equals(jud)) {
-            //todo 修改方法待完成
             // 根据groupid和groupnum来确定唯一的分组, 所以修改分组号就是需要删除再新增
             // 所以先进行查询, 如果查找不到, 那就返回没有找到分组
             Group g = groupInitManagementDao.findGroupByGroupIdAndGroupNum(groupId, groupNum);
@@ -297,7 +299,7 @@ public class GroupInitManagementService {
         return new ReturnObj("error", "请选择正确的操作模式 !", null);
     }
 
-    public ReturnObj deleteGroupByIdAndNum(HttpServletRequest req) {
+    public synchronized ReturnObj deleteGroupByIdAndNum(HttpServletRequest req) {
         String gid = req.getParameter("group_id");
         String gnm = req.getParameter("group_num");
 
@@ -308,7 +310,16 @@ public class GroupInitManagementService {
         int count = groupInitManagementDao.delete(gid, gnm);
 
         if (count != 0) {
-            return new ReturnObj("success", "删除成功 !", null);
+
+            // 对分组实验成绩中的分组进行删除
+            int c = groupManagementDao.deleteGroupByIdAndNum(gid, gnm);
+
+            if (c != 0) {
+                return new ReturnObj("success", "删除成功 !", null);
+            }
+
+            return new ReturnObj("error", "删除失败: 删除分组成绩异常 !", null);
+
         } else {
             return new ReturnObj("error", "删除失败: 数据库异常 !", null);
         }

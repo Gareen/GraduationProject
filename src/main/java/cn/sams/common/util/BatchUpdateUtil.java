@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created by Fanpeng on 2017/4/9.
- * <p>
- * 封装关于Jdbc的一些操作
+ * jdbcTemplate
+ *
+ * @author fanpeng
  */
 public class BatchUpdateUtil {
 

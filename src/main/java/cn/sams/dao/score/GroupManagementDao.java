@@ -36,6 +36,21 @@ public interface GroupManagementDao {
                  @Param("result") Double result_score, @Param("groupId") String group_id,
                  @Param("groupNum") String groupNum, @Param("exIndex") String exIndex);
 
+    /**
+     * 查询分组成绩
+     *
+     * @param groupid
+     * @param num
+     * @param exindex
+     * @return
+     */
     Group queryGroupScore(@Param("groupid") String groupid, @Param("groupNum") String num,
                           @Param("expindex") String exindex);
+
+    /**
+     * @param groupId
+     * @param groupNum
+     * @return
+     */
+    Integer deleteGroupByIdAndNum(@Param("groupId") String groupId, @Param("groupNum") String groupNum);
 }

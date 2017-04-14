@@ -20,4 +20,8 @@
         ]]>
     </update>
 
+    <delete id="deleteGroupByIdAndNum" parameterType="string">
+        DELETE FROM sams_group_score WHERE group_id = #{groupId} AND group_num = #{groupNum}
+    </delete>
+
 </mapper>

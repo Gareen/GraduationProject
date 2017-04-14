@@ -62,12 +62,13 @@ public class GroupManagementService {
         // 首先通过groupid查询有没有分组信息, 有的话, 进行返回信息, 没有的话, 先插入信息
         List<Group> groups = groupManagementDao.queryGroupsByGroupIdAndExpIndex(groupId, expIndex);
 
+        // 一个是实验成绩分组全部为空的情况，一个是实验成绩分组不全部为空，但是实验分组的数目和实验成绩分组的数目不一致的情况
+        // 实验成绩分组全部为空
+        String updateSql = "INSERT INTO sams_group_score VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         if (!Chk.emptyCheck(groups)) {
             // 即将批量插入的数据
             List<Object[]> args = new ArrayList<>();
-
-            String updateSql = "INSERT INTO sams_group_score VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             // 如果为空的话, 那就先插入一批数据
             for (Group group : g) {
@@ -80,6 +81,45 @@ public class GroupManagementService {
 
             // 插入后, 再次查询一遍
             groups = groupManagementDao.queryGroupsByGroupIdAndExpIndex(groupId, expIndex);
+        }
+
+        // 一个是实验成绩分组不全部为空，但是实验分组的数目和实验成绩分组的数目不一致的情况
+        if (Chk.emptyCheck(groups) && g.size() != groups.size()) {
+            // 封装参数列表
+            List<Object[]> argsList = new ArrayList<>();
+            // 当分组管理模块(groupInit)中的分组数 < 分组实验中的分组数的时候, 应该将分组实验中的对应分组进行删除
+            if (g.size() < groups.size()) {
+                // 分组数小一般不可能
+                System.out.println(">>>>分组数小");
+            }
+
+            if (g.size() > groups.size()) {
+
+                // todo 新增后缺失数据的原因是因为此处的remove修改了原来的list的内容
+                g.removeAll(groups);
+
+                // 新增一条的情况
+                if (g.size() == 1) {
+                    Group group = g.get(0);
+                    Object[] args = {group.getGroup_id(), group.getGroup_num(), expIndex, null, null, null, null};
+                    argsList.add(args);
+                }
+
+                // 新增为多条的情况
+                if (g.size() > 1) {
+                    for (Group group : g) {
+                        Object[] args = {group.getGroup_id(), group.getGroup_num(), expIndex, null, null, null, null};
+                        argsList.add(args);
+                    }
+                }
+                BatchUpdateUtil.executeBatchUpdate(updateSql, argsList);
+            }
+
+            // 插入后, 再次查询一遍
+            groups = groupManagementDao.queryGroupsByGroupIdAndExpIndex(groupId, expIndex);
+
+            // 分组也要再次查找一遍, 不然会出现removeAll后不全的问题, Mybatis默认开启一级缓存, 会从缓存中调去
+            g = groupInitManagementDao.queryGroupsByGroupId(groupId);
         }
 
         // 通过班级编号, 将学生查询出来
@@ -101,6 +141,7 @@ public class GroupManagementService {
                     break;
                 }
             }
+
             for (Student student : students) {
                 if (leaderId.equals(student.getStu_no())) {
                     m.put("group_leader", student.getStu_no() + " " + student.getStu_name());
@@ -129,7 +170,7 @@ public class GroupManagementService {
             return new ReturnObj("error", "保存失败: 数据不足 !", null);
         }
 
-        // 这个group中只存在预习, 实验, 报告的分数的值
+        // scoreGroup中只存在预习, 实验, 报告的分数的值
         Group scoreGroup = groupManagementDao.queryGroupScore(group_id, group_num, ex_index);
 
         double pre = NumberUtil.getStrToDouble(scoreGroup.getPre_score());
@@ -162,6 +203,7 @@ public class GroupManagementService {
 
         double result_score = (pre + ex + re) / 3;
 
+        // 根据不同的分数字段动态保存分数值
         int count = groupManagementDao.save(datafield, s, result_score, getArgsStr(group_id), getArgsStr(group_num), getArgsStr(ex_index));
 
         if (count <= 0) {

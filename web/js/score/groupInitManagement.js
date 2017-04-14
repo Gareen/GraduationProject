@@ -355,7 +355,7 @@ $(function () {
                     if (deleteButton.jqxButton('disabled')) {
                         return;
                     }
-                    $bs.confirm("确定删除该条记录吗 ?", function () {
+                    $bs.confirm("确定删除该分组吗? 可能导致已有成绩受影响 ! ", function () {
                         $.post(
                             './deleteGroupByIdAndNum.do',
                             {
@@ -376,7 +376,7 @@ $(function () {
                 });
 
                 // 修改窗口
-                $('#dataTable').on('rowdoubleclick', function (event) {
+                $('#dataTable').on('rowdoubleclick', function () {
                     createGroupWindow('mod');
                 });
 

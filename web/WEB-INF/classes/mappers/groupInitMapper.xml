@@ -25,7 +25,7 @@
     </select>
 
     <insert id="save" parameterType="string">
-        INSERT INTO sams_group VALUES (#{0}, #{1}, #{2}, #{3}, '', '', '', '')
+        INSERT INTO sams_group VALUES (#{0}, #{1}, #{2}, #{3})
     </insert>
 
     <update id="update" parameterType="string">
