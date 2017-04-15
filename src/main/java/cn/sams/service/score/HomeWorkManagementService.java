@@ -152,7 +152,7 @@ public class HomeWorkManagementService {
      * @param req
      * @return
      */
-    private String getWorkId(HttpServletRequest req) {
+    public String getWorkId(HttpServletRequest req) {
         String termId = req.getParameter("termId");
         String courseId = req.getParameter("courseId");
         String classId = req.getParameter("classId");

@@ -290,7 +290,7 @@ $(function () {
                 }
             ],
             columngroups: [
-                {text: '成绩录入', align: 'center', name: 'studentExpScore'}
+                {text: '实验分组成绩录入', align: 'center', name: 'studentExpScore'}
             ],
             renderToolbar: function (toolBar) {
                 var container = $("<div style='overflow: hidden; position: relative; height: 100%; width: 100%;'></div>");

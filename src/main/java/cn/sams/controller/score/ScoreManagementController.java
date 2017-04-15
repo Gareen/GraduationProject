@@ -3,6 +3,7 @@ package cn.sams.controller.score;
 import cn.sams.common.util.Chk;
 import cn.sams.entity.Term;
 import cn.sams.entity.commons.SelectModel;
+import cn.sams.service.score.GroupInitManagementService;
 import cn.sams.service.score.ScoreManagementService;
 import cn.sams.service.system.TermManagementService;
 import org.apache.ibatis.annotations.Select;
@@ -14,11 +15,14 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Created by Fanpeng on 2017/3/20.
- * <p>
  * 学生成绩管理
+ *
+ * @author fanpeng
+ * @time 2017.4.15
  */
 @Controller
 @RequestMapping("/score/scoreManagement")
@@ -28,6 +32,9 @@ public class ScoreManagementController {
     private ScoreManagementService scoreManagementService;
 
     @Resource
+    private GroupInitManagementService groupInitManagementService;
+
+    @Resource
     private TermManagementService termManagementService;
 
     @RequestMapping("toIndex.do")
@@ -35,16 +42,44 @@ public class ScoreManagementController {
         return "score/scoreManagement";
     }
 
-
-    @RequestMapping("queryTermSelectModels.do")
+    @RequestMapping("queryCurrentTime.do")
     @ResponseBody
-    public List<SelectModel> queryTerms() {
-        return termManagementService.queryTermsSelectModels();
+    public Term queryTermTimes(HttpServletRequest req) {
+
+        // 查找当前系统时间的学期
+        Term term = termManagementService.queryCurrentTerm();
+
+        if (term != null) {
+            return term;
+        }
+
+        return null;
     }
 
-    @RequestMapping("queryCourseSelectModels.do")
+    @RequestMapping("queryAllTerms.do")
     @ResponseBody
-    public List<SelectModel> queryCourseSelectModels() {
-        return scoreManagementService.queryCoursesSelectModels();
+    public List<SelectModel> queryAllTerms() {
+        return groupInitManagementService.queryAllTerms();
     }
+
+    @RequestMapping("queryCoursesByTeacherIdAndTerm.do")
+    @ResponseBody
+    public Set<SelectModel> queryCoursesByTeacherIdAndTerm(HttpServletRequest req) {
+        return groupInitManagementService.queryCoursesByTeacherIdAndTerm(req);
+    }
+
+    @RequestMapping("queryClasses.do")
+    @ResponseBody
+    public Set<SelectModel> queryClasses(HttpServletRequest req) {
+        return groupInitManagementService.queryClasses(req);
+    }
+
+    @RequestMapping("query.do")
+    @ResponseBody
+    public List<Map<String, String>> query(HttpServletRequest req) {
+        return scoreManagementService.query(req);
+    }
+
+
+
 }

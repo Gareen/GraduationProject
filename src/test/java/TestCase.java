@@ -1,3 +1,4 @@
+import cn.sams.entity.commons.SelectModel;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
+import java.util.Comparator;
 
 /**
  * Created by Fanpeng on 2017/4/9.
@@ -31,4 +33,22 @@ public class TestCase {
     public void test1() {
         Integer.parseInt("");
     }
+
+    @Test
+    public void test2() {
+
+        Comparator c = new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                return 0;
+            }
+        };
+
+        Comparator c1 = (o1, o2) -> 0;
+
+        Comparator.comparing(SelectModel::getValue);
+
+    }
+
+
 }

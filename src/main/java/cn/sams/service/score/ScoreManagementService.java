@@ -1,6 +1,7 @@
 package cn.sams.service.score;
 
 import cn.sams.common.util.Chk;
+import cn.sams.dao.score.ScoreManagementDao;
 import cn.sams.dao.system.CourseDao;
 import cn.sams.entity.Course;
 import cn.sams.entity.Term;
@@ -12,40 +13,41 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Fanpeng on 2017/3/21.
+ * Created by Fanpeng on 2017/4/15.
  */
 @Service("scoreManagementService")
 public class ScoreManagementService {
 
     @Resource
-    private TermManagementService termManagementService;
+    private GroupInitManagementService groupInitManagementService;
 
     @Resource
-    private CourseDao courseDao;
+    private HomeWorkManagementService homeWorkManagementService;
 
     @Resource
-    private CourseService courseService;
+    private ScoreManagementDao scoreManagementDao;
 
+    public List<Map<String, String>> query(HttpServletRequest req) {
 
-    public List<SelectModel> queryCoursesSelectModels() {
-        List<CourseInfo> courseInfos = courseDao.queryCourseInfo();
+        // 获得这学期分组的id
+        String groupId = groupInitManagementService.getEncodeGroupId(req);
 
-        List<SelectModel> s = new ArrayList<>();
+        // 获得这学期作业的id
+        String homeWorkId = homeWorkManagementService.getWorkId(req);
 
-        if (!Chk.emptyCheck(courseInfos)) {
+        if (!Chk.spaceCheck(groupId) || !Chk.spaceCheck(homeWorkId)) {
             return new ArrayList<>();
         }
 
-        for (CourseInfo c : courseInfos) {
-            SelectModel selectModel = new SelectModel();
-            selectModel.setKey(c.getCourse_name());
-            selectModel.setValue(c.getCourse_id().toString());
-            s.add(selectModel);
-        }
-        return s;
+        System.out.println(groupId);
+        System.out.println(homeWorkId);
+
+        return new ArrayList<>();
     }
 }
