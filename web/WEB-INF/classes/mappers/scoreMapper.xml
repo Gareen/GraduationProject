@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="cn.sams.dao.score.ScoreManagementDao">
+
+    <select id="queryFinalsByFinalId" parameterType="string" resultType="cn.sams.entity.FinalGrade">
+        SELECT t.* FROM sams_finalgrade t WHERE t.final_id = #{0}
+    </select>
+
+    <select id="queryExpIndex" parameterType="string" resultType="int">
+        SELECT COUNT(1)
+        FROM (
+            SELECT t.group_id, IFNULL(t.group_id, 1)
+            FROM
+            sams_group_score t
+            GROUP BY
+            t.group_id, t.ex_index
+        )s
+        WHERE s.group_id = #{groupId}
+    </select>
+
+    <select id="countGroupScoreByGroupIdAndGroupNum" parameterType="string" resultType="double">
+        SELECT ROUND(SUM(IFNULL(t.score, 0)), 2)
+        FROM
+        sams_group_score t
+        WHERE
+        t.group_id = #{groupId} AND t.group_num = #{groupNum}
+        GROUP BY t.group_id
+    </select>
+
+    <select id="countHomeworkScoreByWorkId" parameterType="string" resultType="java.util.HashMap">
+        SELECT work_stu_id AS stuNo, ROUND(SUM(IFNULL(work_score,0)) / COUNT(1), 2) AS sum
+        FROM
+        sams_homework
+        WHERE
+        work_id = #{0}
+        GROUP BY work_id, work_stu_id
+    </select>
+
+</mapper>

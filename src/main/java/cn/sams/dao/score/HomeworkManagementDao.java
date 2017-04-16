@@ -34,4 +34,12 @@ public interface HomeworkManagementDao {
      * @return
      */
     Integer save(Map<String, Object> args);
+
+    /**
+     * 根据工作id查找到所有的作业
+     *
+     * @param id
+     * @return
+     */
+    List<Homework> queryHomeworkByworkId(String id);
 }

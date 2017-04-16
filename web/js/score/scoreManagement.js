@@ -28,6 +28,9 @@ $(function () {
 
     var teacher = $getTea();
 
+    // 获取教师的工号
+    var teaNo = teacher["tea_no"];
+
     // 默认的学期的id为1
     var term_Id = 1;
 
@@ -94,7 +97,7 @@ $(function () {
 
     // 封装查询课程的方法, 根据登录的老师和选中的学期进行查询
     var queryCourseData = {
-        teaNo: teacher["tea_no"],
+        teaNo: teaNo, // teacher["tea_no"]
         termId: term_Id
     };
 
@@ -147,7 +150,7 @@ $(function () {
 
     createCourse();
 
-    // 实验次数
+
 
     var search = function () {
 
@@ -159,11 +162,22 @@ $(function () {
         var $chooseCourse = $("#choose_course");
         var $chooseClass = $("#choose_class");
 
+        var pscj = sessionStorage.getItem(teaNo + "pss");
+        var excj = sessionStorage.getItem(teaNo + "exs");
+        var ficj = sessionStorage.getItem(teaNo + "fis");
+
+        // 用session保存的比重值初始化
+        if (!pscj || !excj || !ficj) {
+            pscj = 30;
+            excj = 30;
+            ficj = 40;
+        }
+
         var data = {
-            teaNo: teacher["tea_no"],
+            teaNo: teaNo,
             termId: term_Id,
             courseId: $chooseCourse.val(),
-            classId: $chooseClass.val(),
+            classId: $chooseClass.val()
         };
 
         var source = {
@@ -204,6 +218,13 @@ $(function () {
                     '</div>';
             }
         };
+
+        var toolbarHtml = "<span style='padding: 3px; margin: 2px;line-height: 33px;'>&nbsp;&nbsp;" +
+            "<i class='fa Example of pie-chart fa-pie-chart' style='margin-right: 20px;'>成绩比重</i>" +
+            "平时成绩:&nbsp;<span id='pingshi' style='color: #0a73a7; font-weight: bold'>" + pscj + "</span>%&nbsp;&nbsp;&nbsp;" +
+            "实验成绩:&nbsp;<span id='shiyan' style='color: #0a73a7; font-weight: bold'>" + excj + "</span>%&nbsp;&nbsp;&nbsp;" +
+            "期末成绩:&nbsp;<span id='qimo' style='color: #0a73a7; font-weight: bold'>" + ficj + "</span>%&nbsp;&nbsp;&nbsp;" +
+            "<a id='modify_percent' style='margin-left: 20px;'>设置成绩比重</a></span></span>";
 
         // 数据绑定
         var dataAdapter = new $.jqx.dataAdapter(source);
@@ -286,13 +307,7 @@ $(function () {
             ],
             renderToolbar: function (toolBar) {
                 var container = $("<div style='overflow: hidden; position: relative; height: 100%; width: 100%;'></div>");
-
-                container.append("<span style='padding: 3px; margin: 2px;line-height: 33px;'>&nbsp;&nbsp;" +
-                    "<i class='fa Example of pie-chart fa-pie-chart' style='margin-right: 20px;'>成绩比重</i>" +
-                    "平时成绩:&nbsp;<span id='pingshi' style='color: #0a73a7; font-weight: bold'>30</span>%&nbsp;&nbsp;&nbsp;" +
-                    "实验成绩:&nbsp;<span id='shiyan' style='color: #0a73a7; font-weight: bold'>30</span>%&nbsp;&nbsp;&nbsp;" +
-                    "期末成绩:&nbsp;<span id='qimo' style='color: #0a73a7; font-weight: bold'>40</span>%&nbsp;&nbsp;&nbsp;" +
-                    "<a id='modify_percent' style='margin-left: 20px;'>修改成绩比重</a></span></span>");
+                container.append(toolbarHtml);
 
                 toolBar.append(container);
 
@@ -301,6 +316,7 @@ $(function () {
                     $("#modify_per .numInput").jqxNumberInput({
                         width: '50px',
                         height: '25px',
+                        theme: jqx_default_theme,
                         symbol: "%",
                         min: 0,
                         max: 99,
@@ -310,8 +326,13 @@ $(function () {
                         spinButtons: false,
                         symbolPosition: 'right'
                     });
+
+                    $("#pss").val(sessionStorage.getItem(teaNo + "pss") ? sessionStorage.getItem(teaNo + "pss") : 30);
+                    $("#exs").val(sessionStorage.getItem(teaNo + "exs") ? sessionStorage.getItem(teaNo + "exs") : 30);
+                    $("#fis").val(sessionStorage.getItem(teaNo + "fis") ? sessionStorage.getItem(teaNo + "fis") : 40);
                     $("#modify_per").modal('show');
                 });
+
                 $("#modifySub").unbind('click').click(function () {
                     var pss = $("#pss").val();
                     var exs = $("#exs").val();
@@ -319,9 +340,15 @@ $(function () {
                     var count = pss + exs + fis;
 
                     if (count !== 100) {
-                        $bs.error('设置无效: 三项比重的比例和必须为100 !');
+                        $bs.error('设置无效: 三项成绩的比重之和必须为100 !');
                         return;
                     }
+
+                    // 将设置好的值暂存在session中, 分成不同的老师自己的比重
+                    sessionStorage.setItem(teaNo + 'pss', pss);
+                    sessionStorage.setItem(teaNo + 'exs', exs);
+                    sessionStorage.setItem(teaNo + 'fis', fis);
+
                     // 设置比重显示
                     $("#pingshi").text(pss);
                     $("#shiyan").text(exs);
@@ -344,7 +371,7 @@ $(function () {
                     var datafield = args.datafield;
 
                     $.post(
-                        "./save.do",
+                        "",
                         {
                             group_id: rowSelectData['group_id'],
                             datafield: datafield,
@@ -372,7 +399,9 @@ $(function () {
 
     $("#query_button").click(function () {
         if (query_flag) {
+            // 使打印按钮生效
             $("#export").prop('disabled', false);
+
             $("#dataTable").each(function () {
                 $(this).jqxGrid("destroy");
             });

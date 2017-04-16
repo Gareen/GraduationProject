@@ -24,6 +24,14 @@ public interface GroupManagementDao {
     List<Group> queryGroupsByGroupIdAndExpIndex(String groupId, String expIndex);
 
     /**
+     * 通过分组id查找到该分组编号下面所有的分组信息
+     *
+     * @param id
+     * @return
+     */
+    List<Group> queryGroupsByGroupId(@Param("groupId") String id);
+
+    /**
      * 动态保存分数
      * @param datafield
      * @param score
@@ -48,6 +56,7 @@ public interface GroupManagementDao {
                           @Param("expindex") String exindex);
 
     /**
+     * 根据小组编号和小组号进行删除指定分组
      * @param groupId
      * @param groupNum
      * @return

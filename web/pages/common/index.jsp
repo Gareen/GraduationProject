@@ -7,34 +7,18 @@
   <link rel="shortcut icon" href="../../images/title-icon.ico"/>
 </head>
 
-
 <body>
 
-
-
 <div id="view-top">
-
 
   <div class="aiis fl">
     <%--<a href="#"><span class="glyphicon glyphicon-home"></span></a>--%>
     <span class="glyphicon glyphicon-home"></span>
   </div>
 
-  <%--<div class="fl topbar-nav">
-    <div>
-      <a><span class="nav-title" >管理</span></a>
-    </div>
-  </div>--%>
-
   <div class="fl topbar-nav">
     <div>
 
-      <%-- <ul>
-         <li><a href="#"><span class="nav-title">1</span></a></li>
-         <li><a href="#"><span class="nav-title">2</span></a></li>
-         <li><a href="#"><span class="nav-title">3</span></a></li>
-         <li><a href="#"><span class="nav-title">4</span></a></li>
-       </ul>--%>
     </div>
   </div>
 
@@ -66,50 +50,6 @@
 
 
 </div>
-
-
- <%-- <div id="view-content">
-
-
-    &lt;%&ndash;<%@include file="sidebar.jsp"%>&ndash;%&gt;
-
-    &lt;%&ndash;<div id="view-content-main">
-
-      <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-1"></div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-              <div class="col-md-1">.col-md-1</div>
-            </div>
-            <div class="row">
-              <div class="col-md-8">.col-md-8</div>
-              <div class="col-md-4">.col-md-4</div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">.col-md-4</div>
-              <div class="col-md-4">.col-md-4</div>
-              <div class="col-md-4">.col-md-4</div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">.col-md-6</div>
-              <div class="col-md-6">.col-md-6</div>
-            </div>
-
-         </div>
-       </div>&ndash;%&gt;
-
-  </div>--%>
-
-
 
 
 </body>

@@ -16,10 +16,10 @@
   <script src="${ctx}/framework/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="${ctx}/framework/bootstrap/js/modal.js"></script>
   <script src="${ctx}/js/common/base.js"></script>
+    <script src="${ctx}/js/common/canvas-particle.js"></script>
 
   <title>用户登录</title>
 </head>
-
 
 <body class="bg">
   <div class="logo"></div>

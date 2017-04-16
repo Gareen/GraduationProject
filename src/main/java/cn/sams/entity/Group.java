@@ -117,7 +117,11 @@ public class Group implements Serializable {
                 ", stu_is_leader='" + stu_is_leader + '\'' +
                 ", stu_is_member='" + stu_is_member + '\'' +
                 ", group_num='" + group_num + '\'' +
-                ", group_score='" + '\'' +
+                ", ex_index='" + ex_index + '\'' +
+                ", pre_score='" + pre_score + '\'' +
+                ", ex_score='" + ex_score + '\'' +
+                ", re_score='" + re_score + '\'' +
+                ", score='" + score + '\'' +
                 '}';
     }
 }
