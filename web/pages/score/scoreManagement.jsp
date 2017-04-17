@@ -4,7 +4,7 @@
 <head>
     <%@include file="../common/lib.jsp" %>
     <style>
-        pt12 {
+        .pt12 {
             padding-top: 12px;
         }
 

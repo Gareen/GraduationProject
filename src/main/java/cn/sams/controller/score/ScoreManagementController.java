@@ -2,6 +2,7 @@ package cn.sams.controller.score;
 
 import cn.sams.common.util.Chk;
 import cn.sams.entity.Term;
+import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
 import cn.sams.service.score.GroupInitManagementService;
 import cn.sams.service.score.ScoreManagementService;
@@ -80,6 +81,10 @@ public class ScoreManagementController {
         return scoreManagementService.query(req);
     }
 
-
+    @RequestMapping("save.do")
+    @ResponseBody
+    public ReturnObj save(HttpServletRequest req) {
+        return scoreManagementService.save(req);
+    }
 
 }

@@ -8,10 +8,13 @@ import cn.sams.dao.score.ScoreManagementDao;
 import cn.sams.dao.system.StudentManagementDao;
 import cn.sams.entity.*;
 
+import cn.sams.entity.commons.ReturnObj;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,10 +60,13 @@ public class ScoreManagementService {
             return new ArrayList<>();
         }
 
+        // !important 每次进行页面显示的时候都需要查询下最新的情况, 和下面的del顺序不可以互换
+        List<FinalGrade> fgs = scoreManagementDao.queryFinalsByFinalId(finalId);
+
         // !important 此处先对当前查询条件下的表中数据进行一次清空, 意思就是每次打开的时候都要进行一次重新的数据插入
         delDataByFinalId(finalId);
 
-        // 根据班级的id查询所有的学生
+        // 先根据班级的id查询所有的学生, 此处数据进行一次保留
         List<Student> students = studentManagementDao.queryStudentsByClassId(classId);
 
         if (!Chk.emptyCheck(students)) {
@@ -80,8 +86,29 @@ public class ScoreManagementService {
 
         for (Student student : students) {
             String stuNo = student.getStu_no();
-            Object[] args = {finalId, work_scores.get(stuNo), group_scores.get(stuNo), null, null, stuNo, ""};
-            argsList.add(args);
+            Object[] args;
+            // 当原来的数据库中本来就没有记录的时候,
+            if (!Chk.emptyCheck(fgs)) {
+
+                args = new Object[]{finalId, work_scores.get(stuNo), group_scores.get(stuNo), null, null, stuNo, ""};
+                argsList.add(args);
+
+            } else {
+                // 当原本的记录就存在的时候, 需要封装一套原本就有的记录
+                for (FinalGrade fg : fgs) {
+
+                    if (student.getStu_no().equals(fg.getFinal_stu_id())) {
+
+                        args = new Object[]{
+                                finalId, work_scores.get(stuNo), group_scores.get(stuNo),
+                                fg.getFinal_exam_score(), fg.getFinal_score(), stuNo,
+                                Chk.spaceCheck(fg.getFinal_remark()) ? fg.getFinal_remark() : ""
+                        };
+
+                        argsList.add(args);
+                    }
+                }
+            }
         }
 
         BatchUpdateUtil.executeBatchUpdate(updateSQL, argsList);
@@ -203,9 +230,10 @@ public class ScoreManagementService {
      * @param finalId
      * @return
      */
-    private synchronized void delDataByFinalId(String finalId) {
+    private void delDataByFinalId(String finalId) {
         scoreManagementDao.delDataByFinalId(finalId);
     }
+
 
     /**
      * 获得学期的编号
@@ -223,5 +251,96 @@ public class ScoreManagementService {
             return "";
         }
         return termId + "F" + courseId + "F" + classId;
+    }
+
+
+    /**
+     * 保存方法
+     *
+     * @param req
+     * @return
+     */
+    public ReturnObj save(HttpServletRequest req) {
+        String finalId = req.getParameter("finalId");
+        String stuNo = req.getParameter("stuNo");
+        String datafield = req.getParameter("datafield");
+        String value = req.getParameter("value");
+
+        if (!Chk.spaceCheck(finalId) || !Chk.spaceCheck(finalId) ||
+                !Chk.spaceCheck(finalId) || !Chk.spaceCheck(finalId)) {
+
+            return new ReturnObj("error", "保存失败: 存在空值!", null);
+        }
+
+        // 如果保存的是分数的话
+        if ("fScore".equalsIgnoreCase(datafield)) {
+            String pss_cent = req.getParameter("p");
+            String exs_cent = req.getParameter("e");
+            String fis_cent = req.getParameter("f");
+
+            if (!Chk.spaceCheck(pss_cent) || !Chk.spaceCheck(exs_cent) ||
+                    !Chk.spaceCheck(fis_cent)) {
+                return new ReturnObj("error", "保存失败: 分数比重不能为空 !", null);
+            }
+
+            try {
+                double p = Double.parseDouble(pss_cent);
+                double e = Double.parseDouble(exs_cent);
+                double f = Double.parseDouble(fis_cent);
+
+                double fs = Double.parseDouble(Chk.spaceCheck(value) ? value : "0.0");
+
+                if (!((p + e + f - 1) < 0.001)) {
+                    return new ReturnObj("error", "保存失败: 比重比例之和必须为100% !", null);
+                }
+
+                FinalGrade fg = scoreManagementDao.queryFgByFinalIdAndStuId(finalId, stuNo);
+
+                double ps = Double.parseDouble(fg.getFinal_work_score());
+                double es = Double.parseDouble(fg.getFinal_exp_score());
+
+                DecimalFormat df = new DecimalFormat("#.00");
+
+                // 保留两位小数
+                double score = Double.parseDouble(df.format(ps * p + es * e + fs * f));
+
+                Integer count = scoreManagementDao.saveScore(fs, score, finalId, stuNo);
+
+                if (count < 1) {
+                    return new ReturnObj("error", "保存失败: 数据库保存出错 !", null);
+                }
+
+                return new ReturnObj("success", "", score);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                return new ReturnObj("error", "保存失败: 重要数据格式转换异常 !", null);
+
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return new ReturnObj("error", "保存失败: 重要数据格式转换异常 !", null);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ReturnObj("error", "保存失败: 重要数据格式转换异常 !", null);
+            }
+
+        }
+
+        if ("remark".equalsIgnoreCase(datafield)) {
+
+            Integer count = scoreManagementDao.saveRemark(value, finalId, stuNo);
+
+            if (count < 1) {
+                return new ReturnObj("error", "保存失败: 数据库保存出错 !", null);
+            }
+
+            return new ReturnObj("success", "", null);
+
+        }
+
+        return new ReturnObj("error", "保存失败:datafield异常 !", null);
+
+
     }
 }

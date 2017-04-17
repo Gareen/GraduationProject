@@ -1,4 +1,5 @@
 $(function () {
+
     var term_info = {
         term_name: "",
         showChangeClass: false,
@@ -286,7 +287,14 @@ $(function () {
                     cellsAlign: 'center',
                     width: "10%",
                     editable: true,
-                    cellsrenderer: cellrenderer
+                    cellsrenderer: cellrenderer,
+                    columntype: 'numberinput',
+                    validation: function (cell, value) {
+                        if (value < 0 || value > 100) {
+                            return {result: false, message: "输入的值请在0 - 100之间 !"};
+                        }
+                        return true;
+                    }
                 },
                 {
                     text: '总成绩',
@@ -361,30 +369,47 @@ $(function () {
                 $dataTable.on('rowselect', function (event) {
                     var args = event.args;
                     rowSelectData = args.row;
+                    // {finalId: "1F625058F10000", stuNo: "14550407", stuName: "李壮壮", hScore: "71.5", eScore: "89.35"…}
                 });
 
                 // 当分数有改变就保存
-                $dataTable.on('cellvaluechanged', function (event) {
+                $dataTable.unbind('cellvaluechanged').on('cellvaluechanged', function (event) {
                     // event arguments.
                     var args = event.args;
                     var value = args.newvalue;
                     var datafield = args.datafield;
+                    var rowIndex = args.rowindex;
 
-                    $.post(
-                        "",
-                        {
-                            group_id: rowSelectData['group_id'],
-                            datafield: datafield,
-                            group_num: rowSelectData['group_num'],
-                            ex_index: rowSelectData['ex_index'],
-                            score: value
-                        },
-                        function (rtn) {
-                            if (rtn.status === 'error') {
-                                $bs.error(rtn.msg);
+                    // 各项成绩的比重
+                    var pss_cent = $("#pingshi").text() / 100;
+                    var exs_cent = $("#shiyan").text() / 100;
+                    var fis_cent = $("#qimo").text() / 100;
+
+
+                    if (datafield === 'fScore' || datafield === 'remark') {
+                        $.post(
+                            "./save.do",
+                            {
+                                finalId: rowSelectData['finalId'],
+                                stuNo: rowSelectData['stuNo'],
+                                datafield: datafield,
+                                value: value,
+                                p: pss_cent,
+                                e: exs_cent,
+                                f: fis_cent
+                            },
+                            function (rtn) {
+                                if (rtn.status === 'error') {
+                                    $bs.error(rtn.msg);
+                                    return;
+                                }
+                                // 如果保存的是分数的话, 要进行更新格子
+                                if (datafield === "fScore") {
+                                    $dataTable.jqxGrid('setcellvalue', rowIndex, 'score', rtn.data);
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 });
             }
         }).on("bindingcomplete", function () {

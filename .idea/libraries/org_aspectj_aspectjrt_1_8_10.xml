@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.aspectj:aspectjrt:1.8.10" type="repository">
+    <properties maven-id="org.aspectj:aspectjrt:1.8.10" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/aspectjrt-1.8.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

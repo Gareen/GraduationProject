@@ -52,4 +52,31 @@ public interface ScoreManagementDao {
      * @param finalId
      */
     void delDataByFinalId(@Param("finalId") String finalId);
+
+    /**
+     * 根据学生的学号和成绩单编号找到对应的成绩信息
+     *
+     * @param finalId
+     * @param stuNo
+     * @return
+     */
+    FinalGrade queryFgByFinalIdAndStuId(@Param("finalId") String finalId, @Param("stuNo") String stuNo);
+
+    /**
+     * 保存分数
+     *
+     * @return
+     */
+    Integer saveScore(@Param("fScore") Double fScore, @Param("score") Double score,
+                      @Param("finalId") String finalId, @Param("stuNo") String stuNo);
+
+    /**
+     * 保存其他情况
+     *
+     * @param remark
+     * @param finalId
+     * @param stuNo
+     * @return
+     */
+    Integer saveRemark(@Param("remark") String remark, @Param("finalId") String finalId, @Param("stuNo") String stuNo);
 }
