@@ -45,4 +45,11 @@ public interface ScoreManagementDao {
      * @return
      */
     List<Map<String, Double>> countHomeworkScoreByWorkId(String workId);
+
+    /**
+     * 根据finalId清空表
+     *
+     * @param finalId
+     */
+    void delDataByFinalId(@Param("finalId") String finalId);
 }

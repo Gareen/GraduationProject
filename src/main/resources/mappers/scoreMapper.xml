@@ -43,4 +43,9 @@
         GROUP BY work_id, work_stu_id
     </select>
 
+    <delete id="delDataByFinalId" parameterType="string">
+        DELETE FROM sams_finalgrade
+        WHERE final_id = #{finalId}
+    </delete>
+
 </mapper>

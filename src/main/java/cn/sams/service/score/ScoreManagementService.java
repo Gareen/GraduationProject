@@ -49,15 +49,16 @@ public class ScoreManagementService {
         // 获得这学期作业的id
         String homeWorkId = homeWorkManagementService.getWorkId(req);
 
-        if (!Chk.spaceCheck(groupId) || !Chk.spaceCheck(homeWorkId)) {
-            return new ArrayList<>();
-        }
-
         // 获得这学期的期末成绩id
         String finalId = getEncodeFinalId(req);
 
-        // 先通过本学期的成绩统计编码查找本学期的所有的成绩
-        List<FinalGrade> fgs = scoreManagementDao.queryFinalsByFinalId(finalId);
+        if (!Chk.spaceCheck(groupId) || !Chk.spaceCheck(homeWorkId) ||
+                !Chk.spaceCheck(finalId) || !Chk.spaceCheck(teaNo) || !Chk.spaceCheck(classId)) {
+            return new ArrayList<>();
+        }
+
+        // !important 此处先对当前查询条件下的表中数据进行一次清空, 意思就是每次打开的时候都要进行一次重新的数据插入
+        delDataByFinalId(finalId);
 
         // 根据班级的id查询所有的学生
         List<Student> students = studentManagementDao.queryStudentsByClassId(classId);
@@ -66,32 +67,24 @@ public class ScoreManagementService {
             return new ArrayList<>();
         }
 
-        // 如果目前的
-        if (!Chk.emptyCheck(fgs)) {
+        // 根据分组编号查询出所有的分组成绩情况
+        Map<String, Double> group_scores = countGroupStuScore(groupId);
 
-            if (!Chk.spaceCheck(groupId) || !Chk.spaceCheck(homeWorkId) || !Chk.spaceCheck(finalId) || !Chk.spaceCheck(teaNo)) {
-                return new ArrayList<>();
-            }
+        // 根据作业编号查询到每个学生对应的平均作业成绩
+        Map<String, Double> work_scores = countHomeworkStuScore(homeWorkId);
 
-            // 根据分组编号查询出所有的分组成绩情况
-            Map<String, Double> group_scores = countGroupStuScore(groupId);
+        // 批量插入参数列表
+        List<Object[]> argsList = new ArrayList<>();
 
-            // 根据作业编号查询到每个学生对应的平均作业成绩
-            Map<String, Double> work_scores = countHomeworkStuScore(homeWorkId);
+        String updateSQL = "INSERT INTO sams_finalgrade VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            // 批量插入参数列表
-            List<Object[]> argsList = new ArrayList<>();
-
-            String updateSQL = "INSERT INTO sams_finalgrade VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-            for (Student student : students) {
-                String stuNo = student.getStu_no();
-                Object[] args = {finalId, work_scores.get(stuNo), group_scores.get(stuNo), null, null, stuNo, ""};
-                argsList.add(args);
-            }
-
-            BatchUpdateUtil.executeBatchUpdate(updateSQL, argsList);
+        for (Student student : students) {
+            String stuNo = student.getStu_no();
+            Object[] args = {finalId, work_scores.get(stuNo), group_scores.get(stuNo), null, null, stuNo, ""};
+            argsList.add(args);
         }
+
+        BatchUpdateUtil.executeBatchUpdate(updateSQL, argsList);
 
         return getResultMap(students, finalId);
     }
@@ -202,6 +195,16 @@ public class ScoreManagementService {
         }
 
         return resultList;
+    }
+
+    /**
+     * 先对表中的数据进行一次清空
+     *
+     * @param finalId
+     * @return
+     */
+    private synchronized void delDataByFinalId(String finalId) {
+        scoreManagementDao.delDataByFinalId(finalId);
     }
 
     /**

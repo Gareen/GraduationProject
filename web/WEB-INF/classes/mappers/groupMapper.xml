@@ -10,17 +10,25 @@
     <select id="queryGroupsByGroupId" parameterType="string" resultType="cn.sams.entity.Group">
         SELECT m.*
         FROM (
-            SELECT t.group_id, t.stu_is_leader, t.stu_is_member, t.group_num, n.ex_index, IFNULL(n.pre_score, 0) pre_score, IFNULL(n.ex_score, 0) ex_score, IFNULL(n.re_score, 0) re_score, IFNULL(n.score, 0) score
-            FROM
-                sams_group_score n
-            LEFT JOIN
-                sams_group t
-            ON
-                t.group_id = n.group_id AND t.group_num = n.group_num
-        ) m
+                 SELECT
+                     t.group_id,
+                     t.stu_is_leader,
+                     t.stu_is_member,
+                     t.group_num,
+                     n.ex_index,
+                     IFNULL(n.pre_score, 0) pre_score,
+                     IFNULL(n.ex_score, 0)  ex_score,
+                     IFNULL(n.re_score, 0)  re_score,
+                     IFNULL(n.score, 0)     score
+                 FROM
+                     sams_group_score n
+                     LEFT JOIN
+                     sams_group t
+                         ON
+                             t.group_id = n.group_id AND t.group_num = n.group_num
+             ) m
         WHERE group_id = #{groupId}
     </select>
-
 
 
     <select id="queryGroupScore" parameterType="string" resultType="cn.sams.entity.Group">

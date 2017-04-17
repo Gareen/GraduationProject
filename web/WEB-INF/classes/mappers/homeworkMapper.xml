@@ -17,7 +17,9 @@
     </update>
 
     <select id="queryHomeworkByworkId" resultType="cn.sams.entity.Homework" parameterType="string">
-        SELECT * FROM sams_homework WHERE work_id = #{0}
+        SELECT *
+        FROM sams_homework
+        WHERE work_id = #{0}
     </select>
 
 </mapper>
