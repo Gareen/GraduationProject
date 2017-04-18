@@ -6,13 +6,16 @@ import cn.sams.dao.score.GroupInitManagementDao;
 
 import cn.sams.dao.score.ScoreManagementDao;
 import cn.sams.dao.system.ClassManagementDao;
+import cn.sams.dao.system.CourseDao;
 import cn.sams.dao.system.StudentManagementDao;
+import cn.sams.dao.system.TermManagementDao;
 import cn.sams.entity.*;
 
 import cn.sams.entity.commons.ReturnObj;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +48,13 @@ public class ScoreManagementService {
     private StudentManagementDao studentManagementDao;
 
     @Resource
+    private TermManagementDao termManagementDao;
+
+    @Resource
     private ClassManagementDao classManagementDao;
+
+    @Resource
+    private CourseDao courseDao;
 
     @Resource
     private ScoreManagementDao scoreManagementDao;
@@ -309,10 +317,8 @@ public class ScoreManagementService {
                 double ps = Double.parseDouble(fg.getFinal_work_score());
                 double es = Double.parseDouble(fg.getFinal_exp_score());
 
-                DecimalFormat df = new DecimalFormat("#.00");
-
-                // 保留两位小数
-                double score = Double.parseDouble(df.format(ps * p + es * e + fs * f));
+                // 保留0位小数
+                double score = Math.round(ps * p + es * e + fs * f);
 
                 Integer count = scoreManagementDao.saveScore(fs, score, finalId, stuNo);
 
@@ -364,7 +370,7 @@ public class ScoreManagementService {
     public void export(HttpServletRequest req, HttpServletResponse response) throws IOException {
 
         String name = "南京晓庄学院学生成绩单";
-        HSSFWorkbook wb = new HSSFWorkbook();
+        XSSFWorkbook wb = new XSSFWorkbook();
 
         List<Map<String, Object>> argsList = getExportDataList(req);
 
@@ -372,14 +378,18 @@ public class ScoreManagementService {
             return;
         }
 
-        doExport(wb, name, name, name, argsList);
+        String termId = req.getParameter("termId");
+        String termName = termManagementDao.queryTermByTermId(termId).getTerm_name();
+
+        // 进行组装
+        doExport(wb, name, name, termName, argsList);
 
         // 将文件上传到页面
         OutputStream ouputStream = null;
         try {
             response.setContentType("application/x-msdownloadoctet-stream");
             String wordName = URLEncoder.encode(name, "UTF-8");
-            response.setHeader("Content-disposition", "attachment;filename=" + wordName + ".xls");
+            response.setHeader("Content-disposition", "attachment;filename=" + wordName + ".xlsx");
             ouputStream = response.getOutputStream();
             wb.write(ouputStream);
         } catch (IOException e) {
@@ -398,6 +408,26 @@ public class ScoreManagementService {
                 e.printStackTrace();
             }
         }
+
+    }
+
+    public Map<String, String> getInfoData(HttpServletRequest req) {
+        Map<String, String> m = new HashMap<>();
+
+        String classId = req.getParameter("classId");
+        String termId = req.getParameter("termId");
+        String courseId = req.getParameter("courseId");
+        String teaNo = req.getParameter("teaNo");
+
+        Course course = courseDao.queryCourse(courseId, teaNo, termId);
+
+        if (course == null) {
+            return new HashMap<>();
+        }
+
+        // todo
+
+        return new HashMap<>();
 
     }
 
@@ -457,7 +487,7 @@ public class ScoreManagementService {
         return argsList;
     }
 
-    public void doExport(HSSFWorkbook wb, String tit, String sheetName, String name, List<Map<String, Object>> list) {
+    public void doExport(XSSFWorkbook wb, String tit, String sheetName, String termName, List<Map<String, Object>> list) {
 
         String colEn = "ID,STUNO,STUNAME,CLASS,XDXZ,PS,QZ,SY,QM,REMARK,SCORE";
         String[] colsEn = colEn.split(",");
@@ -467,7 +497,7 @@ public class ScoreManagementService {
         String[] colsCn = colCn.split(",");
 
         // 在webbook中添加一个sheet,对应Excel文件中的sheet
-        HSSFSheet sheet = wb.createSheet(sheetName);
+        XSSFSheet sheet = wb.createSheet(sheetName);
 
         //单元格合并
         sheet.addMergedRegion(new CellRangeAddress(0, 0, (short) 0, (short) (colsEn.length - 1)));
@@ -475,31 +505,39 @@ public class ScoreManagementService {
         sheet.addMergedRegion(new CellRangeAddress(2, 2, (short) 0, (short) (colsEn.length - 1)));
         sheet.addMergedRegion(new CellRangeAddress(3, 3, (short) 0, (short) (colsEn.length - 1)));
 
-        HSSFFont title = wb.createFont();
+        XSSFFont title = wb.createFont();
         title.setFontName("黑体");
         title.setFontHeightInPoints((short) 16);
         title.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//加粗
 
-        HSSFFont column = wb.createFont();
+        XSSFFont column = wb.createFont();
         column.setFontName("宋体");
         column.setFontHeightInPoints((short) 11);
         column.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//加粗
 
-        HSSFFont cellValue = wb.createFont();
+        XSSFFont cellValue = wb.createFont();
         cellValue.setFontName("宋体");
         cellValue.setFontHeightInPoints((short) 10);
 
-        HSSFCellStyle titleStyle = wb.createCellStyle();
+        XSSFCellStyle titleStyle = wb.createCellStyle();
         titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
         titleStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 竖直居中
         titleStyle.setWrapText(false);
-        titleStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
-        titleStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
-        titleStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
-        titleStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
         titleStyle.setFont(title);
 
-        HSSFCellStyle columnStyle = wb.createCellStyle();
+        XSSFCellStyle termStyle = wb.createCellStyle();
+        termStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+        termStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 竖直居中
+        termStyle.setWrapText(false);
+        termStyle.setFont(cellValue);
+
+        XSSFCellStyle infoStyle = wb.createCellStyle();
+        infoStyle.setAlignment(HSSFCellStyle.ALIGN_LEFT); // 居左
+        infoStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 竖直居中
+        infoStyle.setWrapText(false);
+        infoStyle.setFont(cellValue);
+
+        XSSFCellStyle columnStyle = wb.createCellStyle();
         columnStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
         columnStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 竖直居中
         columnStyle.setWrapText(false);
@@ -507,10 +545,10 @@ public class ScoreManagementService {
         columnStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
         columnStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
         columnStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
-        columnStyle.setFillBackgroundColor(HSSFColor.GREY_50_PERCENT.index);
+        columnStyle.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
         columnStyle.setFont(column);
 
-        HSSFCellStyle cellStyle = wb.createCellStyle();
+        XSSFCellStyle cellStyle = wb.createCellStyle();
         cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 左
         cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 竖直居中
         cellStyle.setWrapText(false);
@@ -521,13 +559,36 @@ public class ScoreManagementService {
         cellStyle.setFont(cellValue);
 
 
-        //表头
-        HSSFRow row = sheet.createRow(0);
-        HSSFCell cell = row.createCell(0);
+        // 表头
+        XSSFRow row = sheet.createRow(0);
+        XSSFCell cell = row.createCell(0);
         cell.setCellValue(tit);
         cell.setCellStyle(titleStyle);
 
-        //列名
+        // 学期
+        XSSFRow term = sheet.createRow(1);
+        XSSFCell termCell = term.createCell(0);
+        termCell.setCellValue(termName);
+        termCell.setCellStyle(termStyle);
+
+        // 信息
+        // 第一行信息
+        XSSFRow info1 = sheet.createRow(2);
+        XSSFCell info1cell = info1.createCell(0);
+
+        String info1Str = "课程号:         课序号:          课程名:        开课单位:        ";
+        info1cell.setCellValue(info1Str);
+        info1cell.setCellStyle(infoStyle);
+
+        // 第二行信息
+        XSSFRow info2 = sheet.createRow(3);
+        XSSFCell info2cell = info2.createCell(0);
+
+        String info2Str = "学分:      人数:       上课教师:       录入状态: 已录入";
+        info2cell.setCellValue(info2Str);
+        info2cell.setCellStyle(infoStyle);
+
+        // 列名
         row = sheet.createRow(4);
         for (int i = 0; i < colsCn.length; i++) {
             cell = row.createCell(i);
@@ -535,7 +596,7 @@ public class ScoreManagementService {
             cell.setCellStyle(columnStyle);
         }
 
-        //添加数据
+        // 添加数据
         if (list != null) {
             for (int i = 0; i < list.size(); i++) {
 
@@ -553,9 +614,13 @@ public class ScoreManagementService {
             sheet.autoSizeColumn((short) i, true);
         }
 
-        // 封装表尾
-
-
+        // 封装表尾 从参数列表后的
+        int rowIndex = list.size() + 5;
+        sheet.addMergedRegion(new CellRangeAddress(rowIndex, rowIndex + 2, (short) 0, (short) (colsEn.length - 1)));
+        row = sheet.createRow(rowIndex);
+        XSSFCell rowCell = row.createCell(0);
+        rowCell.setCellValue("登分人:__________  登分日期:__________  " +
+                "教研室主任(签字):__________  审核日期:___________");
     }
 
 }

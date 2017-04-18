@@ -98,7 +98,7 @@ $(function () {
 
     // 封装查询课程的方法, 根据登录的老师和选中的学期进行查询
     var queryCourseData = {
-        teaNo: teaNo, // teacher["tea_no"]
+        teaNo: teaNo,
         termId: term_Id
     };
 
@@ -152,6 +152,9 @@ $(function () {
     createCourse();
 
 
+    var $chooseCourse = $("#choose_course");
+    var $chooseClass = $("#choose_class");
+
     var search = function () {
 
         if (!query_flag) {
@@ -159,8 +162,7 @@ $(function () {
         }
         query_flag = false;
 
-        var $chooseCourse = $("#choose_course");
-        var $chooseClass = $("#choose_class");
+
 
         var pscj = sessionStorage.getItem(teaNo + "pss");
         var excj = sessionStorage.getItem(teaNo + "exs");
@@ -301,7 +303,8 @@ $(function () {
                     align: "center",
                     cellsAlign: 'center',
                     width: "10%",
-                    editable: false
+                    editable: false,
+                    cellsrenderer: cellrenderer
                 },
                 {
                     text: '其他情况',
@@ -413,7 +416,11 @@ $(function () {
 
                 // 导出excel
                 $("#export").unbind('click').click(function () {
-                    download("./export.do?termId=" + term_Id + "&courseId=" + $chooseCourse.val() + "&classId=" + $chooseClass.val());
+                    download("./export.do?" +
+                        "termId=" + sessionStorage.getItem('termId') +
+                        "&courseId=" + sessionStorage.getItem('courseId') +
+                        "&classId=" + sessionStorage.getItem('classId') +
+                        "&teaNo=" + teaNo);
                 })
             }
         }).on("bindingcomplete", function () {
@@ -430,6 +437,10 @@ $(function () {
         if (query_flag) {
             // 使打印按钮生效
             $("#export").prop('disabled', false);
+
+            sessionStorage.setItem("classId", $chooseClass.val());
+            sessionStorage.setItem("termId", term_Id);
+            sessionStorage.setItem("courseId", $chooseCourse.val());
 
             $("#dataTable").each(function () {
                 $(this).jqxGrid("destroy");

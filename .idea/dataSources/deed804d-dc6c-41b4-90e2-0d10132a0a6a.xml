@@ -118,9 +118,9 @@
       <DataType>int(5)|0</DataType>
     </column>
     <column id="46" parent="18" name="cou_time">
-      <Position>9</Position>
+      <Position>7</Position>
       <Comment>上课时间 (周数, 星期, 上课时间)</Comment>
-      <DataType>varchar(30)|0</DataType>
+      <DataType>varchar(200)|0</DataType>
     </column>
     <column id="47" parent="18" name="cou_number">
       <Position>1</Position>
@@ -130,382 +130,347 @@
       <SequenceIdentity>1</SequenceIdentity>
     </column>
     <column id="48" parent="18" name="cou_term_id">
-      <Position>12</Position>
+      <Position>9</Position>
       <Comment>学期编号</Comment>
       <DataType>int(5)|0</DataType>
     </column>
-    <column id="49" parent="18" name="cou_check_id">
-      <Position>13</Position>
-      <Comment>课堂考勤编号</Comment>
-      <DataType>int(5)|0</DataType>
-    </column>
-    <column id="50" parent="18" name="cou_work_id">
-      <Position>14</Position>
-      <Comment>平时作业编号</Comment>
-      <DataType>int(5)|0</DataType>
-    </column>
-    <column id="51" parent="18" name="cou_exp_id">
-      <Position>15</Position>
-      <Comment>分组实验表编号</Comment>
-      <DataType>int(5)|0</DataType>
-    </column>
-    <column id="52" parent="18" name="cou_final_id">
-      <Position>16</Position>
-      <Comment>期末总评表编号</Comment>
-      <DataType>int(5)|0</DataType>
-    </column>
-    <column id="53" parent="18" name="cou_ana_id">
-      <Position>17</Position>
-      <Comment>质量分析表编号</Comment>
-      <DataType>int(5)|0</DataType>
-    </column>
-    <column id="54" parent="18" name="cou_place_id">
-      <Position>10</Position>
-      <Comment>上课地点</Comment>
-      <DataType>int(5)|0</DataType>
-    </column>
-    <column id="55" parent="18" name="cou_period">
+    <column id="49" parent="18" name="cou_period">
       <Position>4</Position>
       <Comment>学时</Comment>
       <DataType>int(3)|0</DataType>
     </column>
-    <column id="56" parent="18" name="cou_institute">
-      <Position>11</Position>
-      <Comment>开课单位</Comment>
-      <DataType>varchar(20)|0</DataType>
-    </column>
-    <column id="57" parent="18" name="course_id">
+    <column id="50" parent="18" name="course_id">
       <Position>2</Position>
       <Comment>课程编号</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="58" parent="18" name="cou_week">
-      <Position>7</Position>
-      <Comment>上课周数</Comment>
-      <DataType>varchar(3)|0</DataType>
-    </column>
-    <column id="59" parent="18" name="cou_day_of_week">
+    <column id="51" parent="18" name="cou_place">
       <Position>8</Position>
-      <Comment>课程所在的星期</Comment>
-      <DataType>varchar(3)|0</DataType>
+      <Comment>上课地点</Comment>
+      <DataType>varchar(100)|0</DataType>
     </column>
-    <key id="60" parent="18" name="PRIMARY">
+    <key id="52" parent="18" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>cou_number</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="61" parent="19" name="class_id">
+    <column id="53" parent="19" name="class_id">
       <Position>1</Position>
       <Comment>学生学号</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="62" parent="19" name="tea_no">
+    <column id="54" parent="19" name="tea_no">
       <Position>2</Position>
       <Comment>教师工号</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="63" parent="19" name="cou_no">
+    <column id="55" parent="19" name="cou_no">
       <Position>3</Position>
       <Comment>课程编号</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="64" parent="19" name="term_id">
+    <column id="56" parent="19" name="term_id">
       <Position>4</Position>
       <DataType>varchar(3)|0</DataType>
     </column>
-    <column id="65" parent="20" name="course_id">
+    <column id="57" parent="20" name="course_id">
       <Position>1</Position>
       <Comment>课程编号</Comment>
       <DataType>int(10)|0</DataType>
     </column>
-    <column id="66" parent="20" name="course_name">
+    <column id="58" parent="20" name="course_name">
       <Position>2</Position>
       <Comment>课程名称</Comment>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <column id="67" parent="21" name="place_id">
+    <column id="59" parent="20" name="course_unit">
+      <Position>3</Position>
+      <Comment>开课单位</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="60" parent="21" name="place_id">
       <Position>1</Position>
       <Comment>上课教室编号</Comment>
       <DataType>int(5)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="68" parent="21" name="place_name">
+    <column id="61" parent="21" name="place_name">
       <Position>2</Position>
       <Comment>教室名字</Comment>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <column id="69" parent="21" name="place_pid">
+    <column id="62" parent="21" name="place_pid">
       <Position>3</Position>
       <Comment>该教室所在楼</Comment>
       <DataType>int(5)|0</DataType>
     </column>
-    <key id="70" parent="21" name="PRIMARY">
+    <key id="63" parent="21" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>place_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="71" parent="22" name="exp_id">
+    <column id="64" parent="22" name="exp_id">
       <Position>1</Position>
       <Comment>分组实验编号</Comment>
       <DataType>int(3)|0</DataType>
     </column>
-    <column id="72" parent="22" name="exp_group">
+    <column id="65" parent="22" name="exp_group">
       <Position>2</Position>
       <Comment>分组号</Comment>
       <DataType>int(2)|0</DataType>
     </column>
-    <column id="73" parent="22" name="exp_index">
+    <column id="66" parent="22" name="exp_index">
       <Position>3</Position>
       <Comment>分组实验次数</Comment>
       <DataType>int(2)|0</DataType>
     </column>
-    <column id="74" parent="22" name="exp_score">
+    <column id="67" parent="22" name="exp_score">
       <Position>4</Position>
       <Comment>分组实验成绩</Comment>
       <DataType>int(3)|0</DataType>
     </column>
-    <column id="75" parent="23" name="final_id">
+    <column id="68" parent="23" name="final_id">
       <Position>1</Position>
       <Comment>期末成绩表编号</Comment>
-      <DataType>int(3)|0</DataType>
+      <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="76" parent="23" name="final_work_score">
+    <column id="69" parent="23" name="final_work_score">
       <Position>2</Position>
       <Comment>平时平均成绩</Comment>
       <DataType>double|0</DataType>
     </column>
-    <column id="77" parent="23" name="final_exp_score">
+    <column id="70" parent="23" name="final_exp_score">
       <Position>3</Position>
       <Comment>平时实验成绩</Comment>
       <DataType>double|0</DataType>
     </column>
-    <column id="78" parent="23" name="final_exam_score">
+    <column id="71" parent="23" name="final_exam_score">
       <Position>4</Position>
       <Comment>期末理论成绩</Comment>
       <DataType>double|0</DataType>
     </column>
-    <column id="79" parent="23" name="final_score">
+    <column id="72" parent="23" name="final_score">
       <Position>5</Position>
       <Comment>总评成绩</Comment>
       <DataType>double|0</DataType>
     </column>
-    <column id="80" parent="23" name="final_stu_id">
+    <column id="73" parent="23" name="final_stu_id">
       <Position>6</Position>
       <Comment>学生学号</Comment>
       <DataType>varchar(10)|0</DataType>
     </column>
-    <column id="81" parent="23" name="final_remark">
+    <column id="74" parent="23" name="final_remark">
       <Position>7</Position>
       <Comment>备注(特殊原因)</Comment>
-      <DataType>varchar(20)|0</DataType>
+      <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="82" parent="24" name="group_id">
+    <column id="75" parent="24" name="group_id">
       <Position>1</Position>
       <Comment>分组编号(日期yyyyMMddhhmm + 地点代号)</Comment>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="83" parent="24" name="stu_is_leader">
+    <column id="76" parent="24" name="stu_is_leader">
       <Position>2</Position>
       <Comment>是否为组长</Comment>
       <DataType>varchar(10)|0</DataType>
     </column>
-    <column id="84" parent="24" name="group_num">
+    <column id="77" parent="24" name="group_num">
       <Position>4</Position>
       <Comment>分组号</Comment>
       <DataType>int(5)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="85" parent="24" name="stu_is_member">
+    <column id="78" parent="24" name="stu_is_member">
       <Position>3</Position>
       <Comment>组员学号(,分隔)</Comment>
       <DataType>varchar(100)|0</DataType>
     </column>
-    <column id="86" parent="25" name="group_num">
+    <column id="79" parent="25" name="group_num">
       <Position>2</Position>
       <Comment>小组号</Comment>
       <DataType>int(5)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="87" parent="25" name="pre_score">
+    <column id="80" parent="25" name="pre_score">
       <Position>4</Position>
       <Comment>预习成绩</Comment>
       <DataType>double(4,1)|0</DataType>
       <DefaultExpression>&apos;0.0&apos;</DefaultExpression>
     </column>
-    <column id="88" parent="25" name="ex_score">
+    <column id="81" parent="25" name="ex_score">
       <Position>5</Position>
       <Comment>实验成绩</Comment>
       <DataType>double(4,1)|0</DataType>
       <DefaultExpression>&apos;0.0&apos;</DefaultExpression>
     </column>
-    <column id="89" parent="25" name="re_score">
+    <column id="82" parent="25" name="re_score">
       <Position>6</Position>
       <Comment>报告成绩</Comment>
       <DataType>double(4,1)|0</DataType>
       <DefaultExpression>&apos;0.0&apos;</DefaultExpression>
     </column>
-    <column id="90" parent="25" name="ex_index">
+    <column id="83" parent="25" name="ex_index">
       <Position>3</Position>
       <Comment>实验次数</Comment>
       <DataType>int(3)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="91" parent="25" name="group_id">
+    <column id="84" parent="25" name="group_id">
       <Position>1</Position>
       <Comment>分组编码(学期在其中已经编码)</Comment>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="92" parent="25" name="score">
+    <column id="85" parent="25" name="score">
       <Position>7</Position>
       <DataType>double(4,1)|0</DataType>
     </column>
-    <column id="93" parent="26" name="work_id">
+    <column id="86" parent="26" name="work_id">
       <Position>1</Position>
       <Comment>平时作业编号</Comment>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="94" parent="26" name="work_stu_id">
+    <column id="87" parent="26" name="work_stu_id">
       <Position>2</Position>
       <Comment>学生学号</Comment>
       <DataType>varchar(10)|0</DataType>
     </column>
-    <column id="95" parent="26" name="work_index">
+    <column id="88" parent="26" name="work_index">
       <Position>3</Position>
       <Comment>平时作业次数</Comment>
       <DataType>int(3)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="96" parent="26" name="work_score">
+    <column id="89" parent="26" name="work_score">
       <Position>4</Position>
       <Comment>平时作业成绩</Comment>
       <DataType>double(4,1)|0</DataType>
     </column>
-    <column id="97" parent="27" name="id">
+    <column id="90" parent="27" name="id">
       <Position>1</Position>
       <Comment>资源编号</Comment>
       <DataType>int(5)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="98" parent="27" name="title">
+    <column id="91" parent="27" name="title">
       <Position>2</Position>
       <Comment>资源名称</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="99" parent="27" name="path">
+    <column id="92" parent="27" name="path">
       <Position>3</Position>
       <Comment>资源路径</Comment>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="100" parent="27" name="icon">
+    <column id="93" parent="27" name="icon">
       <Position>4</Position>
       <Comment>资源图标</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="101" parent="27" name="pid">
+    <column id="94" parent="27" name="pid">
       <Position>6</Position>
       <Comment>目录层次</Comment>
       <DataType>varchar(5)|0</DataType>
     </column>
-    <column id="102" parent="27" name="plevel">
+    <column id="95" parent="27" name="plevel">
       <Position>5</Position>
       <Comment>权限等级</Comment>
       <DataType>int(5)|0</DataType>
     </column>
-    <key id="103" parent="27" name="PRIMARY">
+    <key id="96" parent="27" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="104" parent="28" name="stu_no">
+    <column id="97" parent="28" name="stu_no">
       <Position>1</Position>
       <Comment>学生学号</Comment>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="105" parent="28" name="course_id">
+    <column id="98" parent="28" name="course_id">
       <Position>2</Position>
       <Comment>课程编号</Comment>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="106" parent="28" name="stu_property">
+    <column id="99" parent="28" name="stu_property">
       <Position>3</Position>
       <Comment>修读性质</Comment>
       <DataType>varchar(10)|0</DataType>
     </column>
-    <column id="107" parent="29" name="stu_no">
+    <column id="100" parent="29" name="stu_no">
       <Position>1</Position>
       <Comment>学生学号</Comment>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="108" parent="29" name="stu_name">
+    <column id="101" parent="29" name="stu_name">
       <Position>2</Position>
       <Comment>学生姓名</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="109" parent="29" name="stu_gender">
+    <column id="102" parent="29" name="stu_gender">
       <Position>3</Position>
       <Comment>学生性别(0:男  1:女)</Comment>
       <DataType>varchar(2)|0</DataType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
     </column>
-    <column id="110" parent="29" name="stu_class_id">
+    <column id="103" parent="29" name="stu_class_id">
       <Position>4</Position>
       <Comment>学生所在班级id</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <key id="111" parent="29" name="PRIMARY">
+    <key id="104" parent="29" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>stu_no</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="112" parent="30" name="tea_no">
+    <column id="105" parent="30" name="tea_no">
       <Position>1</Position>
       <Comment>教师工号</Comment>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="113" parent="30" name="tea_name">
+    <column id="106" parent="30" name="tea_name">
       <Position>3</Position>
       <Comment>教师姓名</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="114" parent="30" name="tea_password">
+    <column id="107" parent="30" name="tea_password">
       <Position>2</Position>
       <Comment>登录密码</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="115" parent="30" name="tea_permission">
+    <column id="108" parent="30" name="tea_permission">
       <Position>4</Position>
       <Comment>控制权限</Comment>
       <DataType>int(2)|0</DataType>
     </column>
-    <key id="116" parent="30" name="PRIMARY">
+    <key id="109" parent="30" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>tea_no</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="117" parent="31" name="term_id">
+    <column id="110" parent="31" name="term_id">
       <Position>1</Position>
       <Comment>学期编号</Comment>
       <DataType>int(3)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="118" parent="31" name="term_name">
+    <column id="111" parent="31" name="term_name">
       <Position>2</Position>
       <Comment>学期名</Comment>
       <DataType>varchar(20)|0</DataType>
     </column>
-    <column id="119" parent="31" name="term_year">
+    <column id="112" parent="31" name="term_year">
       <Position>3</Position>
       <Comment>上课年份(格式: yyyy)</Comment>
       <DataType>varchar(10)|0</DataType>
     </column>
-    <column id="120" parent="31" name="term_month">
+    <column id="113" parent="31" name="term_month">
       <Position>4</Position>
       <Comment>上课学期开始月份(格式: mm)</Comment>
       <DataType>varchar(5)|0</DataType>

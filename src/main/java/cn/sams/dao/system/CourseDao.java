@@ -3,6 +3,7 @@ package cn.sams.dao.system;
 import cn.sams.entity.Course;
 import cn.sams.entity.commons.CourseClassPlace;
 import cn.sams.entity.commons.CourseInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -54,4 +55,14 @@ public interface CourseDao {
      * @return
      */
     CourseInfo queryCourseInfoByCouId(String couId);
+
+    /**
+     * 根据条件查找到唯一的course
+     *
+     * @param courseId
+     * @param teaNo
+     * @param termId
+     * @return
+     */
+    Course queryCourse(@Param("courseId") String courseId, @Param("teaNo") String teaNo, @Param("termId") String termId);
 }

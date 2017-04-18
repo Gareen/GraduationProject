@@ -27,4 +27,10 @@
     <select id="queryCoursesByCourseKeyAndWeek" parameterType="string" resultType="cn.sams.entity.Course">
         SELECT * FROM sams_course t WHERE t.course_id = #{0} AND t.cou_week = #{1}
     </select>
+
+    <select id="queryCourse" parameterType="string" resultType="cn.sams.entity.Course">
+        SELECT *
+        FROM sams_course
+        WHERE course_id = #{courseId} AND cou_term_id = #{termId} AND cou_tea_no = #{teaNo}
+    </select>
 </mapper>

@@ -45,7 +45,7 @@ public class CourseService {
         return list;
     }
 
-    public Set<SelectModel> queryClassPlaceByCourseKey(HttpServletRequest req) {
+   /* public Set<SelectModel> queryClassPlaceByCourseKey(HttpServletRequest req) {
         String key = req.getParameter("key");
         if (! Chk.spaceCheck(key)) {
             return new HashSet<>();
@@ -61,12 +61,12 @@ public class CourseService {
         return set;
     }
 
-    /**
+    *//**
      * 根据课程查找到该门课程的上课周
      * 形成如: 第一周
      * @param req
      * @return TreeSet 对结果进行排序
-     */
+     *//*
     public Set<SelectModel> queryClassWeekByCourseKey(HttpServletRequest req) {
         String key = req.getParameter("key");
         if (! Chk.spaceCheck(key)) {
@@ -88,7 +88,7 @@ public class CourseService {
         return set;
     }
 
-    /**
+    *//**
      * 根据课程和选中的上课周来查找上课的时间列表
      * 形成如: 周五 一二节课 格式
      * db字段: cou_day_of_week  cou_time
@@ -96,7 +96,7 @@ public class CourseService {
      *
      * @param req
      * @return
-     */
+     *//*
     public Set<SelectModel> queryClassTimeByCourseKeyAndWeek(HttpServletRequest req) {
         String key = req.getParameter("key");
         String week = req.getParameter("week");
@@ -140,7 +140,7 @@ public class CourseService {
 
         return set;
     }
-
+*/
     /**
      * 封装在页面上显示的课程信息
      * 显示 课程编号, 课程名称, 上课老师, 上课时间
