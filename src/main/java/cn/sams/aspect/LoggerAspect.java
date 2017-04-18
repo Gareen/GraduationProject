@@ -5,6 +5,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
  * Created by Fanpeng on 2017/4/17.
+ *
  */
 public class LoggerAspect {
 

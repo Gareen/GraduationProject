@@ -49,10 +49,12 @@
     </delete>
 
     <select id="queryFgByFinalIdAndStuId" parameterType="string" resultType="cn.sams.entity.FinalGrade">
-        SELECT * FROM sams_finalgrade WHERE final_id = #{finalId} AND final_stu_id = #{stuNo}
+        SELECT *
+        FROM sams_finalgrade
+        WHERE final_id = #{finalId} AND final_stu_id = #{stuNo}
     </select>
 
-    <update id="saveScore" >
+    <update id="saveScore">
         UPDATE sams_finalgrade
         SET final_exam_score = #{fScore}, final_score = #{score}
         WHERE final_id = #{finalId} AND final_stu_id = #{stuNo}

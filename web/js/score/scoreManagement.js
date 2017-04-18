@@ -152,7 +152,6 @@ $(function () {
     createCourse();
 
 
-
     var search = function () {
 
         if (!query_flag) {
@@ -411,6 +410,11 @@ $(function () {
                         )
                     }
                 });
+
+                // 导出excel
+                $("#export").unbind('click').click(function () {
+                    download("./export.do?termId=" + term_Id + "&courseId=" + $chooseCourse.val() + "&classId=" + $chooseClass.val());
+                })
             }
         }).on("bindingcomplete", function () {
             $dataTable.jqxGrid('refresh');
@@ -435,4 +439,18 @@ $(function () {
             search();
         }
     });
+
+    function download(url, data) {
+        $("#tmp-dl-form").remove();
+        $("#tmp-dl-iframe").remove();
+
+        var form = $("<form id='tmp-dl-form' method='post' target='tmp-dl-iframe'>" +
+            "<input type='hidden' name='data'>" +
+            "</form>");
+        form.attr("action", url);
+        form.children("input").val(data);
+        var iframe = $("<iframe id='tmp-dl-iframe' style='display:none' name='tmp-dl-iframe'></iframe>")
+        $("body").append(iframe).append(form);
+        form.submit();
+    }
 });

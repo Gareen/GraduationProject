@@ -64,6 +64,12 @@
           <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/spring-core-4.3.7.RELEASE.jar" />
           <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/spring-beans-4.3.7.RELEASE.jar" />
           <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/aspectjrt-1.8.10.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/poi-3.11.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/poi-ooxml-3.11.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/stax-api-1.0.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/xmlbeans-2.6.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/commons-codec-1.9.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/poi-ooxml-schemas-3.11.jar" />
         </element>
       </element>
     </root>

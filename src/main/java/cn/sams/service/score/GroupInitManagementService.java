@@ -231,7 +231,7 @@ public class GroupInitManagementService {
         }
     }
 
-    public synchronized ReturnObj saveOrUpdate(HttpServletRequest req) {
+    public synchronized ReturnObj save(HttpServletRequest req) {
         String groupId = getEncodeGroupId(req);
         String jud = req.getParameter("jud");
         String groupNum = req.getParameter("group_num");

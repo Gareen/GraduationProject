@@ -97,6 +97,6 @@ public class GroupInitManagementController {
     @RequestMapping("saveOrUpdate.do")
     @ResponseBody
     public ReturnObj saveOrUpdate(HttpServletRequest req) {
-        return groupInitManagementService.saveOrUpdate(req);
+        return groupInitManagementService.save(req);
     }
 }

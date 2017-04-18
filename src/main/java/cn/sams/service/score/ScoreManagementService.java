@@ -5,16 +5,23 @@ import cn.sams.common.util.Chk;
 import cn.sams.dao.score.GroupInitManagementDao;
 
 import cn.sams.dao.score.ScoreManagementDao;
+import cn.sams.dao.system.ClassManagementDao;
 import cn.sams.dao.system.StudentManagementDao;
 import cn.sams.entity.*;
 
 import cn.sams.entity.commons.ReturnObj;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +44,9 @@ public class ScoreManagementService {
 
     @Resource
     private StudentManagementDao studentManagementDao;
+
+    @Resource
+    private ClassManagementDao classManagementDao;
 
     @Resource
     private ScoreManagementDao scoreManagementDao;
@@ -343,4 +353,209 @@ public class ScoreManagementService {
 
 
     }
+
+
+    /**
+     * 将数据导出
+     *
+     * @param req
+     * @return
+     */
+    public void export(HttpServletRequest req, HttpServletResponse response) throws IOException {
+
+        String name = "南京晓庄学院学生成绩单";
+        HSSFWorkbook wb = new HSSFWorkbook();
+
+        List<Map<String, Object>> argsList = getExportDataList(req);
+
+        if (!Chk.emptyCheck(argsList)) {
+            return;
+        }
+
+        doExport(wb, name, name, name, argsList);
+
+        // 将文件上传到页面
+        OutputStream ouputStream = null;
+        try {
+            response.setContentType("application/x-msdownloadoctet-stream");
+            String wordName = URLEncoder.encode(name, "UTF-8");
+            response.setHeader("Content-disposition", "attachment;filename=" + wordName + ".xls");
+            ouputStream = response.getOutputStream();
+            wb.write(ouputStream);
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        } catch (Exception e2) {
+
+            e2.printStackTrace();
+        } finally {
+            try {
+                if (ouputStream != null) {
+                    ouputStream.flush();
+                    ouputStream.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public List<Map<String, Object>> getExportDataList(HttpServletRequest req) {
+        String finalId = getEncodeFinalId(req);
+
+        if (!Chk.spaceCheck(finalId)) {
+            return new ArrayList<>();
+        }
+
+        String classId = req.getParameter("classId");
+
+        if (!Chk.spaceCheck(classId)) {
+            return new ArrayList<>();
+        }
+
+        String class_name = classManagementDao.queryClassByClassId(classId).getClass_name();
+        List<Student> students = studentManagementDao.queryStudentsByClassId(classId);
+
+        if (!Chk.emptyCheck(students)) {
+            return new ArrayList<>();
+        }
+
+        // 参数列表
+        List<Map<String, Object>> argsList = new ArrayList<>();
+
+        List<FinalGrade> finalGrades = scoreManagementDao.queryFinalsByFinalId(finalId);
+
+        Map<String, Object> map;
+
+        for (int i = 0; i < finalGrades.size(); ) {
+            map = new HashMap<>();
+
+            FinalGrade f = finalGrades.get(i);
+
+            map.put("ID", ++i);
+            map.put("STUNO", f.getFinal_stu_id());
+            for (Student s : students) {
+
+                if (f.getFinal_stu_id().equalsIgnoreCase(s.getStu_no())) {
+                    map.put("STUNAME", s.getStu_name());
+                }
+
+            }
+            map.put("CLASS", class_name);
+            map.put("XDXZ", "");
+            map.put("PS", f.getFinal_work_score());
+            map.put("QZ", "");
+            map.put("SY", f.getFinal_exp_score());
+            map.put("QM", f.getFinal_exam_score());
+            map.put("REMARK", f.getFinal_remark());
+            map.put("SCORE", f.getFinal_score());
+
+            argsList.add(map);
+        }
+
+        return argsList;
+    }
+
+    public void doExport(HSSFWorkbook wb, String tit, String sheetName, String name, List<Map<String, Object>> list) {
+
+        String colEn = "ID,STUNO,STUNAME,CLASS,XDXZ,PS,QZ,SY,QM,REMARK,SCORE";
+        String[] colsEn = colEn.split(",");
+
+        // 其他目前给的是实验的分数
+        String colCn = "序号,学号,姓名,班级,修读性质,平时,期中,其他,期末,特殊原因,总评";
+        String[] colsCn = colCn.split(",");
+
+        // 在webbook中添加一个sheet,对应Excel文件中的sheet
+        HSSFSheet sheet = wb.createSheet(sheetName);
+
+        //单元格合并
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, (short) 0, (short) (colsEn.length - 1)));
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, (short) 0, (short) (colsEn.length - 1)));
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, (short) 0, (short) (colsEn.length - 1)));
+        sheet.addMergedRegion(new CellRangeAddress(3, 3, (short) 0, (short) (colsEn.length - 1)));
+
+        HSSFFont title = wb.createFont();
+        title.setFontName("黑体");
+        title.setFontHeightInPoints((short) 16);
+        title.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//加粗
+
+        HSSFFont column = wb.createFont();
+        column.setFontName("宋体");
+        column.setFontHeightInPoints((short) 11);
+        column.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//加粗
+
+        HSSFFont cellValue = wb.createFont();
+        cellValue.setFontName("宋体");
+        cellValue.setFontHeightInPoints((short) 10);
+
+        HSSFCellStyle titleStyle = wb.createCellStyle();
+        titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+        titleStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 竖直居中
+        titleStyle.setWrapText(false);
+        titleStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+        titleStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+        titleStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+        titleStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+        titleStyle.setFont(title);
+
+        HSSFCellStyle columnStyle = wb.createCellStyle();
+        columnStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+        columnStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 竖直居中
+        columnStyle.setWrapText(false);
+        columnStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+        columnStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+        columnStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+        columnStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+        columnStyle.setFillBackgroundColor(HSSFColor.GREY_50_PERCENT.index);
+        columnStyle.setFont(column);
+
+        HSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 左
+        cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 竖直居中
+        cellStyle.setWrapText(false);
+        cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+        cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+        cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+        cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+        cellStyle.setFont(cellValue);
+
+
+        //表头
+        HSSFRow row = sheet.createRow(0);
+        HSSFCell cell = row.createCell(0);
+        cell.setCellValue(tit);
+        cell.setCellStyle(titleStyle);
+
+        //列名
+        row = sheet.createRow(4);
+        for (int i = 0; i < colsCn.length; i++) {
+            cell = row.createCell(i);
+            cell.setCellValue(colsCn[i]);
+            cell.setCellStyle(columnStyle);
+        }
+
+        //添加数据
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+
+                row = sheet.createRow(i + 5);
+                for (int j = 0; j < colsEn.length; j++) {
+                    cell = row.createCell(j);
+                    cell.setCellValue(list.get(i).get(colsEn[j]) == null ? "" : list.get(i).get(colsEn[j]).toString());
+                    cell.setCellStyle(cellStyle);
+                }
+            }
+        }
+
+        //自适应宽度
+        for (int i = 0; i < colsEn.length; i++) {
+            sheet.autoSizeColumn((short) i, true);
+        }
+
+        // 封装表尾
+
+
+    }
+
 }
