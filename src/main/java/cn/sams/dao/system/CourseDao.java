@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Fanpeng on 2017/2/27.
@@ -64,5 +65,6 @@ public interface CourseDao {
      * @param termId
      * @return
      */
-    Course queryCourse(@Param("courseId") String courseId, @Param("teaNo") String teaNo, @Param("termId") String termId);
+    Map<String, Object> queryCourseToMap(@Param("courseId") String courseId, @Param("teaNo") String teaNo,
+                                         @Param("termId") String termId, @Param("classId") String classId);
 }

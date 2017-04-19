@@ -11,4 +11,8 @@
     <select id="queryTermByYearAndMonth" parameterType="string" resultType="cn.sams.entity.Term">
         SELECT * FROM sams_term WHERE term_year = #{0} AND term_month = #{1}
     </select>
+
+    <select id="queryTermByTermId" parameterType="string" resultType="cn.sams.entity.Term">
+        SELECT * FROM sams_term WHERE term_id = #{termId}
+    </select>
 </mapper>

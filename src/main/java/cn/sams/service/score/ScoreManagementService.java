@@ -5,10 +5,7 @@ import cn.sams.common.util.Chk;
 import cn.sams.dao.score.GroupInitManagementDao;
 
 import cn.sams.dao.score.ScoreManagementDao;
-import cn.sams.dao.system.ClassManagementDao;
-import cn.sams.dao.system.CourseDao;
-import cn.sams.dao.system.StudentManagementDao;
-import cn.sams.dao.system.TermManagementDao;
+import cn.sams.dao.system.*;
 import cn.sams.entity.*;
 
 import cn.sams.entity.commons.ReturnObj;
@@ -49,6 +46,9 @@ public class ScoreManagementService {
 
     @Resource
     private TermManagementDao termManagementDao;
+
+    @Resource
+    private TeacherManagerDao teacherManagerDao;
 
     @Resource
     private ClassManagementDao classManagementDao;
@@ -381,8 +381,9 @@ public class ScoreManagementService {
         String termId = req.getParameter("termId");
         String termName = termManagementDao.queryTermByTermId(termId).getTerm_name();
 
+        Map<String, Object> infoDatas = getInfoData(req);
         // 进行组装
-        doExport(wb, name, name, termName, argsList);
+        doExport(wb, name, name, termName, argsList, infoDatas);
 
         // 将文件上传到页面
         OutputStream ouputStream = null;
@@ -411,24 +412,45 @@ public class ScoreManagementService {
 
     }
 
-    public Map<String, String> getInfoData(HttpServletRequest req) {
-        Map<String, String> m = new HashMap<>();
+    /**
+     * 获得表格信息
+     *
+     * @param req
+     * @return
+     */
+    public Map<String, Object> getInfoData(HttpServletRequest req) {
+        Map<String, Object> m = new HashMap<>();
 
         String classId = req.getParameter("classId");
         String termId = req.getParameter("termId");
         String courseId = req.getParameter("courseId");
         String teaNo = req.getParameter("teaNo");
 
-        Course course = courseDao.queryCourse(courseId, teaNo, termId);
+        Map<String, Object> course = courseDao.queryCourseToMap(courseId, teaNo, termId, classId);
 
-        if (course == null) {
+        if (!Chk.emptyCheck(course)) {
             return new HashMap<>();
         }
 
-        // todo
+        // 课程号
+        m.put("course_id", "00" + course.get("course_id"));
+        // 课序号
+        m.put("cou_number", "0" + course.get("cou_number"));
+        // 课程名
+        m.put("course_name", course.get("course_name") + "");
+        // 开课单位
+        m.put("course_unit", course.get("course_unit") + "");
+        // 学分
+        m.put("cou_credit", course.get("cou_credit") + "");
+        // 人数
+        m.put("cou_counts", course.get("cou_counts") + "");
+        // 上课教师
+        String teaName = teacherManagerDao.queryTeaById(course.get("cou_tea_no") + "").getTea_name();
+        m.put("teaName", teaName);
+        // 录入状态
+        m.put("status", "已录入");
 
-        return new HashMap<>();
-
+        return m;
     }
 
     public List<Map<String, Object>> getExportDataList(HttpServletRequest req) {
@@ -463,22 +485,33 @@ public class ScoreManagementService {
 
             FinalGrade f = finalGrades.get(i);
 
+            // 序号
             map.put("ID", ++i);
+            // 学生学号
             map.put("STUNO", f.getFinal_stu_id());
             for (Student s : students) {
 
                 if (f.getFinal_stu_id().equalsIgnoreCase(s.getStu_no())) {
+                    // 学生姓名
                     map.put("STUNAME", s.getStu_name());
                 }
 
             }
+            // 班级
             map.put("CLASS", class_name);
+            // 修读性质
             map.put("XDXZ", "");
+            // 平时
             map.put("PS", f.getFinal_work_score());
+            // 其中
             map.put("QZ", "");
+            // 其他(实验)
             map.put("SY", f.getFinal_exp_score());
+            // 期末
             map.put("QM", f.getFinal_exam_score());
+            // 特殊原因()
             map.put("REMARK", f.getFinal_remark());
+            // 总评
             map.put("SCORE", f.getFinal_score());
 
             argsList.add(map);
@@ -487,7 +520,7 @@ public class ScoreManagementService {
         return argsList;
     }
 
-    public void doExport(XSSFWorkbook wb, String tit, String sheetName, String termName, List<Map<String, Object>> list) {
+    public void doExport(XSSFWorkbook wb, String tit, String sheetName, String termName, List<Map<String, Object>> list, Map<String, Object> infoDatas) {
 
         String colEn = "ID,STUNO,STUNAME,CLASS,XDXZ,PS,QZ,SY,QM,REMARK,SCORE";
         String[] colsEn = colEn.split(",");
@@ -576,7 +609,8 @@ public class ScoreManagementService {
         XSSFRow info1 = sheet.createRow(2);
         XSSFCell info1cell = info1.createCell(0);
 
-        String info1Str = "课程号:         课序号:          课程名:        开课单位:        ";
+        String info1Str = "课程号:" + infoDatas.get("course_id") + "      课序号:" + infoDatas.get("cou_number") +
+                "      课程名:" + infoDatas.get("course_name") + "      开课单位:" + infoDatas.get("course_unit");
         info1cell.setCellValue(info1Str);
         info1cell.setCellStyle(infoStyle);
 
@@ -584,7 +618,8 @@ public class ScoreManagementService {
         XSSFRow info2 = sheet.createRow(3);
         XSSFCell info2cell = info2.createCell(0);
 
-        String info2Str = "学分:      人数:       上课教师:       录入状态: 已录入";
+        String info2Str = "学分:" + infoDatas.get("cou_credit") + "               人数:" + infoDatas.get("cou_counts") +
+                "        上课教师:" + infoDatas.get("teaName") + "           录入状态:" + infoDatas.get("status");
         info2cell.setCellValue(info2Str);
         info2cell.setCellStyle(infoStyle);
 

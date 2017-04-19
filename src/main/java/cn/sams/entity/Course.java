@@ -18,6 +18,7 @@ public class Course implements Serializable {
     private String cou_time;
     private String cou_place;
     private Integer cou_term_id;
+    private Integer class_id;
 
     public Course() {
     }
@@ -94,7 +95,13 @@ public class Course implements Serializable {
         this.cou_term_id = cou_term_id;
     }
 
+    public Integer getClass_id() {
+        return class_id;
+    }
 
+    public void setClass_id(Integer class_id) {
+        this.class_id = class_id;
+    }
 
     @Override
     public boolean equals(Object o) {
