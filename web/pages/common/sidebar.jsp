@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<script src="${ctx}/js/common/sidebar.js"></script>
 
 <style>
     #view-content-left {
@@ -99,8 +98,6 @@
         </div>
     </div>
 </div>
-<script>
 
-
-</script>
+<script src="${ctx}/js/common/sidebar.js"></script>
 

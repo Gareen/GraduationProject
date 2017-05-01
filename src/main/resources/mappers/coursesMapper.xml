@@ -4,35 +4,31 @@
 <mapper namespace="cn.sams.dao.system.CourseDao">
 
     <select id="queryCourses" resultType="cn.sams.entity.Course">
-        select * from sams_course
+        SELECT *
+        FROM sams_course
     </select>
 
 
     <select id="queryCourseInfo" resultType="cn.sams.entity.commons.CourseInfo">
-        select * from sams_course_info
+        SELECT * FROM sams_course_info
     </select>
 
     <select id="queryCourseInfoByCouId" parameterType="string" resultType="cn.sams.entity.commons.CourseInfo">
-        select * from sams_course_info where course_id = #{0}
+        SELECT * FROM sams_course_info WHERE course_id = #{0}
     </select>
 
     <select id="queryCoursesByCourseKey" parameterType="string" resultType="cn.sams.entity.Course">
         SELECT * FROM sams_course t WHERE t.course_id = #{key}
     </select>
 
-    <select id="queryCoursePlaceById" parameterType="string" resultType="cn.sams.entity.commons.CourseClassPlace">
-        SELECT * FROM sams_course_place WHERE place_id = #{0}
-    </select>
-
-    <select id="queryCoursesByCourseKeyAndWeek" parameterType="string" resultType="cn.sams.entity.Course">
-        SELECT * FROM sams_course t WHERE t.course_id = #{0} AND t.cou_week = #{1}
-    </select>
-
     <select id="queryCourseToMap" parameterType="string" resultType="java.util.Map">
         SELECT *
         FROM(
         SELECT t.cou_number, t.course_id, t.cou_credit, t.cou_period, t.cou_tea_no, t.cou_counts,
-        t.cou_time, t.cou_place, t.cou_term_id, t.class_id, s.course_name, s.course_unit
+            t.cou_term_id,
+            t.class_id,
+            s.course_name,
+            s.course_unit
         FROM
         sams_course t
         LEFT JOIN

@@ -9,7 +9,7 @@
     </select>
 
     <select id="queryClasses" parameterType="string" resultType="cn.sams.entity.Classes">
-        SELECT * FROM sams_course_class t WHERE t.tea_no = #{0} AND t.term_id = #{1} AND t.cou_no = #{2}
+        SELECT * FROM sams_course t WHERE t.cou_tea_no = #{0} AND t.cou_term_id = #{1} AND t.course_id = #{2}
     </select>
 
     <select id="queryGroupsByGroupId" parameterType="string" resultType="cn.sams.entity.Group">

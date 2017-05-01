@@ -15,12 +15,9 @@ body {
 
 
 .bg{
-    /*margin:0px;*/
-    background:url(../images/BG-1.jpg) ;
+    background: url(../images/BG-2.jpg);
     background-size:100% 100%;
     -moz-background-size: 100% 100%;
-    /*background-color: #EAEAEA;*/
-    /*height: 100%;*/
 }
 
 /*自行添加login页面背景logo的属性*/
@@ -31,7 +28,6 @@ body {
     top: 23%;
     right: 62%;
     position: absolute;
-   /* border: 1px solid pink;*/
 }
 
 

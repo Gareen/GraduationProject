@@ -42,6 +42,8 @@ $(function () {
             source: dataAdapter,
             theme: jqx_default_theme,
             altrows: true,
+            groupable: true,
+            showgroupsheader: false,
             filterable: true,
             showfilterrow: true,
             columns: [
@@ -50,7 +52,9 @@ $(function () {
                 {text: '性别', dataField: 'stu_gender', align: "center", cellsAlign: 'center', width: "10%"},
                 {text: '班级', dataField: 'stu_class_id', align: "center", cellsAlign: 'center', width: "35%"}
             ],
+            groups: ['stu_class_id']
         }).on("bindingcomplete", function () {
+            $('#dataTable').jqxGrid('expandallgroups');
             query_flag = true;
         });
 

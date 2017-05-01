@@ -33,7 +33,10 @@ $(function () {
                 {name: 'couId', type: 'String'},
                 {name: 'couName', type: 'String'},
                 {name: 'teaName', type: 'String'},
+                {name: 'couClass', type: 'String'},
                 {name: 'couTime', type: 'String'},
+                {name: 'couTerm', type: 'String'},
+
             ],
         };
 
@@ -51,7 +54,9 @@ $(function () {
                 {text: '课程编号', dataField: 'couId', align: "center", cellsAlign: 'center', width: "10%"},
                 {text: '课程名', dataField: 'couName', align: "center", cellsAlign: 'center', width: "20%"},
                 {text: '上课教师', dataField: 'teaName', align: "center", cellsAlign: 'center', width: "10%"},
-                {text: '上课时间', dataField: 'couTime', align: "center", cellsAlign: 'center', width: "60%"},
+                {text: '上课班级', dataField: 'couClass', align: "center", cellsAlign: 'center', width: "20%"},
+                {text: '上课时间和地点', dataField: 'couTime', align: "center", cellsAlign: 'center', width: "60%"},
+                {text: '上课学期', dataField: 'couTerm', align: "center", cellsAlign: 'center', width: "20%"}
             ],
         }).on("bindingcomplete", function () {
             console.log('bindingcomplete');

@@ -97,13 +97,15 @@ $(function () {
     };
 
 
+    var $choose_course = $("#choose_course");
     var createCourse = function () {
         $.when(
             $.post(
                 "./queryCoursesByTeacherIdAndTerm.do",
                 queryCourseData,
                 function (rtn) {
-                    $("#choose_course").jqxDropDownList({
+                    $choose_course.jqxDropDownList({
+                        placeHolder: "选择课程",
                         source: rtn,
                         selectedIndex: 0,
                         width: '150',
@@ -115,31 +117,40 @@ $(function () {
                     });
                 }
             )).done(function () {
-
-            var courseId = $("#choose_course").val();
-            $.post(
-                "./queryClasses.do",
-                {
-                    teaNo: teacher["tea_no"],
-                    termId: term_Id,
-                    courseId: courseId
-                },
-                function (rtn) {
-                    $("#choose_class").jqxDropDownList({
-                        source: rtn,
-                        selectedIndex: 0,
-                        width: '150',
-                        height: '25',
-                        theme: jqx_default_theme,
-                        autoDropDownHeight: true,
-                        displayMember: 'key',
-                        valueMember: 'value'
-                    });
-                }
-            )
+            createClass();
         })
 
     };
+
+    // 当课程发生改变的时候，班级也需要进行改变
+    $choose_course.on("change", function () {
+        createClass();
+    });
+
+    function createClass() {
+        var courseId = $("#choose_course").val();
+        $.post(
+            "./queryClasses.do",
+            {
+                teaNo: teacher["tea_no"],
+                termId: term_Id,
+                courseId: courseId
+            },
+            function (rtn) {
+                $("#choose_class").jqxDropDownList({
+                    placeHolder: "选择班级",
+                    source: rtn,
+                    selectedIndex: 0,
+                    width: '150',
+                    height: '25',
+                    theme: jqx_default_theme,
+                    autoDropDownHeight: true,
+                    displayMember: 'key',
+                    valueMember: 'value'
+                });
+            }
+        )
+    }
 
     createCourse();
 

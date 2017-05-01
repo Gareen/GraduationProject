@@ -95,7 +95,6 @@ public class GroupManagementService {
 
             if (g.size() > groups.size()) {
 
-                // todo 新增后缺失数据的原因是因为此处的remove修改了原来的list的内容
                 g.removeAll(groups);
 
                 // 新增一条的情况

@@ -23,6 +23,7 @@
                         </div>
 
                         <div class="fr">
+                            <button class="btn btn-warning" id="import_stu">导入学生名册</button>
                             <button class="btn btn-success" id="add" disabled>新增</button>
                             <button class="btn btn-primary" id="edit" disabled>修改</button>
                             <button class="btn btn-danger" id="delete" disabled>删除</button>
