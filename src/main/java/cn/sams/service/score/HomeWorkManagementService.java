@@ -1,5 +1,6 @@
 package cn.sams.service.score;
 
+import cn.sams.common.constants.Constant;
 import cn.sams.common.util.BatchUpdateUtil;
 import cn.sams.common.util.Chk;
 import cn.sams.dao.score.HomeworkManagementDao;
@@ -138,10 +139,10 @@ public class HomeWorkManagementService {
         int count = homeworkManagementDao.save(args);
 
         if (count == 0) {
-            return new ReturnObj("error", "保存出错 !", null);
+            return new ReturnObj(Constant.ERROR, "保存出错 !", null);
         }
 
-        return new ReturnObj("success", "", null);
+        return new ReturnObj(Constant.SUCCESS, "", null);
     }
 
     /**

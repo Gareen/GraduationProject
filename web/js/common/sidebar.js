@@ -22,13 +22,7 @@ $(function (){
 
     (function () {
         var h = window.location.href;
-        // http://localhost:8080/sams/system/teacherManagement/toIndex.do
-        // /sams/system/teacherManagement/toIndex.do
-        /*for (var i in $hrefTexts) {
-         if (i.attr("href") == h.substr(27)) {
-         i.addClass("active");
-         }
-         }*/
+
         var i = h.indexOf('score');
         if (i && i != -1) {
             nav1li.eq(0).click().addClass('active');
@@ -38,26 +32,6 @@ $(function (){
 
     }());
 
-
-    // 根据一级菜单进行二级菜单的获取
-   /* var createUlnav2 = function(re) {
-        // 先清空列表下面的所有的子项
-        $("#sideNav2>li").remove();
-        for(var i = 0; i < re.length ;i++) {
-            // 已经可以获取到第二级菜单的 对象
-            var obj = re[i];
-            if (! obj) {
-                return;
-            }
-            var li = "<li class='nav-item'>" +
-                "<a href=" + obj["path"] + ">" +
-                "<div class='nav-icon'></div>" +
-                "<div class='nav-title'>" + obj["title"] + "</div>" +
-                "</a>" +
-                "</li>";
-            $("#sideNav2").append(li);
-        }
-    };*/
 
     // 根据一级菜单进行二级菜单的获取 vue重构
     var createUlnav2 = function(paths) {
@@ -84,16 +58,6 @@ $(function (){
         // location.href =;
         var url = $(this).attr("href").replace("#","");
         console.log(url);
-       /* if(/^[1-9]+[0-9]*$/.test(url)){
-            $.post(
-                root + "/common/loader/resourcePat h?id=" + url,
-                function (rtn){
-                    if(rtn){
-                        window.location.href = root + rtn;
-                    }
-                }
-            );
-        }*/
     });
 
     var ulnav2 = $("ul.nav2");
@@ -105,17 +69,11 @@ $(function (){
         var hasChildren = $navItem.hasClass("parent");
         if(hasChildren){
             $this.find("div.nav-icon").toggleClass("fa-caret-right");
-            //var c = ulnav2.find("li.nav-item[pid=" + itemId + "]");
-            //c.toggle();
-            //if(c.filter(".active").length > 0){
-                $navItem.toggleClass("active");
-            //}
-            //return;
+
+            $navItem.toggleClass("active");
+
         }
-        //var h = $this.attr("href").replace("#","");
-        // if(h){
-        //     window.location.href = root + h;
-        // }
+
     });
 
     var buildSideNav = function (){
@@ -141,15 +99,6 @@ $(function (){
                 }
             });
         };
-
-        // 设置二级导航栏标题 可以用
-        /*var setSubTitle = function (){
-            var title = $(".nav1 li.nav-item.active .nav-title").text();
-            $("#left-sub-title").html(title);
-
-        };
-        setSubTitle();*/
-
 
 
         var createIconTooltips = function (){
@@ -180,15 +129,7 @@ $(function (){
             vl.width("+=130");
             destroyIconTooltips();
         };
-        //
-        //var sn1sw= baseUtil.getCookie("sideNav1sw");
-        //sn1sw = sn1sw == null ? true : eval(sn1sw);
 
-
-        //if( ! sn1sw){
-        //    closeSideNav1();
-        //    nav1sw.toggleClass("glyphicon-indent-left");
-        //}
         var sn1sw = new Object;
         nav1sw.on("click",function (){
 
@@ -233,11 +174,6 @@ $(function (){
 
     };
 
-   /* activeResourceIds = activeResourceIds.split(",");
-    for(var i = 0 ; i < activeResourceIds.length ; i ++){
-        $("#resourceId-" + activeResourceIds[i]).has("a[href!=#]").addClass("active");
-    }
-*/
     buildSideNav();
 
     // 登陆者可以进行密码修改
@@ -281,7 +217,7 @@ $(function (){
             $.post(
                 "../../system/login/loginOut.do",
                 function (rtn) {
-                    if (rtn == "success") {
+                    if (rtn === "success") {
                         window.location.href = "../../system/login/index.do";
                         // 从localStorage中移除teacher
                         store.removeItem("teacher");

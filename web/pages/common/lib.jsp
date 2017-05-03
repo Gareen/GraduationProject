@@ -17,7 +17,7 @@
 <script src="${ctx}/framework/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="${ctx}/framework/bootstrap/js/modal.js"></script>
 <script>
-    var store = window.localStorage;
+    var store = sessionStorage;
 </script>
 <script src="${ctx}/js/common/base.js"></script>
 <script src="${ctx}/js/common/packageJqx.js"></script>

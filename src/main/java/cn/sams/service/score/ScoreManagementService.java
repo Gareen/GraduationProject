@@ -1,5 +1,6 @@
 package cn.sams.service.score;
 
+import cn.sams.common.util.ExcelUtil;
 import cn.sams.common.util.BatchUpdateUtil;
 import cn.sams.common.util.Chk;
 import cn.sams.dao.score.GroupInitManagementDao;
@@ -19,8 +20,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -386,30 +385,7 @@ public class ScoreManagementService {
         doExport(wb, name, name, termName, argsList, infoDatas);
 
         // 将文件上传到页面
-        OutputStream ouputStream = null;
-        try {
-            response.setContentType("application/x-msdownloadoctet-stream");
-            String wordName = URLEncoder.encode(name, "UTF-8");
-            response.setHeader("Content-disposition", "attachment;filename=" + wordName + ".xlsx");
-            ouputStream = response.getOutputStream();
-            wb.write(ouputStream);
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        } catch (Exception e2) {
-
-            e2.printStackTrace();
-        } finally {
-            try {
-                if (ouputStream != null) {
-                    ouputStream.flush();
-                    ouputStream.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
+        ExcelUtil.exportExcel(wb, response, name);
     }
 
     /**

@@ -4,7 +4,8 @@
 <mapper namespace="cn.sams.dao.system.CourseDao">
 
     <select id="queryCourses" resultType="cn.sams.entity.Course">
-        SELECT * FROM sams_course
+        SELECT *
+        FROM sams_course
     </select>
 
 
@@ -24,7 +25,10 @@
         SELECT *
         FROM(
         SELECT t.cou_number, t.course_id, t.cou_credit, t.cou_period, t.cou_tea_no, t.cou_counts,
-        t.cou_term_id, t.class_id, s.course_name, s.course_unit
+            t.cou_term_id,
+            t.class_id,
+            s.course_name,
+            s.course_unit
         FROM
         sams_course t
         LEFT JOIN

@@ -3,6 +3,8 @@ $(function () {
     // 查询状态
     var query_flag = true;
 
+    var teacher = $getTea();
+
     $(window).on("resize", function () {
         $('#dataTable').jqxGrid({
             height: jqxUtil.getGridHeight(30, 30, 30)
@@ -59,5 +61,61 @@ $(function () {
         });
 
     };
+
     search();
-})
+
+    // 导出学生信息模版
+    $("#export-stuTemp").click(function () {
+        excelExport("export.do");
+    });
+
+    // 学生名册上传
+    let $stuUpload = $("#import-students");
+    let $uploadTool = $("#stu-upload");
+    // 文件上传请求路径
+    let uploadUrl = "./importStudents.do";
+
+    $("#import_stu").click(function () {
+        // todo 完成后需要修改成管理员进行添加
+        if (teacher["tea_no"] === '10000') {
+            $bs.error("您无权导入学生信息，请联系管理员 ！");
+            return;
+        }
+        initUpload();
+        $stuUpload.modal("show");
+    });
+
+    // 上传初始化
+    function initUpload() {
+        // 先对队列中全部的待上传进行清空
+        $uploadTool.jqxFileUpload('cancelAll');
+
+        $uploadTool.jqxFileUpload({
+            theme: jqx_default_theme,
+            height: 150,
+            uploadUrl: uploadUrl,
+            fileInputName: 'studentsInfo',
+            localization: {
+                browseButton: '浏览文件',
+                uploadButton: '全部上传',
+                cancelButton: '全部取消',
+                uploadFileTooltip: '点击上传',
+                cancelFileTooltip: '点击取消'
+            },
+            multipleFilesUpload: true,
+            uploadTemplate: 'warning',
+            // 默认只找寻excel文件
+            accept: ['.xlsx', '.xls']
+        });
+
+    }
+
+    $uploadTool.on('uploadEnd', function (event) {
+        var args = event.args;
+        var fileName = args.file;
+        var serverResponce = args.response;
+        console.log(event);
+        // todo code
+        console.log("upload end");
+    });
+});

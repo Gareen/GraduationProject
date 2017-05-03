@@ -469,75 +469,23 @@ var Chk = {
     }
 }
 
+/**
+ * 导出方法
+ * @param url
+ * @param data
+ */
+function excelExport(url, data) {
+    $("#tmp-dl-form").remove();
+    $("#tmp-dl-iframe").remove();
+
+    var form = $("<form id='tmp-dl-form' method='post' target='tmp-dl-iframe'>" +
+        "<input type='hidden' name='data'>" +
+        "</form>");
+    form.attr("action", url);
+    form.children("input").val(data);
+    var iframe = $("<iframe id='tmp-dl-iframe' style='display:none' name='tmp-dl-iframe'></iframe>")
+    $("body").append(iframe).append(form);
+    form.submit();
+}
 
 
-
-//重写jquery的ajax方法 用作异步请求的 用户登录状态判断
-//jQuery(function($) {
-//备份jquery的ajax方法
-/*var _ajax = $.ajax;
-var ajaxErrorHandel = true;
-$.ajax = function(opt) {
-    var _success = opt && opt.success || function(a, b) {};
-    var errorHandle = function (t,textStatus){
-        if(t == Constant.UNLOGIN_STATUS_CODE){
-            if(ajaxErrorHandel){
-                ajaxErrorHandel = false;
-                alert("登录超时, 请重新登录 !");
-                toIndex();
-                return true;
-            }
-        }else if(t == Constant.NO_PERMISSION_STATUS_CODE){
-            //alert("无访问权限!");
-            _success(null,textStatus);
-            return true;
-        }else{
-            return false;
-        }
-    };
-
-    var _opt = $.extend(opt, {
-
-        error : function (req,textStatus){
-            if( errorHandle(req.responseText,textStatus) ){
-
-            }else{
-                //alert("请求返回异常 : " + textStatus);
-            }
-
-        },
-
-        success : function(d, textStatus) {
-            // 如果后台将请求重定向到了登录页，则data里面存放的就是登录页的源码，这里需要找到data是登录页的证据(标记)
-            if(Chk.isString(d)){
-                if( errorHandle( d , textStatus) ){
-                    return;
-                }
-            }
-            _success(d, textStatus);
-        }
-    });
-
-    return _ajax(_opt);
-};*/
-
-
-
-
-
-
-
-
-
-
-
-
-//$.browser = {};
-////$.browser.mozilla = /firefox/.test(navigator.userAgent.toLowerCase());
-//$.browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
-////$.browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
-////$.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
-//
-//if( ! $.browser.webkit){
-//    window.location.href = getRoot() + "/browser.jsp";
-//}

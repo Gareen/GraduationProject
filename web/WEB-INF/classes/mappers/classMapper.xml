@@ -11,4 +11,8 @@
         SELECT * FROM sams_class WHERE class_id = #{0}
     </select>
 
+    <insert id="insertClasses" parameterType="string">
+        INSERT INTO sams_class VALUES (#{classId}, #{className})
+    </insert>
+
 </mapper>

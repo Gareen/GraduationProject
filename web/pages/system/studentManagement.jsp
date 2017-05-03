@@ -46,6 +46,33 @@
     </div>
 </div>
 
+<%--学生名册上传模态框--%>
+<div class="modal fade" data-backdrop="static" id="import-students">
+    <div class="modal-dialog" style="width: auto;max-width: 500px;min-width: 350px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span type="button" class="close fa fa-close" data-dismiss="modal" aria-hidden="true"
+                      style="float: right; "></span>
+
+                <%--弹出框的标题--%>
+                <h5 class="modal-title">导入学生名册</h5>
+            </div>
+            <div class="modal-body clearfix">
+                <div style="margin-bottom: 7px; border-left: 3px solid #e6e6e6; padding-left: 3px;">
+                    <span>
+                        <strong>提示：</strong>
+                        请上传<a href="#" id="export-stuTemp" style="margin: 0 2px;" title="下载学生信息模版"><i class="fa fa-file"
+                                                                                                      style="margin-right: 2px;"></i>指定模版</a>的学生信息电子表格！
+                    </span>
+                </div>
+                <div id="stu-upload"></div>
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-default" data-dismiss="modal">退出</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

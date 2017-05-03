@@ -424,7 +424,7 @@ $(function () {
 
                 // 导出excel
                 $("#export").unbind('click').click(function () {
-                    download("./export.do?" +
+                    excelExport("./export.do?" +
                         "termId=" + sessionStorage.getItem('termId') +
                         "&courseId=" + sessionStorage.getItem('courseId') +
                         "&classId=" + sessionStorage.getItem('classId') +
@@ -459,17 +459,4 @@ $(function () {
         }
     });
 
-    function download(url, data) {
-        $("#tmp-dl-form").remove();
-        $("#tmp-dl-iframe").remove();
-
-        var form = $("<form id='tmp-dl-form' method='post' target='tmp-dl-iframe'>" +
-            "<input type='hidden' name='data'>" +
-            "</form>");
-        form.attr("action", url);
-        form.children("input").val(data);
-        var iframe = $("<iframe id='tmp-dl-iframe' style='display:none' name='tmp-dl-iframe'></iframe>")
-        $("body").append(iframe).append(form);
-        form.submit();
-    }
 });
