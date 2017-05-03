@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
+<html>
 <head>
   <title>学生成绩管理系统</title>
   <link rel="shortcut icon" href="../../images/title-icon.ico"/>
@@ -34,17 +35,17 @@
 
   <div class="fr " style="font-size: 25px; color: white; margin-right: 10px;"> <%--topbar-nav--%>
     <div>
-     <%-- <a>
-        <span class="nav-title"><span class="fa fa-file nav-icon"></span>帮助与文档</span>
-      </a>--%>
-       <dl class="nav-title" style="font-size: 15px;">
-         <i>
-           <span id="YYYYMMDD"></span>
-           <span id="EEE" ></span>
-         </i>
-         &nbsp;
-         <strong ><span id="clock"></span></strong>
-       </dl>
+      <%-- <a>
+         <span class="nav-title"><span class="fa fa-file nav-icon"></span>帮助与文档</span>
+       </a>--%>
+      <dl class="nav-title" style="font-size: 15px;">
+        <i>
+          <span id="YYYYMMDD"></span>
+          <span id="EEE" ></span>
+        </i>
+        &nbsp;
+        <strong ><span id="clock"></span></strong>
+      </dl>
     </div>
   </div>
 

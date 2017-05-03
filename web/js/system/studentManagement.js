@@ -5,19 +5,23 @@ $(function () {
 
     var teacher = $getTea();
 
+    var $table = $("#dataTable");
+
     $(window).on("resize", function () {
-        $('#dataTable').jqxGrid({
+        $table.jqxGrid({
             height: jqxUtil.getGridHeight(30, 30, 30)
         });
     });
 
     sidebar.callback = function () {
-        $('#dataTable').jqxGrid('render');
+        $table.jqxGrid('render');
     };
 
 
     var search = function () {
 
+        // 行选中数据
+        let rowSelectData;
 
         if (!query_flag) {
             return;
@@ -38,7 +42,7 @@ $(function () {
 
         var dataAdapter = new $.jqx.dataAdapter(source);
 
-        $("#dataTable").jqxGrid({
+        $table.jqxGrid({
             width: "100%",
             height: jqxUtil.getGridHeight(30, 30, 30),
             source: dataAdapter,
@@ -55,9 +59,24 @@ $(function () {
                 {text: '班级', dataField: 'stu_class_id', align: "center", cellsAlign: 'center', width: "35%"}
             ],
             groups: ['stu_class_id']
+
         }).on("bindingcomplete", function () {
-            $('#dataTable').jqxGrid('expandallgroups');
+            $table.jqxGrid('expandallgroups');
             query_flag = true;
+
+            // 行选中事件
+            $table.on('rowselect', function (event) {
+                var args = event.args;
+                rowSelectData = args.row;
+                // {stu_no: "10002", stu_name: "test2", stu_gender: "女", stu_class_id: "测试班级", uid: "10002"}
+                if (rowSelectData) {
+                    $("#edit").prop('disabled', false);
+                    $("#delete").prop('disabled', false);
+                }
+            });
+
+
+
         });
 
     };
@@ -110,12 +129,15 @@ $(function () {
 
     }
 
-    $uploadTool.on('uploadEnd', function (event) {
+    /*$uploadTool.on('uploadEnd', function (event) {
         var args = event.args;
-        var fileName = args.file;
         var serverResponce = args.response;
-        console.log(event);
-        // todo code
-        console.log("upload end");
-    });
+     let rtn = JSON.parse($(serverResponce).text());
+
+     /!*if (rtn && rtn['status'] === 'success') {
+     $('#dataTable').jqxGrid('render');
+     }*!/
+     console.log(111)
+     });*/
+
 });

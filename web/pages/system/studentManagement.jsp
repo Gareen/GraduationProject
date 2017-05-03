@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
+<html>
 <head>
     <%@include file="../common/lib.jsp" %>
 </head>
@@ -24,14 +25,14 @@
 
                         <div class="fr">
                             <button class="btn btn-warning" id="import_stu">导入学生名册</button>
-                            <button class="btn btn-success" id="add" disabled>新增</button>
+                            <button class="btn btn-success" id="add">新增</button>
                             <button class="btn btn-primary" id="edit" disabled>修改</button>
                             <button class="btn btn-danger" id="delete" disabled>删除</button>
                         </div>
                     </div>
                     <div class="alert alert-success margin-top">
                         <a href="#" class="close" data-dismiss="alert"><span class="fa fa-close"></span></a>
-                        <strong>提示！</strong>学生信息展示.<br/>
+                        <strong>提示：</strong>支持批量导入学生信息，导入后请刷新页面.<br/>
                     </div>
                 </div>
             </div>
@@ -74,6 +75,7 @@
         </div>
     </div>
 </div>
+
 
 </body>
 </html>

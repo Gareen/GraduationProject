@@ -102,7 +102,7 @@ $(function () {
                             var msg = rtn["msg"];
                             // 关闭window
                             createSubmit.next("a").click();
-                            if (status == 'success') {
+                            if (status === 'success') {
                                 $bs.success(msg);
                             } else {
                                 $bs.error(msg);
@@ -114,7 +114,7 @@ $(function () {
                 });
 
 
-                $("#dataTable").unbind("click").on('rowselect', function (event) {
+                $("#dataTable").unbind("rowselect").on('rowselect', function (event) {
                     var args = event.args;
                     rowIndex = args.rowindex;
                     var rowData = args.row;
@@ -125,7 +125,7 @@ $(function () {
 
                 /*删除教师*/
                 $("#deleteTea").unbind("click").click(function() {
-                    if (rowIndex == -1) {
+                    if (rowIndex === -1) {
                         $bs.alert("请选中一位教师 !");
                         return;
                     }
