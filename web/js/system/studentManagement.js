@@ -64,18 +64,47 @@ $(function () {
             $table.jqxGrid('expandallgroups');
             query_flag = true;
 
+            let $btn_add = $("#add");
+            let $btn_edit = $("#edit");
+            let $btn_del = $("#delete");
+
             // 行选中事件
             $table.on('rowselect', function (event) {
-                var args = event.args;
+                let args = event.args;
                 rowSelectData = args.row;
                 // {stu_no: "10002", stu_name: "test2", stu_gender: "女", stu_class_id: "测试班级", uid: "10002"}
                 if (rowSelectData) {
-                    $("#edit").prop('disabled', false);
-                    $("#delete").prop('disabled', false);
+                    $btn_edit.prop('disabled', false);
+                    $btn_del.prop('disabled', false);
                 }
             });
 
+            // 删除学生信息
+            $btn_del.unbind('click').click(function () {
 
+                $bs.confirm("确认删除该学生？", function () {
+                    $.post(
+                        './delete.do',
+                        {
+                            stu: JSON.stringify({
+                                'stu_no': rowSelectData['stu_no'],
+                                'stu_class_id': rowSelectData['stu_class_id']
+                            }),
+                            teaNo: teacher['tea_no']
+                        },
+                        function (rtn) {
+
+                            if (rtn && rtn.status === 'success') {
+                                console.log(1)
+                                $table.jqxGrid('deleterow', stuId);
+                            } else {
+                                console.log(2)
+                                $bs.error(rtn['msg']);
+                            }
+                        }
+                    )
+                })
+            })
 
         });
 

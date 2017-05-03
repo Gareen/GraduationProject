@@ -40,4 +40,10 @@
         m.course_id = #{courseId} AND m.cou_tea_no = #{teaNo}
         AND m.cou_term_id = #{termId} AND m.class_id = #{classId}
     </select>
+
+    <select id="queryCoursesByTeaIdAndTermIDAndClassId" parameterType="string" resultType="cn.sams.entity.Course">
+        SELECT *
+        FROM sams_course
+        WHERE class_id = #{classId} AND cou_tea_no = #{teaId} AND cou_term_id = #{termId}
+    </select>
 </mapper>

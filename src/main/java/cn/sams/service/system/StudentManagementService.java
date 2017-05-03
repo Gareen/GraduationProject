@@ -4,12 +4,16 @@ import cn.sams.common.constants.Constant;
 import cn.sams.common.util.BatchUpdateUtil;
 import cn.sams.common.util.ExcelUtil;
 import cn.sams.common.util.Chk;
+import cn.sams.common.util.JsonUtil;
 import cn.sams.dao.system.ClassManagementDao;
+import cn.sams.dao.system.CourseDao;
 import cn.sams.dao.system.StudentManagementDao;
 import cn.sams.entity.Classes;
+import cn.sams.entity.Course;
 import cn.sams.entity.Student;
 import cn.sams.entity.commons.ReturnObj;
 
+import com.sun.xml.internal.xsom.impl.Const;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -40,6 +44,12 @@ public class StudentManagementService {
 
     @Resource
     private ClassManagementDao classManagementDao;
+
+    @Resource
+    private CourseDao courseDao;
+
+    @Resource
+    private TermManagementService termManagementService;
 
     public List<Student> queryStudents(HttpServletRequest req) {
 
@@ -372,5 +382,48 @@ public class StudentManagementService {
 
         return new ReturnObj(Constant.SUCCESS, "", null);
     }
+
+    /**
+     * 删除学生
+     *
+     * @param req
+     * @return
+     */
+    public ReturnObj delete(HttpServletRequest req) {
+
+        String student = req.getParameter("stu");
+        String teaNo = req.getParameter("teaNo");
+
+        if (!Chk.spaceCheck(student) || !Chk.spaceCheck(teaNo)) {
+            return new ReturnObj(Constant.ERROR, "学生或者老师信息不能为空！", null);
+        }
+
+        Student stu = JsonUtil.toObject(student, Student.class);
+
+        if (stu == null) {
+            return new ReturnObj(Constant.ERROR, "学生信息转换失败！", null);
+        }
+
+        String stu_class = stu.getStu_class_id();
+
+        String termid = termManagementService.queryCurrentTerm().getTerm_id();
+
+        List<Course> courses = courseDao.queryCoursesByTeaIdAndTermIDAndClassId(teaNo, termid, stu_class);
+
+        if (!Chk.emptyCheck(courses)) {
+            return new ReturnObj(Constant.ERROR, "删除失败：该学生不属于登陆教师所教的班级！", null);
+        }
+
+        Integer count = studentManagementDao.deleteStudentByStuId(stu.getStu_no());
+
+        if (count <= 0) {
+            return new ReturnObj(Constant.ERROR, "删除失败：学生不存在，请刷新页面重试！", null);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "", null);
+    }
+
+
+
 
 }

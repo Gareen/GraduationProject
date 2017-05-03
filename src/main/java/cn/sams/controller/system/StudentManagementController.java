@@ -50,4 +50,10 @@ public class StudentManagementController {
             e.printStackTrace();
         }
     }
+
+    @RequestMapping("delete.do")
+    @ResponseBody
+    public ReturnObj delete(HttpServletRequest req) {
+        return studentManagementService.delete(req);
+    }
 }

@@ -1,6 +1,7 @@
 package cn.sams.dao.system;
 
 import cn.sams.entity.Student;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,4 +29,12 @@ public interface StudentManagementDao {
      * @return
      */
     Student queryStudentByStuId(String stuId);
+
+    /**
+     * 根据学号删除学生
+     *
+     * @param stuId
+     * @return
+     */
+    Integer deleteStudentByStuId(@Param("stuId") String stuId);
 }

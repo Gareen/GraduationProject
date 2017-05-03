@@ -67,4 +67,15 @@ public interface CourseDao {
      */
     Map<String, Object> queryCourseToMap(@Param("courseId") String courseId, @Param("teaNo") String teaNo,
                                          @Param("termId") String termId, @Param("classId") String classId);
+
+    /**
+     * 根据教师工号，学期号，班级号查询是否存在这样的班级
+     *
+     * @param teaId
+     * @param termId
+     * @param classId
+     * @return
+     */
+    List<Course> queryCoursesByTeaIdAndTermIDAndClassId(@Param("teaId") String teaId, @Param("termId") String termId,
+                                                        @Param("classId") String classId);
 }

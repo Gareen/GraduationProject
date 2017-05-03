@@ -13,11 +13,11 @@ import java.util.Map;
 
 /**
  *JSON相关工具类
- * @author wangsq
  *
  */
 public class JsonUtil {
-	private static ObjectMapper mapper = new ObjectMapper();
+
+    private static ObjectMapper mapper = new ObjectMapper();
 	static{
 		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		/**
@@ -129,9 +129,5 @@ public class JsonUtil {
 		}
 		return json;
 	}
-	
-
-	
-	
 
 }

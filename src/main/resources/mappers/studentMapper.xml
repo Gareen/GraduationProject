@@ -15,4 +15,9 @@
         SELECT t.* FROM sams_student t WHERE t.stu_no = #{0}
     </select>
 
+    <delete id="deleteStudentByStuId" parameterType="string">
+        DELETE FROM sams_student
+        WHERE stu_no = #{stuId}
+    </delete>
+
 </mapper>
