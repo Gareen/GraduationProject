@@ -78,7 +78,6 @@ $(function () {
                 // 删除学生信息
                 $btn_del.unbind('click').click(function () {
 
-                    console.log(rowSelectData);
                     $bs.confirm("确认删除该学生？", function () {
                         $.post(
                             './delete.do',
@@ -95,7 +94,6 @@ $(function () {
 
                                     $bs.success(rtn['msg']);
                                     $table.jqxGrid('deleterow', rtn.data);
-                                    $table.jqxGrid('expandallgroups');
                                 } else {
                                     $bs.error(rtn['msg']);
                                 }

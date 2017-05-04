@@ -4,15 +4,20 @@ import cn.sams.common.constants.Constant;
 import cn.sams.common.constants.DateFormat;
 import cn.sams.common.util.Chk;
 import cn.sams.common.util.DateUtil;
+import cn.sams.common.util.JsonUtil;
 import cn.sams.dao.system.TermManagementDao;
 import cn.sams.entity.Term;
+import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Fanpeng on 2017/2/6.
@@ -79,5 +84,96 @@ public class TermManagementService {
             s.add(selectModel);
         }
         return s;
+    }
+
+    public ReturnObj queryTermByTermId(HttpServletRequest req) {
+        String termId = req.getParameter("termId");
+
+        if (!Chk.spaceCheck(termId)) {
+            return new ReturnObj(Constant.ERROR, "查询失败！学期编号缺失", null);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "", termManagementDao.queryTermByTermId(termId));
+    }
+
+    public ReturnObj deleteTermByTermId(HttpServletRequest req) {
+        String termId = req.getParameter("termId");
+
+        if (!Chk.spaceCheck(termId)) {
+            return new ReturnObj(Constant.ERROR, "查询失败：学期编号缺失", null);
+        }
+
+        int count = termManagementDao.deleteTermByTermId(termId);
+
+        if (count < 1) {
+
+            return new ReturnObj(Constant.ERROR, "删除失败：数据库异常！", null);
+        } else {
+
+            return new ReturnObj(Constant.SUCCESS, "删除成功！", termId);
+
+        }
+    }
+
+    public ReturnObj saveOrUpdate(HttpServletRequest req) {
+        String data = req.getParameter("data");
+
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "保存失败：关键数据缺失！", null);
+        }
+
+        Map<String, String> dataMap = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(dataMap)) {
+            return new ReturnObj(Constant.ERROR, "保存失败：数据转换异常！", null);
+        }
+
+        String permission = dataMap.get("tea");
+
+        if (!"1".equalsIgnoreCase(permission)) {
+            return new ReturnObj(Constant.ERROR, "操作失败：权限不足！", null);
+        }
+
+        String mode = dataMap.get("optMode");
+
+        String termId = dataMap.get("termId");
+        String termName = dataMap.get("termName");
+        String termYear = dataMap.get("termYear");
+        String termMon = dataMap.get("termMon");
+
+        // 新增
+        if ("add".equalsIgnoreCase(mode)) {
+
+            // 先查询库中是否已有该学期的信息
+            Term term = termManagementDao.queryTermByTermId(termId);
+
+            if (term != null) {
+                return new ReturnObj(Constant.ERROR, "新增失败：学期已存在！", null);
+            }
+
+            int count = termManagementDao.save(termId, termName, termYear, termMon);
+
+            if (count < 1) {
+                return new ReturnObj(Constant.ERROR, "新增失败：保存异常！", null);
+            }
+
+            return new ReturnObj(Constant.SUCCESS, "新增成功，刷新页面生效！", null);
+        }
+
+        // 修改
+        if ("mod".equalsIgnoreCase(mode)) {
+
+            int count = termManagementDao.update(termId, termName, termYear, termMon);
+
+            if (count < 1) {
+                return new ReturnObj(Constant.ERROR, "修改失败：保存异常！", null);
+            }
+
+            return new ReturnObj(Constant.SUCCESS, "修改成功，刷新页面生效！", null);
+
+        }
+
+        return new ReturnObj(Constant.ERROR, "操作失败：操作类型错误！", null);
+
     }
 }

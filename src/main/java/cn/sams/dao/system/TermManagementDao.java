@@ -23,4 +23,36 @@ public interface TermManagementDao {
      * @return
      */
     Term queryTermByTermId(@Param("termId") String termId);
+
+    /**
+     * 根据学期ID删除学期
+     *
+     * @param termId
+     * @return
+     */
+    Integer deleteTermByTermId(@Param("termId") String termId);
+
+    /**
+     * 保存学期信息
+     *
+     * @param termId
+     * @param termName
+     * @param termYear
+     * @param termMon
+     * @return
+     */
+    Integer save(@Param("termId") String termId, @Param("termName") String termName,
+                 @Param("termYear") String termYear, @Param("termMon") String termMon);
+
+    /**
+     * 修改学期信息
+     *
+     * @param termId
+     * @param termName
+     * @param termYear
+     * @param termMon
+     * @return
+     */
+    Integer update(@Param("termId") String termId, @Param("termName") String termName,
+                   @Param("termYear") String termYear, @Param("termMon") String termMon);
 }

@@ -15,4 +15,20 @@
     <select id="queryTermByTermId" parameterType="string" resultType="cn.sams.entity.Term">
         SELECT * FROM sams_term WHERE term_id = #{termId}
     </select>
+
+    <delete id="deleteTermByTermId" parameterType="string">
+        DELETE FROM sams_term
+        WHERE term_id = #{termId}
+    </delete>
+
+    <insert id="save" parameterType="string">
+        INSERT INTO sams_term VALUES (#{termId}, #{termName}, #{termYear}, #{termMon})
+    </insert>
+
+    <update id="update" parameterType="string">
+        UPDATE sams_term
+        SET term_name = #{termName}, term_year = #{termYear}, term_month = #{termMon}
+        WHERE term_id = #{termId}
+    </update>
+
 </mapper>

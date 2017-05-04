@@ -11,8 +11,6 @@
 <%@include file="../common/index.jsp"%>
 <div id="view-content">
     <%@include file="../common/sidebar.jsp"%>
-    <script src="${ctx}/js/system/classManagement.js"></script>
-
     <div id="view-content-main">
 
         <div class="container-fluid">
@@ -32,34 +30,11 @@
 
                     <div class="alert alert-success margin-top">
                         <a href="#" class="close" data-dismiss="alert"><span class="fa fa-close"></span></a>
-                        <strong>提示！</strong>请选中课程进行修改/删除操作<br/>
+                        <strong>提示！</strong>请选中课程进行修改/删除操作，班级在导入学生后可能会新增。<br/>
                     </div>
 
                 </div>
             </div>
-
-            <%--  <div class="panel search" style="height:55px" id="search-panel">
-                  <div class="main clearfix">
-                      <div>
-                          <table border="0" cellspacing="0" cellpadding="0">
-                              <tr>
-                                  <!--选择日期查询，若不选择状态为销案，则查询结果不包含状态为销案的事故-->
-                                  <td class="lb"><label for="accidentTime">事故日期</label></td>
-                                  <td>
-                                      <div id="accidentTime" class="formItem"></div>
-                                  </td>
-                                  <td>
-                                      <!--查询按钮-->
-                                      <input type="button" id="query_button" class="find mr8"/>
-                                      <input type="button" id="export" class="dc" title="导出" />
-                                  </td>
-                              </tr>
-                          </table>
-                      </div>
-                  </div>
-              </div>
-              <!--空白行-->
-              <div id="totalNumber" style="text-align: right;font-weight: bold;font-size: 13px;">&nbsp;</div>--%>
 
             <div class="row">
                 <div class="col-md-12" id="dataTable-panel">
@@ -78,7 +53,7 @@
 
 </div>
 
-<%--新建教师--%>
+<%--班级管理模态框--%>
 <div class="modal fade" data-backdrop="static" id="createWin" >
     <div class="modal-dialog" style="width: auto;max-width: 500px;min-width: 350px;">
         <div class="modal-content">
@@ -87,7 +62,7 @@
                 <span type="button" class="close fa fa-close" data-dismiss="modal" aria-hidden="true" style="float: right; "></span>
 
                 <%--弹出框的标题--%>
-                <h5 class="modal-title" id="tea_win_title"></h5>
+                <h5 class="modal-title" id="win_title"></h5>
             </div>
             <div class="modal-body clearfix" >
                 <table class="form" width="100%" id="info_form">
@@ -127,6 +102,8 @@
         </div>
     </div>
 </div>
+
+<script src="${ctx}/js/system/classManagement.js"></script>
 
 </body>
 </html>

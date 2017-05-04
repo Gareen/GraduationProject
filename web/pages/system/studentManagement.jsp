@@ -11,7 +11,7 @@
 <%@include file="../common/index.jsp" %>
 <div id="view-content">
     <%@include file="../common/sidebar.jsp" %>
-    <script src="${ctx}/js/system/studentManagement.js"></script>
+
 
     <div id="view-content-main">
 
@@ -137,5 +137,6 @@
         </div>
     </div>
 </div>
+<script src="${ctx}/js/system/studentManagement.js"></script>
 </body>
 </html>

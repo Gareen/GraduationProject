@@ -3,6 +3,7 @@ $(function () {
     // 查询状态
     var query_flag = true;
 
+    let teacher = $getTea();
 
     // 页面调整大小后自动适配
     $(window).on("resize", function (){
@@ -67,6 +68,11 @@ $(function () {
                 $("#tea_permission").jqxDropDownList({theme: jqx_default_theme, width:'45%', height:"25px", autoDropDownHeight: true});
                 // 新建窗口初始化
                 $("#createTea").click(function () {
+                    if (teacher && teacher['tea_permission'] !== '1') {
+                        $bs.error('您无权新增教师，请联系管理员！');
+                        return;
+                    }
+
                     $("#jud").val("").val("add");
                     $("#tea_win_title").html("新增教师");
                     $("#tea_no").jqxInput({disabled:false});
@@ -92,6 +98,7 @@ $(function () {
                 // 提交按钮点击事件
                 var createSubmit = $("#createSubmit");
                 createSubmit.unbind("click").click(function () {
+
                     var tea = createTea();
                     $.post(
                         "./saveTeacher.do",
@@ -104,11 +111,11 @@ $(function () {
                             createSubmit.next("a").click();
                             if (status === 'success') {
                                 $bs.success(msg);
+                                destroyGrid("dataTable");
+                                search();
                             } else {
                                 $bs.error(msg);
                             }
-                            destroyGrid("dataTable");
-                            search();
                         }
                     )
                 });
@@ -146,11 +153,11 @@ $(function () {
                                 $("#msg_n").click();
                                 if (status == 'success') {
                                     $bs.success(msg);
+                                    destroyGrid("dataTable");
+                                    search();
                                 } else {
                                     $bs.error(msg);
                                 }
-                                destroyGrid("dataTable");
-                                search();
                             }
                         )
                     })
@@ -170,7 +177,6 @@ $(function () {
                         "./queryTeacherById.do",
                         {"id":rowId},
                         function (rtn) {
-                            console.log(JSON.stringify(rtn));
                             // {"tea_no":"12121112","tea_password":"sams","tea_name":"徐老师","tea_permission":"2"}
                             for (var id in rtn) {
                                 $("#" + id).val(rtn[id]);
@@ -195,13 +201,13 @@ $(function () {
                                         var msg = rtn["msg"];
                                         if (status == 'success') {
                                             $bs.success(msg);
+                                            destroyGrid("dataTable");
+                                            search();
                                         } else {
                                             $bs.error(msg);
                                         }
                                         // 关闭window
                                         createSubmit.next("a").click();
-                                        destroyGrid("dataTable");
-                                        search();
                                     }
                                 )
                             });
