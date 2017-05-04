@@ -233,8 +233,8 @@ $(function () {
     let uploadUrl = "./importStudents.do";
 
     $("#import_stu").click(function () {
-        // todo 完成后需要修改成管理员进行添加
-        if (teacher["tea_no"] === '10000') {
+        // todo 完成后需要修改成管理员权限进行添加
+        if (teacher["tea_permission"] !== '1') {
             $bs.error("您无权导入学生信息，请联系管理员 ！");
             return;
         }

@@ -16,25 +16,36 @@
     </insert>
 
     <select id="queryClassesByTeaId" resultType="java.util.HashMap" parameterType="string">
-        SELECT m.class_id AS clzId, m.class_name AS clzName
+        SELECT
+            m.class_id   AS clzId,
+            m.class_name AS clzName
         FROM
             (
-                SELECT t.class_id FROM sams_course t WHERE cou_tea_no = #{teaId}
+                SELECT t.class_id
+                FROM sams_course t
+                WHERE cou_tea_no = #{teaId}
             ) n
-        LEFT JOIN
+            LEFT JOIN
             sams_class m
-        ON m.class_id = n.class_id
+                ON m.class_id = n.class_id
     </select>
 
     <select id="queryClassIdToListByTeaId" parameterType="string" resultType="string">
-        SELECT t.class_id FROM sams_course t WHERE t.cou_tea_no = #{teaId}
+        SELECT t.class_id
+        FROM sams_course t
+        WHERE t.cou_tea_no = #{teaId}
     </select>
 
     <select id="queryClassesKVToMap" resultType="java.util.HashMap">
-        SELECT t.class_id AS clzId, t.class_name AS clzName FROM sams_class t
+        SELECT
+            t.class_id   AS clzId,
+            t.class_name AS clzName
+        FROM sams_class t
     </select>
 
     <select id="queryClassByClassName" parameterType="string" resultType="cn.sams.entity.Classes">
-        SELECT * FROM sams_class WHERE class_name = #{className}
+        SELECT *
+        FROM sams_class
+        WHERE class_name = #{className}
     </select>
 </mapper>
