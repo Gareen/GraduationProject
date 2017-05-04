@@ -58,54 +58,163 @@ $(function () {
                 {text: '性别', dataField: 'stu_gender', align: "center", cellsAlign: 'center', width: "10%"},
                 {text: '班级', dataField: 'stu_class_id', align: "center", cellsAlign: 'center', width: "35%"}
             ],
-            groups: ['stu_class_id']
+            groups: ['stu_class_id'],
+            ready: function () {
+                let $btn_add = $("#add");
+                let $btn_edit = $("#edit");
+                let $btn_del = $("#delete");
+                let mod;
+
+                // 行选中事件
+                $table.on('rowselect', function (event) {
+                    let args = event.args;
+                    rowSelectData = args.row;
+                    if (rowSelectData) {
+                        $btn_edit.prop('disabled', false);
+                        $btn_del.prop('disabled', false);
+                    }
+                });
+
+                // 删除学生信息
+                $btn_del.unbind('click').click(function () {
+
+                    console.log(rowSelectData);
+                    $bs.confirm("确认删除该学生？", function () {
+                        $.post(
+                            './delete.do',
+                            {
+                                stu: JSON.stringify({
+                                    'stu_no': rowSelectData['stu_no'],
+                                    'stu_class_id': rowSelectData['stu_class_id']
+                                }),
+                                teacher: JSON.stringify(teacher)
+                            },
+                            function (rtn) {
+
+                                if (rtn && rtn.status === 'success') {
+
+                                    $bs.success(rtn['msg']);
+                                    $table.jqxGrid('deleterow', rtn.data);
+                                    $table.jqxGrid('expandallgroups');
+                                } else {
+                                    $bs.error(rtn['msg']);
+                                }
+                            }
+                        )
+                    })
+                });
+
+                let optMode;
+
+                // 新增或者修改学生信息
+                $btn_add.unbind("click").click(function () {
+                    initWin('add');
+
+                });
+
+                $btn_edit.unbind("click").click(function () {
+                    initWin('mod');
+                });
+
+                function initWin(mod) {
+
+                    optMode = mod;
+
+                    let $title = $("#win_title");
+                    $("#createWin :input").jqxInput({theme: jqx_default_theme, height: "25px"});
+                    $("#gender, #stuClass").jqxDropDownList({
+                        theme: jqx_default_theme,
+                        selectedIndex: 0,
+                        height: '25',
+                        autoDropDownHeight: true
+                    });
+                    $("#gender").jqxDropDownList({width: 50});
+
+                    $.post(
+                        './queryClassesByTeaId.do',
+                        {
+                            teacher: JSON.stringify(teacher)
+                        },
+                        function (rtn) {
+                            $("#stuClass").jqxDropDownList({
+                                source: rtn,
+                                displayMember: 'key',
+                                valueMember: 'value'
+                            });
+                        }
+                    );
+
+                    if (mod === 'add') {
+                        $title.text('新增学生');
+                        $("#stuNo").prop('disabled', false);
+                        $("#modtip").hide();
+                        $("#createWin :input").val('');
+                        $("#gender, #stuClass").jqxDropDownList({selectedIndex: 0});
+
+                        $("#createWin").modal('show');
+                    } else {
+                        $title.text('修改学生');
+                        $("#stuNo").prop('disabled', true);
+                        $("#modtip").show();
+                        $.post(
+                            './queryStudent.do',
+                            {
+                                stuNo: rowSelectData['stu_no'],
+                                teacher: JSON.stringify(teacher)
+                            },
+                            function (rtn) {
+                                if (rtn && rtn.status === 'success') {
+                                    let stu = rtn.data;
+                                    //{"stu_no":"10002","stu_name":"test2","stu_gender":"1","stu_class_id":"10006"}
+                                    $("#stuNo").val(stu['stu_no']);
+                                    $("#stuName").val(stu['stu_name']);
+                                    $("#gender").val(stu['stu_gender']);
+                                    $("#stuClass").val(stu['stu_class_id']);
+                                } else {
+                                    $bs.error(rtn.msg);
+                                    return;
+                                }
+
+                                $("#createWin").modal('show');
+                            }
+                        )
+                    }
+
+
+                }
+
+                $("#submit").unbind('click').click(function () {
+
+                    let postData = {};
+                    postData['mode'] = optMode;
+                    postData.stuNo = $("#stuNo").val();
+                    postData.stuName = $("#stuName").val();
+                    postData.gender = $("#gender").val();
+                    postData.classes = $("#stuClass").val();
+
+                    $.post(
+                        './saveOrUpdate.do',
+                        {
+                            postData: JSON.stringify(postData)
+                        },
+                        function (rtn) {
+
+                            if (rtn && rtn['status'] === 'success') {
+                                $bs.success(rtn.msg);
+                            } else {
+                                $bs.error(rtn['msg']);
+                            }
+                        }
+                    );
+
+                    // 点击关闭按钮
+                    $("#submit").next().unbind('click').click();
+                });
+            }
 
         }).on("bindingcomplete", function () {
             $table.jqxGrid('expandallgroups');
             query_flag = true;
-
-            let $btn_add = $("#add");
-            let $btn_edit = $("#edit");
-            let $btn_del = $("#delete");
-
-            // 行选中事件
-            $table.on('rowselect', function (event) {
-                let args = event.args;
-                rowSelectData = args.row;
-                // {stu_no: "10002", stu_name: "test2", stu_gender: "女", stu_class_id: "测试班级", uid: "10002"}
-                if (rowSelectData) {
-                    $btn_edit.prop('disabled', false);
-                    $btn_del.prop('disabled', false);
-                }
-            });
-
-            // 删除学生信息
-            $btn_del.unbind('click').click(function () {
-
-                $bs.confirm("确认删除该学生？", function () {
-                    $.post(
-                        './delete.do',
-                        {
-                            stu: JSON.stringify({
-                                'stu_no': rowSelectData['stu_no'],
-                                'stu_class_id': rowSelectData['stu_class_id']
-                            }),
-                            teaNo: teacher['tea_no']
-                        },
-                        function (rtn) {
-
-                            if (rtn && rtn.status === 'success') {
-                                console.log(1)
-                                $table.jqxGrid('deleterow', stuId);
-                            } else {
-                                console.log(2)
-                                $bs.error(rtn['msg']);
-                            }
-                        }
-                    )
-                })
-            })
-
         });
 
     };

@@ -32,7 +32,7 @@
                     </div>
                     <div class="alert alert-success margin-top">
                         <a href="#" class="close" data-dismiss="alert"><span class="fa fa-close"></span></a>
-                        <strong>提示：</strong>支持批量导入学生信息，导入后请刷新页面.<br/>
+                        <strong>提示：</strong>支持批量导入学生信息，导入后请刷新页面；新增/修改学生记录后，请手动刷新页面<br/>
                     </div>
                 </div>
             </div>
@@ -82,62 +82,51 @@
         <div class="modal-content">
             <div class="modal-header">
 
-                        <span type="button" class="close fa fa-close" data-dismiss="modal" aria-hidden="true"
-                              style="float: right; "></span>
+                <span type="button" class="close fa fa-close" data-dismiss="modal" aria-hidden="true"
+                      style="float: right; "></span>
 
                 <%--弹出框的标题--%>
                 <h5 class="modal-title" id="win_title"></h5>
             </div>
             <div class="modal-body clearfix">
                 <table class="form" width="100%" id="info_form">
-                    <%--上级资源的id--%>
-                    <input type="hidden" id="pid">
-                    <input type="hidden" id="jud">
                     <tr>
-                        <td class='text-right'>父级资源:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td class='text-right'>学生学号:&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td>
-                            <div id="parentNodeName" style="color: slategray"></div>
+                            <input id="stuNo">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <span style="color:red; display: none" id="modtip">如要修改学号，请删除学生后重新添加！</span>
                         </td>
                     </tr>
                     <tr style="height: 10px;"></tr>
                     <tr>
-                        <td class='text-right'>资源编号:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td id="vue-ctl">
-                            <input type="text" id="nodeNo">
-                            <span style="color: red;" v-if="showTip">&nbsp;&nbsp;{{tipText}}</span>
+                        <td class='text-right'>学生姓名:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <input id="stuName">
                         </td>
                     </tr>
                     <tr style="height: 10px;"></tr>
                     <tr>
-                        <td class='text-right'>资源名称:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td class='text-right'>学生性别:&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td>
-                            <input type="text" id="nodeName">
-                        </td>
-                    </tr>
-                    <tr style="height: 10px;"></tr>
-                    <tr>
-                        <td class='text-right'>资源路径:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td>
-                            <input type="text" id="nodePath">
-                        </td>
-                    </tr>
-                    <tr style="height: 10px;"></tr>
-                    <tr>
-                        <td class='text-right'>资源图标:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td>
-                            <input type="text" id="icon">
-                        </td>
-                    </tr>
-                    <tr style="height: 10px;"></tr>
-                    <tr>
-                        <td class='text-right'>资源等级:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td>
-                            <select id="level">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <select id="gender">
+                                <option value="0">男</option>
+                                <option value="1">女</option>
                             </select>
                         </td>
                     </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td class='text-right'>学生班级:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <div id="stuClass"></div>
+                        </td>
+                    </tr>
+
                 </table>
             </div>
 

@@ -15,4 +15,17 @@
         SELECT t.* FROM sams_student t WHERE t.stu_no = #{0}
     </select>
 
+    <delete id="deleteStudentByStuId" parameterType="string">
+        DELETE FROM sams_student
+        WHERE stu_no = #{stuId}
+    </delete>
+
+    <insert id="save" parameterType="string">
+        INSERT INTO sams_student VALUES (#{stuNo}, #{stuName}, #{gender}, #{classId})
+    </insert>
+
+    <update id="update" parameterType="string">
+        UPDATE sams_student SET  stu_name = #{stuName}, stu_gender = #{gender}, stu_class_id = #{classId}
+        WHERE stu_no = #{stuNo}
+    </update>
 </mapper>

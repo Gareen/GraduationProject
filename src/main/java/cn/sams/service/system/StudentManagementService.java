@@ -11,13 +11,16 @@ import cn.sams.dao.system.StudentManagementDao;
 import cn.sams.entity.Classes;
 import cn.sams.entity.Course;
 import cn.sams.entity.Student;
+import cn.sams.entity.Teacher;
 import cn.sams.entity.commons.ReturnObj;
 
+import cn.sams.entity.commons.SelectModel;
 import com.sun.xml.internal.xsom.impl.Const;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.ibatis.annotations.Select;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.xssf.usermodel.*;
@@ -32,6 +35,8 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Fanpeng on 2017/3/22.
@@ -392,15 +397,16 @@ public class StudentManagementService {
     public ReturnObj delete(HttpServletRequest req) {
 
         String student = req.getParameter("stu");
-        String teaNo = req.getParameter("teaNo");
+        String teacher = req.getParameter("teacher");
 
-        if (!Chk.spaceCheck(student) || !Chk.spaceCheck(teaNo)) {
+        if (!Chk.spaceCheck(student) || !Chk.spaceCheck(teacher)) {
             return new ReturnObj(Constant.ERROR, "学生或者老师信息不能为空！", null);
         }
 
         Student stu = JsonUtil.toObject(student, Student.class);
+        Teacher tea = JsonUtil.toObject(teacher, Teacher.class);
 
-        if (stu == null) {
+        if (stu == null || tea == null) {
             return new ReturnObj(Constant.ERROR, "学生信息转换失败！", null);
         }
 
@@ -408,10 +414,16 @@ public class StudentManagementService {
 
         String termid = termManagementService.queryCurrentTerm().getTerm_id();
 
-        List<Course> courses = courseDao.queryCoursesByTeaIdAndTermIDAndClassId(teaNo, termid, stu_class);
+        // 当教师权限不是管理员的时候，需要进行进一步的判断
+        if (!"1".equalsIgnoreCase(tea.getTea_permission())) {
 
-        if (!Chk.emptyCheck(courses)) {
-            return new ReturnObj(Constant.ERROR, "删除失败：该学生不属于登陆教师所教的班级！", null);
+            // 因为页面上查询到的是封装成名称的班级，所以要根据班级名，将班级的id查询出来
+            String scId = classManagementDao.queryClassByClassName(stu_class).getClass_id();
+            List<Course> courses = courseDao.queryCoursesByTeaIdAndTermIDAndClassId(tea.getTea_no(), termid, scId);
+
+            if (!Chk.emptyCheck(courses)) {
+                return new ReturnObj(Constant.ERROR, "删除失败：该学生不属于您的班级！", null);
+            }
         }
 
         Integer count = studentManagementDao.deleteStudentByStuId(stu.getStu_no());
@@ -420,10 +432,168 @@ public class StudentManagementService {
             return new ReturnObj(Constant.ERROR, "删除失败：学生不存在，请刷新页面重试！", null);
         }
 
-        return new ReturnObj(Constant.SUCCESS, "", null);
+        return new ReturnObj(Constant.SUCCESS, "删除成功 ！", stu.getStu_no());
     }
 
+    /**
+     * 新增或者修改
+     *
+     * @param req
+     * @return todo
+     */
+    public ReturnObj saveOrUpdate(HttpServletRequest req) {
 
+        String postData = req.getParameter("postData");
 
+        if (!Chk.spaceCheck(postData)) {
+            return new ReturnObj(Constant.ERROR, "数据出错！", null);
+        }
+
+        Map<String, String> data = JsonUtil.toMap(postData, String.class, String.class);
+
+        System.out.println(data);
+
+        if (!Chk.emptyCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "数据出错！", null);
+        }
+
+        String mode = data.get("mode");
+        String stuNo = data.get("stuNo");
+        String stuName = data.get("stuName");
+        String gender = data.get("gender");
+        String classes = data.get("classes");
+
+        // 先通过学生学号查找学生，如果查找到，那就不是新增
+        Student student = studentManagementDao.queryStudentByStuId(stuNo);
+        if ("add".equalsIgnoreCase(mode)) {
+
+            if (student != null) {
+                return new ReturnObj(Constant.ERROR, "新增失败：学生已存在！", null);
+            }
+
+            int count = studentManagementDao.save(stuNo, stuName, gender, classes);
+
+            if (count < 1) {
+                return new ReturnObj(Constant.ERROR, "新增失败：保存出错！", null);
+            }
+
+            return new ReturnObj(Constant.SUCCESS, "新增成功，刷新页面生效!", null);
+        }
+
+        if ("mod".equalsIgnoreCase(mode)) {
+            if (student == null) {
+                return new ReturnObj(Constant.ERROR, "修改失败：学生不存在！", null);
+            }
+
+            int count = studentManagementDao.update(stuNo, stuName, gender, classes);
+
+            if (count < 1) {
+                return new ReturnObj(Constant.ERROR, "修改失败：保存出错！", null);
+            }
+
+            return new ReturnObj(Constant.SUCCESS, "修改成功，刷新页面生效 !", null);
+        }
+
+        return new ReturnObj(Constant.ERROR, "操作出错！", null);
+    }
+
+    /**
+     * 根据登录老师查询该老师所带班级
+     *
+     * @param req
+     * @return
+     */
+    public List<SelectModel> queryClassesByTeaId(HttpServletRequest req) {
+        String teacher = req.getParameter("teacher");
+
+        if (!Chk.spaceCheck(teacher)) {
+            return new ArrayList<>();
+        }
+        Teacher tea = JsonUtil.toObject(teacher, Teacher.class);
+
+        System.out.println(tea);
+        if (tea == null) {
+            return new ArrayList<>();
+        }
+
+        List<Map<String, String>> cs;
+        if (!"1".equalsIgnoreCase(tea.getTea_permission())) {
+            // 区分权限，管理员可以查询到所有的班级，当课老师只能看到自己的班级的学生
+            cs = classManagementDao.queryClassesByTeaId(tea.getTea_no());
+
+        } else {
+
+            cs = classManagementDao.queryClassesKVToMap();
+        }
+
+        if (!Chk.emptyCheck(cs)) {
+            return new ArrayList<>();
+        }
+
+        List<SelectModel> sml = new ArrayList<>();
+
+        for (Map<String, String> m : cs) {
+            SelectModel sm = new SelectModel();
+
+            Set<Map.Entry<String, String>> entries = m.entrySet();
+            for (Map.Entry<String, String> e : entries) {
+                if ("clzId".equalsIgnoreCase(e.getKey())) {
+                    sm.setValue(e.getValue());
+                }
+                if ("clzName".equalsIgnoreCase(e.getKey())) {
+                    sm.setKey(e.getValue());
+                }
+            }
+
+            sml.add(sm);
+        }
+        return sml;
+    }
+
+    /**
+     * 查询学生
+     *
+     * @param req
+     * @return
+     */
+    public ReturnObj queryStudent(HttpServletRequest req) {
+
+        String stuNo = req.getParameter("stuNo");
+        String teacher = req.getParameter("teacher");
+
+        if (!Chk.spaceCheck(stuNo) || !Chk.spaceCheck(teacher)) {
+            return new ReturnObj(Constant.ERROR, "关键数据缺失！", null);
+        }
+        Student student = studentManagementDao.queryStudentByStuId(stuNo);
+
+        Map<String, String> teaMap = JsonUtil.toMap(teacher, String.class, String.class);
+        if (!Chk.emptyCheck(teaMap)) {
+            return new ReturnObj(Constant.ERROR, "教师信息异常！", null);
+        }
+
+        if ("1".equalsIgnoreCase(teaMap.get("tea_permission"))) {
+            // 管理员权限可以对学生进行任意班级的添加/修改
+            return new ReturnObj(Constant.SUCCESS, "", student);
+
+        } else {
+            // 如果改名教师不是管理员权限，只能对自己所教班级的学生信息做修改
+            List<String> cids = classManagementDao.queryClassIdToListByTeaId(teaMap.get("tea_no"));
+
+            if (!Chk.emptyCheck(cids)) {
+
+                // 说明该名教师目前没有上课的班级
+                return new ReturnObj(Constant.ERROR, "无法修改：该名学生不在所属班级内！", null);
+            }
+            String stuClass = student.getStu_class_id();
+
+            if (cids.contains(stuClass)) {
+                return new ReturnObj(Constant.SUCCESS, "", student);
+            } else {
+                return new ReturnObj(Constant.ERROR, "无法修改：该名学生不在所属班级内！", null);
+            }
+
+        }
+
+    }
 
 }

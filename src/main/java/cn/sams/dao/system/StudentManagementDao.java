@@ -37,4 +37,29 @@ public interface StudentManagementDao {
      * @return
      */
     Integer deleteStudentByStuId(@Param("stuId") String stuId);
+
+    /**
+     * 保存学生
+     *
+     * @param stuNo
+     * @param stuName
+     * @param gender
+     * @param classId
+     * @return
+     */
+    Integer save(@Param("stuNo") String stuNo, @Param("stuName") String stuName,
+                 @Param("gender") String gender, @Param("classId") String classId);
+
+    /**
+     * 更新学生
+     *
+     * @param stuNo
+     * @param stuName
+     * @param gender
+     * @param classId
+     * @return
+     */
+    Integer update(@Param("stuNo") String stuNo, @Param("stuName") String stuName,
+                   @Param("gender") String gender, @Param("classId") String classId);
+
 }

@@ -2,6 +2,7 @@ package cn.sams.controller.system;
 
 import cn.sams.entity.Student;
 import cn.sams.entity.commons.ReturnObj;
+import cn.sams.entity.commons.SelectModel;
 import cn.sams.service.system.StudentManagementService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,5 +56,23 @@ public class StudentManagementController {
     @ResponseBody
     public ReturnObj delete(HttpServletRequest req) {
         return studentManagementService.delete(req);
+    }
+
+    @RequestMapping("saveOrUpdate.do")
+    @ResponseBody
+    public ReturnObj saveOrUpdate(HttpServletRequest req) {
+        return studentManagementService.saveOrUpdate(req);
+    }
+
+    @RequestMapping("queryClassesByTeaId.do")
+    @ResponseBody
+    public List<SelectModel> queryClassesByTeaId(HttpServletRequest req) {
+        return studentManagementService.queryClassesByTeaId(req);
+    }
+
+    @RequestMapping("queryStudent.do")
+    @ResponseBody
+    public ReturnObj queryStudent(HttpServletRequest req) {
+        return studentManagementService.queryStudent(req);
     }
 }
