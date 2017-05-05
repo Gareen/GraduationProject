@@ -3,7 +3,9 @@ package cn.sams.dao.system;
 import cn.sams.entity.Course;
 import cn.sams.entity.commons.CourseClassPlace;
 import cn.sams.entity.commons.CourseInfo;
+import com.sun.jdi.IntegerType;
 import org.apache.ibatis.annotations.Param;
+import org.apache.poi.util.Internal;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,13 +21,21 @@ public interface CourseDao {
      * 返回全部课程的详细信息
      * @return
      */
-    List<Course> queryCourses();
+    List<Map<String, String>> queryCourses();
 
     /**
      * 返回全部课程对应的课程名
      * @return
      */
     List<CourseInfo> queryCourseInfo();
+
+    /**
+     * 查询课程
+     *
+     * @param couNum
+     * @return
+     */
+    Course queryCourseByCouNum(@Param("couNum") String couNum);
 
     /**
      * 返回课程
@@ -78,4 +88,12 @@ public interface CourseDao {
      */
     List<Course> queryCoursesByTeaIdAndTermIDAndClassId(@Param("teaId") String teaId, @Param("termId") String termId,
                                                         @Param("classId") String classId);
+
+    /**
+     * 删除
+     *
+     * @param num
+     * @return
+     */
+    Integer delete(@Param("couNum") String num);
 }

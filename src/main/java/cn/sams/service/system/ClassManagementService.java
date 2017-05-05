@@ -9,6 +9,7 @@ import cn.sams.entity.Term;
 import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
 import com.sun.xml.internal.xsom.impl.Const;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -125,5 +126,28 @@ public class ClassManagementService {
         }
 
         return new ReturnObj(Constant.SUCCESS, "删除成功！", clzId);
+    }
+
+    public List<SelectModel> queryClassesToSelectModel() {
+
+        List<Classes> classes = classManagementDao.queryClasses();
+
+        List<SelectModel> list = new ArrayList<>();
+
+        if (Chk.emptyCheck(classes)) {
+
+            for (Classes c : classes) {
+                SelectModel selectModel = new SelectModel();
+
+                String id = c.getClass_id();
+                String name = c.getClass_name();
+
+                selectModel.setKey(name);
+                selectModel.setValue(id);
+
+                list.add(selectModel);
+            }
+        }
+        return list;
     }
 }

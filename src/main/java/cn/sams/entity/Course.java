@@ -5,31 +5,24 @@ import java.io.Serializable;
 /**
  * Created by Fanpeng on 2017/2/27.
  * Modify by Fanpeng on 2017/3/5.
+ * Modify by Fanpeng on 2017/5/5.
  * 课程实体类
  */
 public class Course implements Serializable {
 
-    private Integer cou_number;
+    private String cou_number;
     private String course_id;
     private Integer cou_credit;
     private Integer cou_period;
     private String cou_tea_no;
-    private Integer cou_counts;
-    private String cou_time;
-    private String cou_place;
-    private Integer cou_term_id;
-    private Integer class_id;
+    private String cou_counts;
+    private String class_time_place;
+    private String cou_term_id;
+    private String class_id;
 
     public Course() {
     }
 
-    public Integer getCou_number() {
-        return cou_number;
-    }
-
-    public void setCou_number(Integer cou_number) {
-        this.cou_number = cou_number;
-    }
 
     public String getCourse_id() {
         return course_id;
@@ -63,44 +56,44 @@ public class Course implements Serializable {
         this.cou_tea_no = cou_tea_no;
     }
 
-    public Integer getCou_counts() {
+    public String getCou_number() {
+        return cou_number;
+    }
+
+    public void setCou_number(String cou_number) {
+        this.cou_number = cou_number;
+    }
+
+    public String getCou_counts() {
         return cou_counts;
     }
 
-    public void setCou_counts(Integer cou_counts) {
+    public void setCou_counts(String cou_counts) {
         this.cou_counts = cou_counts;
     }
 
-    public String getCou_time() {
-        return cou_time;
-    }
-
-    public void setCou_time(String cou_time) {
-        this.cou_time = cou_time;
-    }
-
-    public String getCou_place() {
-        return cou_place;
-    }
-
-    public void setCou_place(String cou_place) {
-        this.cou_place = cou_place;
-    }
-
-    public Integer getCou_term_id() {
+    public String getCou_term_id() {
         return cou_term_id;
     }
 
-    public void setCou_term_id(Integer cou_term_id) {
+    public void setCou_term_id(String cou_term_id) {
         this.cou_term_id = cou_term_id;
     }
 
-    public Integer getClass_id() {
+    public String getClass_id() {
         return class_id;
     }
 
-    public void setClass_id(Integer class_id) {
+    public void setClass_id(String class_id) {
         this.class_id = class_id;
+    }
+
+    public String getClass_time_place() {
+        return class_time_place;
+    }
+
+    public void setClass_time_place(String class_time_place) {
+        this.class_time_place = class_time_place;
     }
 
     @Override

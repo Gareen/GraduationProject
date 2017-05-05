@@ -3,11 +3,22 @@
         "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="cn.sams.dao.system.CourseDao">
 
-    <select id="queryCourses" resultType="cn.sams.entity.Course">
-        SELECT *
-        FROM sams_course
+    <select id="queryCourses" resultType="java.util.HashMap">
+        SELECT t.class_id, t.course_id, t.cou_tea_no, t.cou_term_id, t.class_time_place,
+            t.cou_counts, t.cou_credit, t.cou_number, t.cou_period, m.course_name, m.course_unit
+        FROM
+            sams_course t
+        LEFT JOIN
+            sams_course_info m
+        ON t.course_id = m.course_id
+
     </select>
 
+    <select id="queryCourseByCouNum" parameterType="string" resultType="cn.sams.entity.Course">
+        SELECT *
+        FROM sams_course
+        WHERE cou_number = #{couNum}
+    </select>
 
     <select id="queryCourseInfo" resultType="cn.sams.entity.commons.CourseInfo">
         SELECT * FROM sams_course_info
@@ -46,4 +57,9 @@
         FROM sams_course
         WHERE class_id = #{classId} AND cou_tea_no = #{teaId} AND cou_term_id = #{termId}
     </select>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM sams_course WHERE cou_number = #{couNum}
+    </delete>
+
 </mapper>

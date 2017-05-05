@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by wangsq on 2016/6/21.
- */
 public class CollectionUtil {
 
     public static <T> Map<String,T> listToMap(List<T> list, String keyField){

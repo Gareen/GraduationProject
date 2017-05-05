@@ -1,7 +1,14 @@
 package cn.sams.controller.system;
 
 import cn.sams.entity.Course;
+import cn.sams.entity.commons.CourseInfo;
+import cn.sams.entity.commons.ReturnObj;
+import cn.sams.entity.commons.SelectModel;
+import cn.sams.service.system.ClassManagementService;
 import cn.sams.service.system.CourseService;
+import cn.sams.service.system.TeacherManagementService;
+import cn.sams.service.system.TermManagementService;
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +29,15 @@ public class CourseManagementController {
     @Resource
     private CourseService courseService;
 
+    @Resource
+    private TermManagementService termManagementService;
+
+    @Resource
+    private TeacherManagementService teacherManagementService;
+
+    @Resource
+    private ClassManagementService classManagementService;
+
     @RequestMapping("toIndex.do")
     public String toIndex() {
         return "system/courseManagement";
@@ -32,5 +48,41 @@ public class CourseManagementController {
     @ResponseBody
     public List<Map<String, String>> queryCourses(HttpServletRequest req) {
         return courseService.displayCourseInfo(req);
+    }
+
+    @RequestMapping("queryCourseInfo.do")
+    @ResponseBody
+    public List<CourseInfo> queryCourseInfo() {
+        return courseService.queryCourseInfos();
+    }
+
+    @RequestMapping("delete.do")
+    @ResponseBody
+    public ReturnObj delete(HttpServletRequest req) {
+        return courseService.delete(req);
+    }
+
+    @RequestMapping("queryTeachers.do")
+    @ResponseBody
+    public List<SelectModel> queryTeachers() {
+        return teacherManagementService.queryTeachersSelectModel();
+    }
+
+    @RequestMapping("queryTerms.do")
+    @ResponseBody
+    public List<SelectModel> queryTerms() {
+        return termManagementService.queryTermsSelectModels();
+    }
+
+    @RequestMapping("queryClz.do")
+    @ResponseBody
+    public List<SelectModel> queryClz() {
+        return classManagementService.queryClassesToSelectModel();
+    }
+
+    @RequestMapping("queryCourseById.do")
+    @ResponseBody
+    public ReturnObj queryCourseById(HttpServletRequest req) {
+        return courseService.queryCourseById(req);
     }
 }

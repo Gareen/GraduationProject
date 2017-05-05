@@ -9,6 +9,7 @@ public class CourseInfo implements Serializable {
 
     private Integer course_id;
     private String course_name;
+    private String course_unit;
 
     public Integer getCourse_id() {
         return course_id;
@@ -24,6 +25,14 @@ public class CourseInfo implements Serializable {
 
     public void setCourse_name(String course_name) {
         this.course_name = course_name;
+    }
+
+    public String getCourse_unit() {
+        return course_unit;
+    }
+
+    public void setCourse_unit(String course_unit) {
+        this.course_unit = course_unit;
     }
 
     @Override

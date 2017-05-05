@@ -4,9 +4,6 @@ package cn.sams.common.util;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 
-/**
- * Created by 3701 on 2015/10/27.
- */
 public class ReflectUtil {
 
 

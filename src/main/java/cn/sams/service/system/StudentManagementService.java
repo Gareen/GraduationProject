@@ -451,8 +451,6 @@ public class StudentManagementService {
 
         Map<String, String> data = JsonUtil.toMap(postData, String.class, String.class);
 
-        System.out.println(data);
-
         if (!Chk.emptyCheck(data)) {
             return new ReturnObj(Constant.ERROR, "数据出错！", null);
         }

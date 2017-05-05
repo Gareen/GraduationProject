@@ -4,11 +4,13 @@ import cn.sams.common.util.Chk;
 import cn.sams.dao.system.TeacherManagerDao;
 import cn.sams.entity.Teacher;
 import cn.sams.entity.commons.ReturnObj;
+import cn.sams.entity.commons.SelectModel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -103,5 +105,26 @@ public class TeacherManagementService {
         } catch (Exception e) {
             return new ReturnObj("error", e.getMessage(), null);
         }
+    }
+
+    public List<SelectModel> queryTeachersSelectModel() {
+        List<Teacher> teachers = teacherManagerDao.findTeachers();
+
+        if (!Chk.emptyCheck(teachers)) {
+            return new ArrayList<>();
+        }
+
+        List<SelectModel> sms = new ArrayList<>();
+
+        for (Teacher teacher : teachers) {
+            SelectModel sm = new SelectModel();
+
+            sm.setKey(teacher.getTea_no() + " " + teacher.getTea_name());
+            sm.setValue(teacher.getTea_no());
+
+            sms.add(sm);
+        }
+
+        return sms;
     }
 }
