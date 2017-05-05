@@ -57,5 +57,33 @@ public interface ClassManagementDao {
      */
     List<String> queryClassIdToListByTeaId(@Param("teaId") String teaId);
 
+    /**
+     * 根据课程名称查找到班级信息
+     *
+     * @param className
+     * @return
+     */
     Classes queryClassByClassName(@Param("className") String className);
+
+    /**
+     * 保存
+     *
+     * @return
+     */
+    Integer save(@Param("clzId") String id, @Param("clzName") String name);
+
+    /**
+     * 更新
+     *
+     * @return
+     */
+    Integer update(@Param("clzId") String id, @Param("clzName") String name);
+
+    /**
+     * 删除
+     *
+     * @param id
+     * @return
+     */
+    Integer delete(@Param("clzId") String id);
 }

@@ -48,4 +48,18 @@
         FROM sams_class
         WHERE class_name = #{className}
     </select>
+
+    <insert id="save" parameterType="string">
+        INSERT INTO sams_class (class_id, class_name) VALUES (#{clzId}, #{clzName});
+    </insert>
+
+    <update id="update" parameterType="string">
+        UPDATE sams_class
+        SET class_name = #{clzName}
+        WHERE class_id = #{clzId};
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM sams_class WHERE class_id = #{clzId}
+    </delete>
 </mapper>

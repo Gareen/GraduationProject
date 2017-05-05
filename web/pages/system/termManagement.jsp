@@ -45,8 +45,6 @@
     </div>
 </div>
 
-</div>
-
 <%--添加/修改学期信息--%>
 <div class="modal fade" data-backdrop="static" id="createWin">
     <div class="modal-dialog" style="width: auto;max-width: 500px;min-width: 350px;">
