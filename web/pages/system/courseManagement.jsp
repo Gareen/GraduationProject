@@ -136,7 +136,7 @@
 
 <div id="window">
     <div id="windowHeader">
-        <span>课程信息管理</span>
+        <span><i class="fa fa-file" style="margin-right: 5px;"></i>课程信息管理</span>
     </div>
     <div id="windowContent">
         <div id="grid"></div>

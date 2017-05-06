@@ -23,7 +23,6 @@ $(function () {
 
     var search = function () {
 
-
         // 此处是为了多次刷新准备的
         if (!query_flag) {
             return;
@@ -346,6 +345,7 @@ $(function () {
         resizable: false,
         initContent: function () {
             var $grid = $("#grid");
+            var rowSelectData;
 
             $grid.jqxGrid({
                 width: "100%",
@@ -353,11 +353,99 @@ $(function () {
                 source: dataAdapter1,
                 theme: jqx_default_theme,
                 altrows: true,
+                showtoolbar: true,
                 columns: [
                     {text: '课程编号', dataField: 'course_id', align: "center", cellsAlign: 'center', width: "20%"},
                     {text: '课程名', dataField: 'course_name', align: "center", cellsAlign: 'center', width: "40%"},
                     {text: '开课单位', dataField: 'course_unit', align: "center", cellsAlign: 'center', width: "40%"}
-                ]
+                ],
+                renderToolbar: function (toolBar) {
+
+                    var container = $("<div style='overflow: hidden; position: relative; height: 100%; width: 100%;'></div>");
+                    var buttonTemplate = "<div style='float: left; padding: 3px; margin: 2px;'><div style='margin: 4px; width: 16px; height: 16px;'></div></div>";
+                    var addButton = $(buttonTemplate);
+                    var editButton = $(buttonTemplate);
+                    var deleteButton = $(buttonTemplate);
+                    var saveButton = $(buttonTemplate);
+                    var cancelButton = $(buttonTemplate);
+                    container.append(addButton);
+                    container.append(editButton);
+                    container.append(cancelButton);
+                    container.append(saveButton);
+                    container.append(deleteButton);
+                    toolBar.append(container);
+
+                    addButton.jqxButton({
+                        theme: jqx_default_theme,
+                        cursor: "pointer",
+                        disabled: false,
+                        enableDefault: false,
+                        height: 25,
+                        width: 25
+                    });
+                    addButton.find('div:first').addClass('jqx-icon-plus');
+                    addButton.jqxTooltip({theme: jqx_default_theme, position: 'bottom', content: "新增"});
+
+
+                    editButton.jqxButton({
+                        theme: jqx_default_theme,
+                        cursor: "pointer",
+                        disabled: true,
+                        enableDefault: false,
+                        height: 25,
+                        width: 25
+                    });
+                    editButton.find('div:first').addClass('jqx-icon-edit');
+                    editButton.jqxTooltip({theme: jqx_default_theme, position: 'bottom', content: "修改"});
+
+                    deleteButton.jqxButton({
+                        theme: jqx_default_theme,
+                        cursor: "pointer",
+                        disabled: true,
+                        enableDefault: false,
+                        height: 25,
+                        width: 25
+                    });
+                    deleteButton.find('div:first').addClass('jqx-icon-delete');
+                    deleteButton.jqxTooltip({theme: jqx_default_theme, position: 'bottom', content: "删除"});
+
+                    saveButton.jqxButton({
+                        theme: jqx_default_theme,
+                        cursor: "pointer",
+                        disabled: true,
+                        enableDefault: false,
+                        height: 25,
+                        width: 25
+                    });
+                    saveButton.find('div:first').addClass('jqx-icon-save');
+                    saveButton.jqxTooltip({theme: jqx_default_theme, position: 'bottom', content: "保存"});
+
+                    cancelButton.jqxButton({
+                        theme: jqx_default_theme,
+                        cursor: "pointer",
+                        disabled: true,
+                        enableDefault: false,
+                        height: 25,
+                        width: 25
+                    });
+                    cancelButton.find('div:first').addClass('jqx-icon-cancel');
+                    cancelButton.jqxTooltip({position: 'bottom', content: "取消"});
+
+                    // 行选中事件
+                    $grid.on('rowselect', function (event) {
+                        let args = event.args;
+                        rowSelectData = args.row;
+                        console.log(rowSelectData);
+                        if (rowSelectData) {
+                            editButton.jqxButton({disabled: false});
+                            deleteButton.jqxButton({disabled: false});
+                        }
+                    });
+
+                },
+                ready: function () {
+
+                }
             });
         }
     });
