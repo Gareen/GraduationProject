@@ -2,6 +2,7 @@ package cn.sams.service.system;
 
 import cn.sams.common.constants.Constant;
 import cn.sams.common.util.Chk;
+import cn.sams.common.util.JsonUtil;
 import cn.sams.common.util.SelectModelUtil;
 import cn.sams.dao.system.ClassManagementDao;
 import cn.sams.dao.system.CourseDao;
@@ -43,7 +44,7 @@ public class CourseService {
         return courseDao.queryCourses();
     }
 
-    public List<SelectModel> queryCourseInfo() {
+    public List<SelectModel> queryCourseInfoToSelectModel() {
         List<CourseInfo> courses = courseDao.queryCourseInfo();
         if (courses == null) {
             return new ArrayList<>();
@@ -170,5 +171,94 @@ public class CourseService {
         }
 
         return sms;
+    }
+
+    public CourseInfo queryCourseInfoById(HttpServletRequest req) {
+
+        String courseId = req.getParameter("courseId");
+
+        if (!Chk.spaceCheck(courseId)) {
+            return null;
+        }
+
+        return courseDao.queryCourseInfoByCouId(courseId);
+    }
+
+    public ReturnObj deleteCourseInfoByCouId(HttpServletRequest req) {
+        String courseId = req.getParameter("courseId");
+        String promis = req.getParameter("promis");
+
+        if (!Chk.spaceCheck(courseId) || !Chk.spaceCheck(promis)) {
+            return new ReturnObj(Constant.ERROR, "删除失败：关键信息缺失！", null);
+        }
+
+        if (!"1".equalsIgnoreCase(promis)) {
+            return new ReturnObj(Constant.ERROR, "删除失败：权限不足！", null);
+        }
+
+        int count = courseDao.deleteCourseInfoByCouId(courseId);
+
+        if (count < 1) {
+            return new ReturnObj(Constant.ERROR, "删除失败：无此数据，请刷新后重试！", null);
+        } else {
+
+            // todo 删除对应的上课信息，暂时预留
+            return new ReturnObj(Constant.SUCCESS, "删除成功！", courseId);
+        }
+    }
+
+    public ReturnObj saveOrUpdateCouInfo(HttpServletRequest req) {
+        String data = req.getParameter("data");
+
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "操作失败：关键数据缺失！", null);
+        }
+
+        Map<String, String> datas = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(datas)) {
+            return new ReturnObj(Constant.ERROR, "操作失败，关键数据转换异常！", null);
+        }
+
+        if (!"1".equalsIgnoreCase(datas.get("promis"))) {
+            return new ReturnObj(Constant.ERROR, "操作失败：权限不足！", null);
+        }
+
+        String cno = datas.get("cno");
+        String cname = datas.get("cname");
+        String cunit = datas.get("cunit");
+
+        if (!Chk.spaceCheck(cno)) {
+            return new ReturnObj(Constant.ERROR, "操作失败：课程编号不能为空！", null);
+        }
+
+        if ("add".equalsIgnoreCase(datas.get("mode"))) {
+
+            // 首先应该先从数据库中查找是否已有该课程信息
+            CourseInfo courseInfo = courseDao.queryCourseInfoByCouId(cno);
+
+            if (courseInfo != null) {
+                return new ReturnObj(Constant.ERROR, "操作失败：课程信息已存在！", null);
+            }
+
+            int count = courseDao.saveCourseInfo(cno, cname, cunit);
+
+            if (count < 1) {
+                return new ReturnObj(Constant.ERROR, "新增失败：数据库异常！", null);
+            } else {
+                return new ReturnObj(Constant.SUCCESS, "新增成功！", new CourseInfo(cno, cname, cunit));
+            }
+
+        }
+
+        if ("mod".equalsIgnoreCase(datas.get("mode"))) {
+
+            // todo
+
+
+        }
+
+        return new ReturnObj(Constant.ERROR, "操作失败：操作方式异常！", null);
+
     }
 }

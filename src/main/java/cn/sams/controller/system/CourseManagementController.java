@@ -50,6 +50,12 @@ public class CourseManagementController {
         return courseService.displayCourseInfo(req);
     }
 
+    @RequestMapping("queryCourseInfoById.do")
+    @ResponseBody
+    public CourseInfo queryCourseInfoById(HttpServletRequest req) {
+        return courseService.queryCourseInfoById(req);
+    }
+
     @RequestMapping("queryCourseInfo.do")
     @ResponseBody
     public List<CourseInfo> queryCourseInfo() {
@@ -90,5 +96,17 @@ public class CourseManagementController {
     @ResponseBody
     public List<SelectModel> queryCourseSelectModel() {
         return courseService.queryCoursesSelectModel();
+    }
+
+    @RequestMapping("deleteCourseInfoByCouId.do")
+    @ResponseBody
+    public ReturnObj deleteCourseInfoByCouId(HttpServletRequest req) {
+        return courseService.deleteCourseInfoByCouId(req);
+    }
+
+    @RequestMapping("saveOrUpdateCouInfo.do")
+    @ResponseBody
+    public ReturnObj saveOrUpdateCouInfo(HttpServletRequest req) {
+        return courseService.saveOrUpdateCouInfo(req);
     }
 }

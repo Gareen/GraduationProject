@@ -127,12 +127,59 @@
     </div>
 </div>
 
+<%--课程信息展板--%>
 <div id="window">
     <div id="windowHeader">
         <span><i class="fa fa-file" style="margin-right: 5px;"></i>课程信息管理</span>
     </div>
     <div id="windowContent">
         <div id="grid"></div>
+    </div>
+</div>
+
+<div id="addWindow">
+    <div>
+        <span id="optTitle"></span>
+    </div>
+    <div style="padding-left: 28px;">
+        <div>
+            <table width="100%">
+                <tr>
+                    <td class="">课程号：</td>
+                    <td class="">
+                        <input id="course_no">
+                    </td>
+                </tr>
+                <tr style="display: none; " id="add_tips">
+                    <td colspan="2" style="padding-top: 10px;">
+                        <strong>Tips:</strong>
+                        <span style="color: red;">
+                            要修改课程号请删除重建！
+                        </span>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr style="height: 10px;"></tr>
+                <tr>
+                    <td class="">课程名：</td>
+                    <td class="">
+                        <input id="course_name">
+                    </td>
+                </tr>
+                <tr style="height: 10px;"></tr>
+                <tr>
+                    <td class="">开课单位：</td>
+                    <td class="">
+                        <%--默认为信工院--%>
+                        <input id="course_unit" value="信息工程学院">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="add_footer" style="margin-top: 120px; margin-left: 48px;">
+            <a class="btn btn-primary" id="optCou">提交</a>
+            <a class="btn btn-default" style="margin-left: 30px;" id="cancel">取消</a>
+        </div>
     </div>
 </div>
 

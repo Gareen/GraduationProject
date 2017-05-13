@@ -73,4 +73,12 @@
         WHERE cou_number = #{couNum}
     </delete>
 
+    <delete id="deleteCourseInfoByCouId" parameterType="string">
+        DELETE FROM sams_course_info WHERE course_id = #{couId}
+    </delete>
+
+    <insert id="saveCourseInfo" parameterType="string">
+        INSERT INTO sams_course_info VALUES (#{cno}, #{cname}, #{cunit})
+    </insert>
+
 </mapper>

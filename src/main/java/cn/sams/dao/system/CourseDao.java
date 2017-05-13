@@ -96,4 +96,19 @@ public interface CourseDao {
      * @return
      */
     Integer delete(@Param("couNum") String num);
+
+    /**
+     * 根据课程号，删除课程信息
+     *
+     * @param couId
+     * @return
+     */
+    Integer deleteCourseInfoByCouId(@Param("couId") String couId);
+
+    /**
+     * 保存课程信息
+     *
+     * @return
+     */
+    Integer saveCourseInfo(@Param("cno") String cno, @Param("cname") String cname, @Param("cunit") String cunit);
 }

@@ -1,7 +1,6 @@
 package cn.sams.common.constants;
 
 public class Constant {
-    public static final String HTTP_SESSION = "httpSession";
 
     public final static String SEPARATOR = ",";
 
@@ -17,20 +16,5 @@ public class Constant {
 
     // 文件默认目录
     public final static String FILE_TEMP_PATH = "tempFiles";
-
-
-    /**
-     * return
-     */
-
-    public static final int RETURN_SUCCESS  = 1;
-    public static final int RETURN_FAILURE = 0;
-
-
-
-
-
-
-
 
 }
