@@ -72,7 +72,7 @@ public class TeacherManagementService {
            try {
                Integer row = teacherManagerDao.updateTeacher(id, pwd, name, pre);
                if (row != null && row > 0) {
-                   return new ReturnObj("success", "更新成功 !", null);
+                   return new ReturnObj("success", "更新成功，教师登陆后生效 !", null);
                } else {
                    return new ReturnObj("error", "更新失败 !", null);
                }

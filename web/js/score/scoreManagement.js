@@ -171,10 +171,9 @@ $(function () {
         query_flag = false;
 
 
-
-        var pscj = sessionStorage.getItem(teaNo + "pss");
-        var excj = sessionStorage.getItem(teaNo + "exs");
-        var ficj = sessionStorage.getItem(teaNo + "fis");
+        var pscj = localStorage.getItem(teaNo + "pss");
+        var excj = localStorage.getItem(teaNo + "exs");
+        var ficj = localStorage.getItem(teaNo + "fis");
 
         // 用session保存的比重值初始化
         if (!pscj || !excj || !ficj) {
@@ -345,9 +344,9 @@ $(function () {
                         symbolPosition: 'right'
                     });
 
-                    $("#pss").val(sessionStorage.getItem(teaNo + "pss") ? sessionStorage.getItem(teaNo + "pss") : 30);
-                    $("#exs").val(sessionStorage.getItem(teaNo + "exs") ? sessionStorage.getItem(teaNo + "exs") : 30);
-                    $("#fis").val(sessionStorage.getItem(teaNo + "fis") ? sessionStorage.getItem(teaNo + "fis") : 40);
+                    $("#pss").val(localStorage.getItem(teaNo + "pss") ? localStorage.getItem(teaNo + "pss") : 30);
+                    $("#exs").val(localStorage.getItem(teaNo + "exs") ? localStorage.getItem(teaNo + "exs") : 30);
+                    $("#fis").val(localStorage.getItem(teaNo + "fis") ? localStorage.getItem(teaNo + "fis") : 40);
                     $("#modify_per").modal('show');
                 });
 
@@ -363,9 +362,9 @@ $(function () {
                     }
 
                     // 将设置好的值暂存在session中, 分成不同的老师自己的比重
-                    sessionStorage.setItem(teaNo + 'pss', pss);
-                    sessionStorage.setItem(teaNo + 'exs', exs);
-                    sessionStorage.setItem(teaNo + 'fis', fis);
+                    localStorage.setItem(teaNo + 'pss', pss);
+                    localStorage.setItem(teaNo + 'exs', exs);
+                    localStorage.setItem(teaNo + 'fis', fis);
 
                     // 设置比重显示
                     $("#pingshi").text(pss);
@@ -425,9 +424,9 @@ $(function () {
                 // 导出excel
                 $("#export").unbind('click').click(function () {
                     excelExport("./export.do?" +
-                        "termId=" + sessionStorage.getItem('termId') +
-                        "&courseId=" + sessionStorage.getItem('courseId') +
-                        "&classId=" + sessionStorage.getItem('classId') +
+                        "termId=" + localStorage.getItem('termId') +
+                        "&courseId=" + localStorage.getItem('courseId') +
+                        "&classId=" + localStorage.getItem('classId') +
                         "&teaNo=" + teaNo);
                 })
             }
@@ -446,9 +445,9 @@ $(function () {
             // 使打印按钮生效
             $("#export").prop('disabled', false);
 
-            sessionStorage.setItem("classId", $chooseClass.val());
-            sessionStorage.setItem("termId", term_Id);
-            sessionStorage.setItem("courseId", $chooseCourse.val());
+            localStorage.setItem("classId", $chooseClass.val());
+            localStorage.setItem("termId", term_Id);
+            localStorage.setItem("courseId", $chooseCourse.val());
 
             $("#dataTable").each(function () {
                 $(this).jqxGrid("destroy");

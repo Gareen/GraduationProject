@@ -52,6 +52,8 @@ $(function () {
             showgroupsheader: false,
             filterable: true,
             showfilterrow: true,
+            /* pageable: true,
+             pagesize: 15,*/
             columns: [
                 {text: '学号', dataField: 'stu_no', align: "center", cellsAlign: 'center', width: "25%"},
                 {text: '姓名', dataField: 'stu_name', align: "center", cellsAlign: 'center', width: "30%"},

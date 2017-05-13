@@ -4,13 +4,23 @@
 <mapper namespace="cn.sams.dao.system.CourseDao">
 
     <select id="queryCourses" resultType="java.util.HashMap">
-        SELECT t.class_id, t.course_id, t.cou_tea_no, t.cou_term_id, t.class_time_place,
-            t.cou_counts, t.cou_credit, t.cou_number, t.cou_period, m.course_name, m.course_unit
+        SELECT
+            t.class_id,
+            t.course_id,
+            t.cou_tea_no,
+            t.cou_term_id,
+            t.class_time_place,
+            t.cou_counts,
+            t.cou_credit,
+            t.cou_number,
+            t.cou_period,
+            m.course_name,
+            m.course_unit
         FROM
             sams_course t
-        LEFT JOIN
+            LEFT JOIN
             sams_course_info m
-        ON t.course_id = m.course_id
+                ON t.course_id = m.course_id
 
     </select>
 
@@ -59,7 +69,8 @@
     </select>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM sams_course WHERE cou_number = #{couNum}
+        DELETE FROM sams_course
+        WHERE cou_number = #{couNum}
     </delete>
 
 </mapper>

@@ -162,7 +162,7 @@ public class HomeWorkManagementService {
         if (!Chk.spaceCheck(termId) || !Chk.spaceCheck(courseId) || !Chk.spaceCheck(classId)) {
             return "";
         }
-        return termId + "H" + courseId + "H" + classId;
+        return termId + "H" + courseId + "H" + classId; // 学期号+H+课程编号+H+班级编号
     }
 
 }

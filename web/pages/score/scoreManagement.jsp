@@ -31,7 +31,7 @@
                 <div class="col-md-12">
                     <div class="console-title console-title-border clearfix">
                         <div class="fl">
-                            <h5>学生成绩管理</h5>
+                            <h5>学生成绩统计管理</h5>
                         </div>
                         <div class="fr" id="term_info">
                             <input type="hidden" id="term_id">

@@ -85,4 +85,10 @@ public class CourseManagementController {
     public ReturnObj queryCourseById(HttpServletRequest req) {
         return courseService.queryCourseById(req);
     }
+
+    @RequestMapping("queryCoursesSelectModel.do")
+    @ResponseBody
+    public List<SelectModel> queryCourseSelectModel() {
+        return courseService.queryCoursesSelectModel();
+    }
 }

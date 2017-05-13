@@ -12,6 +12,7 @@ import cn.sams.entity.Teacher;
 import cn.sams.entity.commons.CourseInfo;
 import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
+import cn.sams.service.score.GroupInitManagementService;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,7 @@ public class CourseService {
 
     @Resource
     private TermManagementDao termManagementDao;
+
 
     public List<Map<String, String>> queryAllCourses() {
         return courseDao.queryCourses();
@@ -150,4 +152,23 @@ public class CourseService {
         return new ReturnObj(Constant.SUCCESS, "", course);
     }
 
+    public List<SelectModel> queryCoursesSelectModel() {
+        List<CourseInfo> courseInfos = courseDao.queryCourseInfo();
+
+        if (!Chk.emptyCheck(courseInfos)) {
+            return new ArrayList<>();
+        }
+
+        List<SelectModel> sms = new ArrayList<>();
+
+        for (CourseInfo ci : courseInfos) {
+            SelectModel sm = new SelectModel();
+
+            sm.setValue(ci.getCourse_id() + "");
+            sm.setKey(ci.getCourse_name());
+            sms.add(sm);
+        }
+
+        return sms;
+    }
 }

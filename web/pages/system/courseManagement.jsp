@@ -62,16 +62,9 @@
             <div class="modal-body clearfix" style="height: 240px; overflow: auto; width: 100%;">
                 <table class="form" width="100%" id="info_form">
                     <tr>
-                        <td class='text-right'>课程编号:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td class='text-right'>课程:&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td>
-                            <input id="couId">
-                        </td>
-                    </tr>
-                    <tr style="height: 10px;"></tr>
-                    <tr>
-                        <td class='text-right'>课程名称:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td>
-                            <input id="couName">
+                            <div id="course"></div>
                         </td>
                     </tr>
                     <tr style="height: 10px;"></tr>

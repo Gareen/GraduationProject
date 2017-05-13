@@ -83,8 +83,7 @@ $(function () {
                 let $btn_del = $("#delete");
                 let $title = $("#win_title");
 
-                var $couId = $("#couId");
-                var $couName = $("#couName");
+                var $course = $("#course");
                 var $couCredit = $("#couCredit");
                 var $couPeriod = $("#couPeriod");
                 var $couTea = $("#couTea");
@@ -125,8 +124,21 @@ $(function () {
 
                     optmode = mode;
 
-                    $couName.jqxInput({theme: jqx_default_theme, height: "25px"});
-                    $couId.jqxInput({theme: jqx_default_theme, height: "25px"});
+                    $.post(
+                        'queryCoursesSelectModel.do',
+                        function (rtn) {
+                            $course.jqxDropDownList({
+                                theme: jqx_default_theme,
+                                source: rtn,
+                                selectedIndex: 0,
+                                height: '25',
+                                autoDropDownHeight: true,
+                                displayMember: 'key',
+                                valueMember: 'value'
+                            });
+                        }
+                    );
+
                     $timePlace.jqxTextArea({
                         theme: jqx_default_theme,
                         placeHolder: '输入上课时间和地点...',
@@ -203,11 +215,11 @@ $(function () {
                             });
                         }
                     );
+
                     if ('add' === mode) {
                         $title.text('新增课程');
 
-                        $couName.val('');
-                        $couId.val('');
+                        $course.jqxDropDownList({selectedIndex: 0});
                         $couCredit.jqxNumberInput('setDecimal', 0);
                         $couPeriod.jqxNumberInput('setDecimal', 0);
                         $couCounts.jqxNumberInput('setDecimal', 0);
@@ -230,8 +242,7 @@ $(function () {
                                 //{"cou_number":"2","course_id":"705058","cou_credit":3,"cou_period":56,"cou_tea_no":"12312316","cou_counts":"42",
                                 // "class_time_place":"gdf","cou_term_id":"1","class_id":"10001"}
                                 if (rtn && rtn.status === 'success') {
-                                    $couId.val(data['course_id']);
-                                    $couName.val(data['']);
+                                    $course.val(data['course_id']);
                                     $couCredit.jqxNumberInput('setDecimal', new Number(data['cou_credit']));
                                     $couPeriod.jqxNumberInput('setDecimal', new Number(data['cou_period']));
                                     $couCounts.jqxNumberInput('setDecimal', new Number(data['cou_counts']));
@@ -251,11 +262,11 @@ $(function () {
 
                 $('#submit').unbind('click').click(function () {
                     var postData = {};
-                    postData.optMode = optmode;
+                    /*postData.optMode = optmode;
                     postData.termId = $termId.jqxNumberInput('getDecimal');
                     postData.termName = $termName.val();
                     postData.termYear = $termYear.jqxNumberInput('getDecimal');
-                    postData.termMon = $termMon.val();
+                     postData.termMon = $termMon.val();*/
                     postData.tea = teacher['tea_permission'];
 
                     $.post(
@@ -352,10 +363,20 @@ $(function () {
                 height: "99%",
                 source: dataAdapter1,
                 theme: jqx_default_theme,
+                editable: true,
+                editmode: 'selectedcell',
+                selectionmode: 'singlerow',
                 altrows: true,
                 showtoolbar: true,
                 columns: [
-                    {text: '课程编号', dataField: 'course_id', align: "center", cellsAlign: 'center', width: "20%"},
+                    {
+                        text: '课程编号',
+                        dataField: 'course_id',
+                        align: "center",
+                        cellsAlign: 'center',
+                        width: "20%",
+                        editable: false
+                    },
                     {text: '课程名', dataField: 'course_name', align: "center", cellsAlign: 'center', width: "40%"},
                     {text: '开课单位', dataField: 'course_unit', align: "center", cellsAlign: 'center', width: "40%"}
                 ],
@@ -366,13 +387,9 @@ $(function () {
                     var addButton = $(buttonTemplate);
                     var editButton = $(buttonTemplate);
                     var deleteButton = $(buttonTemplate);
-                    var saveButton = $(buttonTemplate);
-                    var cancelButton = $(buttonTemplate);
                     container.append(addButton);
-                    container.append(editButton);
-                    container.append(cancelButton);
-                    container.append(saveButton);
                     container.append(deleteButton);
+                    container.append("<span style='padding: 3px; margin: 2px;line-height: 33px;'>&nbsp;&nbsp;&nbsp;提示:&nbsp;双击单元格进行数据填写</span></span>");
                     toolBar.append(container);
 
                     addButton.jqxButton({
@@ -384,19 +401,8 @@ $(function () {
                         width: 25
                     });
                     addButton.find('div:first').addClass('jqx-icon-plus');
-                    addButton.jqxTooltip({theme: jqx_default_theme, position: 'bottom', content: "新增"});
+                    addButton.jqxTooltip({theme: jqx_default_theme, position: 'bottom', content: "新增一条记录"});
 
-
-                    editButton.jqxButton({
-                        theme: jqx_default_theme,
-                        cursor: "pointer",
-                        disabled: true,
-                        enableDefault: false,
-                        height: 25,
-                        width: 25
-                    });
-                    editButton.find('div:first').addClass('jqx-icon-edit');
-                    editButton.jqxTooltip({theme: jqx_default_theme, position: 'bottom', content: "修改"});
 
                     deleteButton.jqxButton({
                         theme: jqx_default_theme,
@@ -409,48 +415,37 @@ $(function () {
                     deleteButton.find('div:first').addClass('jqx-icon-delete');
                     deleteButton.jqxTooltip({theme: jqx_default_theme, position: 'bottom', content: "删除"});
 
-                    saveButton.jqxButton({
-                        theme: jqx_default_theme,
-                        cursor: "pointer",
-                        disabled: true,
-                        enableDefault: false,
-                        height: 25,
-                        width: 25
-                    });
-                    saveButton.find('div:first').addClass('jqx-icon-save');
-                    saveButton.jqxTooltip({theme: jqx_default_theme, position: 'bottom', content: "保存"});
 
-                    cancelButton.jqxButton({
-                        theme: jqx_default_theme,
-                        cursor: "pointer",
-                        disabled: true,
-                        enableDefault: false,
-                        height: 25,
-                        width: 25
-                    });
-                    cancelButton.find('div:first').addClass('jqx-icon-cancel');
-                    cancelButton.jqxTooltip({position: 'bottom', content: "取消"});
-
+                    let rowIndex;
                     // 行选中事件
                     $grid.on('rowselect', function (event) {
                         let args = event.args;
+                        rowIndex = args.rowindex;
                         rowSelectData = args.row;
-                        console.log(rowSelectData);
                         if (rowSelectData) {
                             editButton.jqxButton({disabled: false});
                             deleteButton.jqxButton({disabled: false});
                         }
                     });
 
+                    // 点击新增按钮，新增一行
+                    addButton.click(function () {
+                        $grid.jqxGrid('addrow', '', {});
+                    });
+
+
                 },
                 ready: function () {
-
                 }
             });
         }
     });
 
     $btn_cou.click(function () {
+        if ('1' !== teacher["tea_permission"]) {
+            $bs.error('权限不足，请联系管理员！');
+            return;
+        }
         $window.jqxWindow('open');
     })
 
