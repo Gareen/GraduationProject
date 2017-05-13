@@ -435,6 +435,33 @@ public class StudentManagementService {
         return new ReturnObj(Constant.SUCCESS, "删除成功 ！", stu.getStu_no());
     }
 
+    public ReturnObj delStuByClassId(HttpServletRequest req) {
+        String classId = req.getParameter("classId");
+        String teacher = req.getParameter("teacher");
+
+        if (!Chk.spaceCheck(classId) || !Chk.spaceCheck(teacher)) {
+            return new ReturnObj(Constant.ERROR, "学生或者老师信息不能为空！", null);
+        }
+
+        Teacher tea = JsonUtil.toObject(teacher, Teacher.class);
+
+        if (tea == null) {
+            return new ReturnObj(Constant.ERROR, "教师信息转换失败！", null);
+        }
+
+        if (!"1".equalsIgnoreCase(tea.getTea_permission())) {
+            return new ReturnObj(Constant.ERROR, "删除失败：权限不足！", null);
+        }
+
+        int count = studentManagementDao.deleteStuByClassId(classId);
+
+        if (count <= 0) {
+            return new ReturnObj(Constant.ERROR, "删除失败：数据库异常或者班级无学生！", null);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "删除成功，刷新页面生效 ！", null);
+    }
+
     /**
      * 新增或者修改
      *

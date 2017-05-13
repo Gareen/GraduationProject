@@ -28,4 +28,8 @@
         UPDATE sams_student SET stu_name = #{stuName}, stu_gender = #{gender}, stu_class_id = #{classId}
         WHERE stu_no = #{stuNo}
     </update>
+
+    <delete id="deleteStuByClassId" parameterType="string">
+        DELETE FROM sams_student WHERE stu_class_id = #{classId}
+    </delete>
 </mapper>

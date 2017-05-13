@@ -1,8 +1,10 @@
 package cn.sams.controller.system;
 
 import cn.sams.entity.Student;
+
 import cn.sams.entity.commons.ReturnObj;
 import cn.sams.entity.commons.SelectModel;
+import cn.sams.service.system.ClassManagementService;
 import cn.sams.service.system.StudentManagementService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -24,6 +25,9 @@ public class StudentManagementController {
 
     @Resource
     private StudentManagementService studentManagementService;
+
+    @Resource
+    private ClassManagementService classManagementService;
 
     @RequestMapping("toIndex.do")
     public String toIndex() {
@@ -52,6 +56,12 @@ public class StudentManagementController {
         }
     }
 
+    @RequestMapping("queryClasses.do")
+    @ResponseBody
+    public List<SelectModel> queryClasses() {
+        return classManagementService.queryClassesToSelectModel();
+    }
+
     @RequestMapping("delete.do")
     @ResponseBody
     public ReturnObj delete(HttpServletRequest req) {
@@ -68,6 +78,12 @@ public class StudentManagementController {
     @ResponseBody
     public List<SelectModel> queryClassesByTeaId(HttpServletRequest req) {
         return studentManagementService.queryClassesByTeaId(req);
+    }
+
+    @RequestMapping("delStuByClassId.do")
+    @ResponseBody
+    public ReturnObj delStuByClassId(HttpServletRequest req) {
+        return studentManagementService.delStuByClassId(req);
     }
 
     @RequestMapping("queryStudent.do")

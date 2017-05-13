@@ -39,6 +39,14 @@ public interface StudentManagementDao {
     Integer deleteStudentByStuId(@Param("stuId") String stuId);
 
     /**
+     * 根据班级编号删除学生
+     *
+     * @param classId
+     * @return
+     */
+    Integer deleteStuByClassId(@Param("classId") String classId);
+
+    /**
      * 保存学生
      *
      * @param stuNo

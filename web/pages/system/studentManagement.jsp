@@ -24,10 +24,11 @@
                         </div>
 
                         <div class="fr">
-                            <button class="btn btn-warning" id="import_stu">导入学生名册</button>
+                            <button class="btn btn-info" id="import_stu">导入学生名册</button>
                             <button class="btn btn-success" id="add">新增</button>
                             <button class="btn btn-primary" id="edit" disabled>修改</button>
                             <button class="btn btn-danger" id="delete" disabled>删除</button>
+                            <button class="btn btn-warning" id="deleteClz">按班级删除</button>
                         </div>
                     </div>
                     <div class="alert alert-success margin-top">
@@ -70,6 +71,44 @@
             </div>
 
             <div class="modal-footer">
+                <a class="btn btn-default" data-dismiss="modal">退出</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--根据班级号码删除一个班级的学生--%>
+<div class="modal fade" data-backdrop="static" id="delClassWin">
+    <div class="modal-dialog" style="width: auto;max-width: 500px;min-width: 350px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span type="button" class="close fa fa-close" data-dismiss="modal" aria-hidden="true"
+                      style="float: right; "></span>
+
+                <%--弹出框的标题--%>
+                <h5 class="modal-title">删除班级学生</h5>
+            </div>
+            <div class="modal-body clearfix">
+                <table class="form" width="100%">
+                    <tr>
+                        <td class='text-right'>选择班级:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <div id="delClass"></div>
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;"></tr>
+                    <tr>
+                        <td colspan="2" style="padding-left: 75px;">
+                            <strong>提示：</strong><span style="color: red">危险操作，请谨慎！</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-danger" data-dismiss="modal" id="del-Class">确认删除</a>
                 <a class="btn btn-default" data-dismiss="modal">退出</a>
             </div>
         </div>

@@ -99,7 +99,7 @@ $(function () {
                         return;
                     }
 
-                    $bs.confirm("确认删除该学期么？", function () {
+                    $bs.confirm("确认删除该班级么？该班学生会被对应删除！", function () {
                         $.post(
                             './delete.do',
                             {

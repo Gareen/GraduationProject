@@ -1,11 +1,11 @@
 $(function () {
 
     // 查询状态
-    var query_flag = true;
+    let query_flag = true;
 
-    var teacher = $getTea();
+    let teacher = $getTea();
 
-    var $table = $("#dataTable");
+    let $table = $("#dataTable");
 
     $(window).on("resize", function () {
         $table.jqxGrid({
@@ -18,7 +18,7 @@ $(function () {
     };
 
 
-    var search = function () {
+    let search = function () {
 
         // 行选中数据
         let rowSelectData;
@@ -28,7 +28,7 @@ $(function () {
         }
         query_flag = false;
 
-        var source = {
+        let source = {
             dataType: "json",
             dataFields: [
                 {name: 'stu_no', type: 'string'},
@@ -40,7 +40,7 @@ $(function () {
             url: "./queryStudents.do"
         };
 
-        var dataAdapter = new $.jqx.dataAdapter(source);
+        let dataAdapter = new $.jqx.dataAdapter(source);
 
         $table.jqxGrid({
             width: "100%",
@@ -65,6 +65,9 @@ $(function () {
                 let $btn_add = $("#add");
                 let $btn_edit = $("#edit");
                 let $btn_del = $("#delete");
+                let $btn_delClz = $("#deleteClz");
+                let $delClass = $("#delClass");
+                let $delAll = $("#del-Class");
                 let mod;
 
                 // 行选中事件
@@ -102,6 +105,56 @@ $(function () {
                             }
                         )
                     })
+                });
+
+                // 根据班级删除一个班级的学生
+                $btn_delClz.unbind('click').click(function () {
+
+                    $.when(
+                        $.post(
+                            './queryClasses.do',
+                        )
+                    ).done(function (rtn) {
+                        $delClass.jqxDropDownList({
+                            placeHolder: "选择班级",
+                            source: rtn,
+                            selectedIndex: 0,
+                            width: '150',
+                            height: '25',
+                            theme: jqx_default_theme,
+                            autoDropDownHeight: true,
+                            displayMember: 'key',
+                            valueMember: 'value'
+                        });
+                    }).then(function () {
+                        $("#delClassWin").modal('show');
+                    })
+
+                });
+
+                $delAll.click(function () {
+
+                    let postData = {
+                        teacher: JSON.stringify(teacher),
+                        classId: $delClass.val()
+                    };
+
+                    $.when(
+                        $.post(
+                            './delStuByClassId.do',
+                            postData
+                        )
+                    ).done(function () {
+                        $delAll.next().unbind('click').click();
+
+                    }).then(function (rtn) {
+                        if (rtn && rtn.status === 'success') {
+                            $bs.success(rtn.msg);
+                        } else {
+                            $bs.error(rtn.msg);
+                        }
+                    })
+
                 });
 
                 let optMode;
@@ -268,8 +321,8 @@ $(function () {
     }
 
     /*$uploadTool.on('uploadEnd', function (event) {
-        var args = event.args;
-        var serverResponce = args.response;
+     let args = event.args;
+     let serverResponce = args.response;
      let rtn = JSON.parse($(serverResponce).text());
 
      /!*if (rtn && rtn['status'] === 'success') {
