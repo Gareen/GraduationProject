@@ -82,4 +82,29 @@
         INSERT INTO sams_course_info VALUES (#{cno}, #{cname}, #{cunit})
     </insert>
 
+    <update id="updateCourseInfo" parameterType="string">
+        UPDATE sams_course_info
+        SET course_name = #{cname}, course_unit = #{cunit}
+        WHERE course_id = #{cno}
+    </update>
+
+    <insert id="save" parameterType="string">
+        INSERT INTO sams_course VALUES (NULL, #{cid}, #{cre}, #{per}, #{tea}, #{counts},
+                                        #{term}, #{clz}, #{tp})
+    </insert>
+
+    <update id="update" parameterType="string">
+        UPDATE sams_course t SET t.course_id = #{cid}, t.cou_credit = #{cre}, t.cou_period = #{per},
+        t.cou_counts = #{counts}, t.cou_tea_no = #{tea}, t.class_id = #{clz}, t.cou_term_id = #{term},
+        t.class_time_place = #{tp}
+        WHERE cou_number = #{cno}
+    </update>
+
+    <delete id="deleteCourseByCourseId" parameterType="string">
+        DELETE FROM sams_course WHERE course_id = #{0}
+    </delete>
+
+    <select id="getLastInsertId" resultType="Integer">
+        SELECT last_insert_id()
+    </select>
 </mapper>

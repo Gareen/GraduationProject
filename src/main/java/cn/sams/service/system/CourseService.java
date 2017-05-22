@@ -44,22 +44,6 @@ public class CourseService {
         return courseDao.queryCourses();
     }
 
-    public List<SelectModel> queryCourseInfoToSelectModel() {
-        List<CourseInfo> courses = courseDao.queryCourseInfo();
-        if (courses == null) {
-            return new ArrayList<>();
-        }
-
-        List<SelectModel> list = new ArrayList<>();
-        for (CourseInfo course : courses) {
-            SelectModel model = new SelectModel();
-            model.setKey(course.getCourse_id().toString());
-            model.setValue(course.getCourse_name());
-            list.add(model);
-        }
-        return list;
-    }
-
     public List<CourseInfo> queryCourseInfos() {
         return courseDao.queryCourseInfo();
     }
@@ -105,9 +89,6 @@ public class CourseService {
         return teacherManagerDao.queryTeaById(teaId).getTea_name();
     }
 
-    private String getCoruseTimeAndPlace(String couNum) {
-        return courseDao.queryCourseByCouNum(couNum).getClass_time_place();
-    }
 
     private String getClassName(String classId) {
         return classManagementDao.queryClassByClassId(classId).getClass_name();
@@ -124,7 +105,7 @@ public class CourseService {
         String promis = req.getParameter("promis");
 
         if (!Chk.spaceCheck(couNum) || !Chk.spaceCheck(promis)) {
-            return new ReturnObj(Constant.ERROR, "课程唯一码/教师权限为空！", null);
+            return new ReturnObj(Constant.ERROR, "上课信息唯一码/教师权限为空！", null);
         }
 
         if (!"1".equalsIgnoreCase(promis)) {
@@ -135,13 +116,19 @@ public class CourseService {
 
         if (count < 1) {
 
-            return new ReturnObj(Constant.ERROR, "删除失败：数据库异常！", null);
+            return new ReturnObj(Constant.ERROR, "删除失败：数据库异常或无此数据！", null);
         }
-        return new ReturnObj(Constant.SUCCESS, "删除成功！", couNum);
+        return new ReturnObj(Constant.SUCCESS, "删除成功, 刷新页面生效！", couNum);
 
     }
 
-    public ReturnObj queryCourseById(HttpServletRequest req) {
+    /**
+     * 根据key查找到上课信息
+     *
+     * @param req
+     * @return
+     */
+    public ReturnObj queryCourseByCouNum(HttpServletRequest req) {
         String couNum = req.getParameter("couNum");
 
         if (!Chk.spaceCheck(couNum)) {
@@ -200,13 +187,19 @@ public class CourseService {
 
         if (count < 1) {
             return new ReturnObj(Constant.ERROR, "删除失败：无此数据，请刷新后重试！", null);
+
         } else {
 
-            // todo 删除对应的上课信息，暂时预留
+            courseDao.deleteCourseByCourseId(courseId);
             return new ReturnObj(Constant.SUCCESS, "删除成功！", courseId);
         }
     }
 
+    /**
+     * 保存/更新课程信息
+     * @param req
+     * @return
+     */
     public ReturnObj saveOrUpdateCouInfo(HttpServletRequest req) {
         String data = req.getParameter("data");
 
@@ -253,12 +246,99 @@ public class CourseService {
 
         if ("mod".equalsIgnoreCase(datas.get("mode"))) {
 
-            // todo
+            int count = courseDao.updateCourseInfo(cno, cname, cunit);
 
+            if (count < 1) {
+                return new ReturnObj(Constant.ERROR, "更新失败：数据库异常或无此数据！", null);
+            } else {
+                return new ReturnObj(Constant.SUCCESS, "更新成功, 刷新页面生效！", new CourseInfo(cno, cname, cunit));
+            }
 
         }
 
         return new ReturnObj(Constant.ERROR, "操作失败：操作方式异常！", null);
+    }
 
+    /**
+     * 保存/更新上课信息
+     *
+     * @param req
+     * @return
+     */
+    public ReturnObj saveOrUpdate(HttpServletRequest req) {
+        String data = req.getParameter("data");
+
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "保存/更新上课信息失败: 关键数据缺失!", null);
+        }
+
+        // {"optMode":"mod","couNum":"7","courseId":"705058",
+        // "couCredit":3,"couPeriod":56,"couCounts":45,"couTea":"12315601",
+        // "couClz":"10002","couTerm":"1","timePlace":"hh","promisssion":"1"}
+        Map<String, String> dataMap = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(dataMap)) {
+            return new ReturnObj(Constant.ERROR, "保存/更新上课信息失败: 数据转换失败!", null);
+        }
+
+        // 判断登陆的用户权限
+        String promiss = dataMap.get("promisssion");
+
+        if (!"1".equals(promiss)) {
+            return new ReturnObj(Constant.ERROR, "保存/更新上课信息失败: 权限不足!", null);
+        }
+
+        // 判断操作方式
+        String mode = dataMap.get("optMode");
+
+        // 获取传过来的参数
+        String courseId = dataMap.get("courseId");
+        String couCredit = dataMap.get("couCredit");
+        String couPeriod = dataMap.get("couPeriod");
+        String couCounts = dataMap.get("couCounts");
+        String couTea = dataMap.get("couTea");
+        String couClz = dataMap.get("couClz");
+        String couTerm = dataMap.get("couTerm");
+        String timePlace = dataMap.get("timePlace");
+
+        int count;
+
+        if ("add".equalsIgnoreCase(mode)) {
+            // 因为couNum为自增, 所以不需要判断是否已存在
+            count = courseDao.save(courseId, couCredit, couPeriod, couCounts, couTea,
+                    couClz, couTerm, timePlace);
+
+            if (count < 0) {
+                return new ReturnObj(Constant.ERROR, "保存上课信息失败: 数据库错误!", null);
+            } else {
+                return new ReturnObj(Constant.SUCCESS, "保存上课信息成功, 刷新页面生效!", null);
+            }
+        }
+
+        if ("mod".equalsIgnoreCase(mode)) {
+            // 此为记录的key, 只有在修改的时候用到
+            String couNum = dataMap.get("couNum");
+
+            count = courseDao.update(couNum, courseId, couCredit, couPeriod, couCounts, couTea,
+                    couClz, couTerm, timePlace);
+
+            if (count < 0) {
+                return new ReturnObj(Constant.ERROR, "更新上课信息失败: 数据库错误或无此记录!", null);
+            } else {
+                return new ReturnObj(Constant.SUCCESS, "更新上课信息成功, 刷新页面生效!", null);
+            }
+        }
+
+        return new ReturnObj(Constant.ERROR, "保存/更新上课信息失败: 操作错误!", null);
+
+    }
+
+    /**
+     * 获取最新插入上课信息记录的id
+     *
+     * @return id 自增主键, 只适用于MySQL数据库
+     */
+    public int getLastInsertId() {
+        return courseDao.getLastInsertId();
     }
 }

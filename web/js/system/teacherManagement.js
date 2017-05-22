@@ -136,11 +136,7 @@ $(function () {
                         $bs.alert("请选中一位教师 !");
                         return;
                     }
-                    // $bs.confirm("确定要删除这条记录吗 ?");
-                    /* var d = confirm();
-                     if (! d) {
-                     return;
-                     }*/
+
                     $bs.confirm("确定要删除这条记录吗 ?", function () {
                         $.post(
                             "./deleteTeacherById.do",
@@ -151,7 +147,7 @@ $(function () {
                                 var msg = rtn["msg"];
                                 // 关闭window
                                 $("#msg_n").click();
-                                if (status == 'success') {
+                                if (status === 'success') {
                                     $bs.success(msg);
                                     destroyGrid("dataTable");
                                     search();
@@ -169,7 +165,7 @@ $(function () {
                     $("#jud").val("").val("mod");
                     $("#tea_win_title").html("修改教师");
                     $("#tea_no").jqxInput({disabled:true});
-                    if (rowIndex == -1) {
+                    if (rowIndex === -1) {
                         $bs.alert("请选中一位教师 !");
                         return;
                     }
@@ -185,7 +181,7 @@ $(function () {
                             var tea_no = $("#tea_no").val();
                             // 此处初始化一下下拉列表的可用, 对管理员进行特殊的处理
                             $("#tea_permission").jqxDropDownList({ disabled: false });
-                            if (tea_no == '10000') {
+                            if (tea_no === '10000') {
                                 $("#tea_permission").jqxDropDownList({ disabled: true });
                             } else {
                                 $("#tea_permission").jqxDropDownList({ disabled: false });
@@ -199,7 +195,7 @@ $(function () {
                                     function (rtn) {
                                         var status = rtn["status"];
                                         var msg = rtn["msg"];
-                                        if (status == 'success') {
+                                        if (status === 'success') {
                                             $bs.success(msg);
                                             destroyGrid("dataTable");
                                             search();

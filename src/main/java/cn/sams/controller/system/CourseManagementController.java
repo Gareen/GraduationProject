@@ -86,10 +86,10 @@ public class CourseManagementController {
         return classManagementService.queryClassesToSelectModel();
     }
 
-    @RequestMapping("queryCourseById.do")
+    @RequestMapping("queryCourseByCouNum.do")
     @ResponseBody
-    public ReturnObj queryCourseById(HttpServletRequest req) {
-        return courseService.queryCourseById(req);
+    public ReturnObj queryCourseByCouNum(HttpServletRequest req) {
+        return courseService.queryCourseByCouNum(req);
     }
 
     @RequestMapping("queryCoursesSelectModel.do")
@@ -109,4 +109,11 @@ public class CourseManagementController {
     public ReturnObj saveOrUpdateCouInfo(HttpServletRequest req) {
         return courseService.saveOrUpdateCouInfo(req);
     }
+
+    @RequestMapping("saveOrUpdate.do")
+    @ResponseBody
+    public ReturnObj saveOrUpdate(HttpServletRequest req) {
+        return courseService.saveOrUpdate(req);
+    }
+
 }

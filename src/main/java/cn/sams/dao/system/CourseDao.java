@@ -90,7 +90,7 @@ public interface CourseDao {
                                                         @Param("classId") String classId);
 
     /**
-     * 删除
+     * 删除上课信息
      *
      * @param num
      * @return
@@ -111,4 +111,57 @@ public interface CourseDao {
      * @return
      */
     Integer saveCourseInfo(@Param("cno") String cno, @Param("cname") String cname, @Param("cunit") String cunit);
+
+    /**
+     * 更新课程信息
+     *
+     * @param cno
+     * @param cname
+     * @param cunit
+     */
+    Integer updateCourseInfo(@Param("cno") String cno, @Param("cname") String cname, @Param("cunit") String cunit);
+
+    /**
+     * 保存上课信息
+     *
+     * @param courseId  课程号
+     * @param couCredit 课程学分
+     * @param couPeriod 课程学时
+     * @param couCounts 选课人数
+     * @param couTea    上课教师
+     * @param couClz    上课班级
+     * @param couTerm   上课学期
+     * @param timePlace 上课时间和地点
+     * @return
+     */
+    Integer save(@Param("cid") String courseId, @Param("cre") String couCredit, @Param("per") String couPeriod,
+                 @Param("counts") String couCounts, @Param("tea") String couTea, @Param("clz") String couClz,
+                 @Param("term") String couTerm, @Param("tp") String timePlace);
+
+    /**
+     * 更新上课信息
+     *
+     * @param couNum    key
+     * @param courseId  课程号
+     * @param couCredit 课程学分
+     * @param couPeriod 课程学时
+     * @param couCounts 选课人数
+     * @param couTea    上课教师
+     * @param couClz    上课班级
+     * @param couTerm   上课学期
+     * @param timePlace 上课时间和地点
+     * @return
+     */
+    Integer update(@Param("cno") String couNum, @Param("cid") String courseId, @Param("cre") String couCredit,
+                   @Param("per") String couPeriod, @Param("counts") String couCounts, @Param("tea") String couTea,
+                   @Param("clz") String couClz, @Param("term") String couTerm, @Param("tp") String timePlace);
+
+    /**
+     * 根据课程号删除上课信息
+     *
+     * @param courseId
+     */
+    void deleteCourseByCourseId(String courseId);
+
+    int getLastInsertId();
 }

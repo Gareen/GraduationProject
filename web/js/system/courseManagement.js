@@ -97,6 +97,7 @@ $(function () {
                     let args = event.args;
                     rowSelectData = args.row;
 
+                    console.log(rowSelectData);
                     if (rowSelectData) {
                         couNum = rowSelectData['couNum'];
 
@@ -217,7 +218,7 @@ $(function () {
                     );
 
                     if ('add' === mode) {
-                        $title.text('新增课程');
+                        $title.text('新增上课信息');
 
                         $course.jqxDropDownList({selectedIndex: 0});
                         $couCredit.jqxNumberInput('setDecimal', 0);
@@ -230,10 +231,10 @@ $(function () {
                         $("#createWin").modal('show');
 
                     } else {
-                        $title.text('修改课程');
+                        $title.text('修改上课信息');
 
                         $.post(
-                            './queryCourseById.do',
+                            './queryCourseByCouNum.do',
                             {
                                 couNum: couNum
                             },
@@ -261,16 +262,23 @@ $(function () {
                 }
 
                 $('#submit').unbind('click').click(function () {
+
+                    // 封装上课信息参数
                     var postData = {};
-                    /*postData.optMode = optmode;
-                    postData.termId = $termId.jqxNumberInput('getDecimal');
-                    postData.termName = $termName.val();
-                    postData.termYear = $termYear.jqxNumberInput('getDecimal');
-                     postData.termMon = $termMon.val();*/
-                    postData.tea = teacher['tea_permission'];
+                    postData.optMode = optmode;
+                    postData.couNum = couNum;
+                    postData.courseId = $course.val();
+                    postData.couCredit = $couCredit.jqxNumberInput('getDecimal');
+                    postData.couPeriod = $couPeriod.jqxNumberInput('getDecimal');
+                    postData.couCounts = $couCounts.jqxNumberInput('getDecimal');
+                    postData.couTea = $couTea.val();
+                    postData.couClz = $couClz.val();
+                    postData.couTerm = $couTerm.val();
+                    postData.timePlace = $timePlace.val();
+                    postData.promisssion = teacher['tea_permission'];
 
                     $.post(
-                        // './saveOrUpdate.do',
+                        './saveOrUpdate.do',
                         {
                             data: JSON.stringify(postData)
                         },
@@ -296,7 +304,7 @@ $(function () {
                     $bs.confirm("确认删除该课程？", function () {
 
                         $.post(
-                            // 'delete.do',
+                            'delete.do',
                             {
                                 couNum: couNum,
                                 promis: promis
@@ -304,7 +312,6 @@ $(function () {
                             function (rtn) {
                                 if (rtn && rtn.status === 'success') {
                                     $bs.success(rtn.msg);
-                                    $table.jqxGrid('deleterow', rtn.data);
                                 } else {
                                     $bs.error(rtn.msg);
                                 }
@@ -340,27 +347,29 @@ $(function () {
     cname.jqxInput({theme: jqx_default_theme, width: 150, height: 25});
     cunit.jqxInput({theme: jqx_default_theme, width: 150, height: 25});
 
-    var rowSelectData;
+    let rowSelectData;
 
     let offset = $table.offset();
 
-    // 设置数据源
-    var source1 = {
-        url: "./queryCourseInfo.do",
-        datatype: "json",
-        type: "post",
-        datafields: [
-            {name: 'course_id', type: 'String'},
-            {name: 'course_name', type: 'String'},
-            // 开课单位
-            {name: 'course_unit', type: 'String'},
-        ],
-        id: 'course_id'
-    };
 
-    var createCourseInfoGrid = function () {
+    let createCourseInfoGrid = function () {
 
-        var dataAdapter1 = new $.jqx.dataAdapter(source1);
+        // 设置数据源
+        let source1 = {
+            url: "./queryCourseInfo.do",
+            datatype: "json",
+            type: "post",
+            datafields: [
+                {name: 'course_id', type: 'String'},
+                {name: 'course_name', type: 'String'},
+                // 开课单位
+                {name: 'course_unit', type: 'String'},
+            ],
+            id: 'course_id'
+        };
+
+        // data-bind
+        let dataAdapter1 = new $.jqx.dataAdapter(source1);
 
         $grid.jqxGrid({
             width: "100%",
@@ -393,7 +402,7 @@ $(function () {
                 container.append(addButton);
                 container.append(editButton);
                 container.append(deleteButton);
-                container.append("<span style='padding: 3px; margin: 2px;line-height: 33px;'>&nbsp;&nbsp;&nbsp;提示:&nbsp;双击单元格进行数据填写</span></span>");
+                // container.append("<span style='padding: 3px; margin: 2px;line-height: 33px;'></span></span>");
                 toolBar.append(container);
 
                 addButton.jqxButton({
@@ -437,6 +446,7 @@ $(function () {
                     let args = event.args;
                     rowIndex = args.rowindex;
                     rowSelectData = args.row;
+
                     if (rowSelectData) {
                         editButton.jqxButton({disabled: false});
                         deleteButton.jqxButton({disabled: false});
@@ -481,8 +491,8 @@ $(function () {
                             )
                         ).done(function (rtn) {
                             if (rtn && rtn.status === 'success') {
-                                $bs.success(rtn.msg);
-                                $grid.jqxGrid('deleterow', rtn.data);
+                                $grid.jqxGrid('deleterow', rowSelectData['course_id']);
+                                $bs.success(rtn.msg + ', 刷新页面后生效!');
                             } else {
                                 $bs.error(rtn.msg);
                             }
@@ -556,9 +566,15 @@ $(function () {
                             }
                         ).done(function (rtn) {
                             if (rtn && rtn.status === 'success') {
-                                $bs.success(rtn.msg);
+                                // $bs.success(rtn.msg);
+                                if (optmod === 'add') {
+                                    $grid.jqxGrid('addrow', cno, rtn.data, 'last');
+                                }
+                                if (optmod === 'mod') {
+                                    // $grid.jqxGrid('updaterow', cno, rtn.data);
+                                    $bs.success(rtn.msg);
+                                }
                                 initAddWindow();
-                                $grid.jqxGrid('addrow', cno, rtn.data, 'last');
                             } else {
                                 $bs.error(rtn.msg);
                             }

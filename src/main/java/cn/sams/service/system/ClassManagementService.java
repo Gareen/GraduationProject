@@ -4,6 +4,7 @@ import cn.sams.common.constants.Constant;
 import cn.sams.common.util.Chk;
 import cn.sams.common.util.JsonUtil;
 import cn.sams.dao.system.ClassManagementDao;
+import cn.sams.dao.system.StudentManagementDao;
 import cn.sams.entity.Classes;
 import cn.sams.entity.Term;
 import cn.sams.entity.commons.ReturnObj;
@@ -24,6 +25,9 @@ public class ClassManagementService {
 
     @Resource
     private ClassManagementDao classManagementDao;
+
+    @Resource
+    private StudentManagementDao studentManagementDao;
 
     public List<Classes> queryClasses() {
         return classManagementDao.queryClasses();
@@ -125,6 +129,11 @@ public class ClassManagementService {
             return new ReturnObj(Constant.ERROR, "删除失败：数据库异常！", null);
         }
 
+        // 删除对应的学生表中该班级的学生
+        studentManagementDao.deleteStuByClassId(clzId);
+       /* if (count < 1) {
+            return new ReturnObj(Constant.ERROR, "删除对应班级的学生失败！", null);
+        }*/
         return new ReturnObj(Constant.SUCCESS, "删除成功！", clzId);
     }
 
