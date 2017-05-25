@@ -75,6 +75,10 @@
                                                     style="width: 60px; height: 30px;">搜索
                                             </button>
                                         </td>
+                                        <td class="lb"></td>
+                                        <td style="padding-left: 10px;">
+                                            <a href="#" id="reset_score">重置分数</a>
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
@@ -129,7 +133,8 @@
     </div>
 </div>
 
-</div>
+<%--引入重置--%>
+<jsp:include page="reset.jsp"/>
 
 <script src="${ctx}/js/score/homeWorkManagement.js"></script>
 

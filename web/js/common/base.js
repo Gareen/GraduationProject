@@ -123,6 +123,25 @@ var $getTea = function () {
     }
 }
 
+/**
+ * 创建下拉列表
+ * @param count
+ * @param selector 选择器名称
+ */
+var $createDropDownList = function (count, selector) {
+
+    $("#" + selector).jqxDropDownList({
+        theme: jqx_default_theme,
+        selectedIndex: 0,
+        source: count,
+        width: '70',
+        height: "25px",
+        autoDropDownHeight: true,
+        displayMember: 'key',
+        valueMember: 'value'
+    });
+};
+
 var dateFormat = {
     yMd: "yyyy-MM-dd",
     yMd_Hms: "yyyy-MM-dd HH:mm:ss",

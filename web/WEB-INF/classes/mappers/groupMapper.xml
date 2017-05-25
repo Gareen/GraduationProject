@@ -37,15 +37,52 @@
     </select>
 
     <!--动态对字段进行赋值-->
-    <update id="save" parameterType="java.util.Map" statementType="STATEMENT">
+    <!--<update id="save" parameterType="java.util.Map" statementType="STATEMENT">
         <![CDATA[
         UPDATE sams_group_score SET ${datafield} = ${score}, score = ${result}
         WHERE group_id = ${groupId} AND group_num = ${groupNum} AND ex_index = ${exIndex}
         ]]>
+    </update>-->
+
+    <sql id="datafield">
+        <if test="datafield == 'pre_score'">
+            pre_score = #{score}
+        </if>
+        <if test="datafield == 'ex_score'">
+            ex_score = #{score}
+        </if>
+        <if test="datafield == 're_score'">
+            re_score  = #{score}
+        </if>
+    </sql>
+
+    <update id="save" parameterType="java.util.Map">
+        UPDATE sams_group_score SET
+            <include refid="datafield"/>
+            , score = #{result}
+        WHERE
+        group_id = #{groupId} AND group_num = #{groupNum} AND ex_index = #{exIndex}
     </update>
 
     <delete id="deleteGroupByIdAndNum" parameterType="string">
         DELETE FROM sams_group_score WHERE group_id = #{groupId} AND group_num = #{groupNum}
     </delete>
 
+    <select id="queryScoreCount" parameterType="string" resultType="java.util.HashMap">
+        select t.ex_index AS counts
+        FROM sams_group_score t
+        WHERE t.group_id = #{0}
+        GROUP BY t.ex_index
+    </select>
+
+    <update id="reset" parameterType="string">
+        UPDATE sams_group_score
+        SET pre_score = 0, re_score = 0, ex_score = 0, score = 0
+        WHERE group_id = #{0} AND ex_index = #{1}
+    </update>
+
+    <delete id="deleteScoreByIndex" parameterType="string">
+        DELETE FROM sams_group_score
+        WHERE group_id = #{id} AND ex_index = #{index}
+    </delete>
 </mapper>

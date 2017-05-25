@@ -16,7 +16,7 @@ $(function (){
                     // 将教师信息保存在localStorage, 以便后续调用
                     store.setItem("teacher", JSON.stringify(rtn.data));
                     // 设置默认的跳转页面
-                    window.location.href = "../../system/studentManagement/toIndex.do";
+                    window.location.href = "../../score/groupManagement/toIndex.do";
                 }else{
                     $bs.error(rtn.msg);
                 }

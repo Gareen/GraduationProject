@@ -95,4 +95,22 @@ public class GroupManagementController {
     public ReturnObj save(HttpServletRequest req) {
         return groupManagementService.save(req);
     }
+
+    @RequestMapping("queryScoreCounts.do")
+    @ResponseBody
+    public ReturnObj queryScoreCounts(HttpServletRequest req) {
+        return groupManagementService.queryScoreCounts(req);
+    }
+
+    @RequestMapping("resetScore.do")
+    @ResponseBody
+    public ReturnObj resetScore(HttpServletRequest req) {
+        return groupManagementService.resetScore(req);
+    }
+
+    @RequestMapping("deleteScore.do")
+    @ResponseBody
+    public ReturnObj deleteScore(HttpServletRequest req) {
+        return groupManagementService.deleteScore(req);
+    }
 }

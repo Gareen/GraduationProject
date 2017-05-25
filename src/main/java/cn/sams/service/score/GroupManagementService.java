@@ -1,7 +1,9 @@
 package cn.sams.service.score;
 
+import cn.sams.common.constants.Constant;
 import cn.sams.common.util.BatchUpdateUtil;
 import cn.sams.common.util.Chk;
+import cn.sams.common.util.JsonUtil;
 import cn.sams.common.util.NumberUtil;
 import cn.sams.dao.score.GroupInitManagementDao;
 import cn.sams.dao.score.GroupManagementDao;
@@ -9,14 +11,12 @@ import cn.sams.dao.system.StudentManagementDao;
 import cn.sams.entity.Group;
 import cn.sams.entity.Student;
 import cn.sams.entity.commons.ReturnObj;
+import cn.sams.entity.commons.SelectModel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -203,7 +203,7 @@ public class GroupManagementService {
         double result_score = (pre + ex + re) / 3;
 
         // 根据不同的分数字段动态保存分数值
-        int count = groupManagementDao.save(datafield, s, result_score, getArgsStr(group_id), getArgsStr(group_num), getArgsStr(ex_index));
+        int count = groupManagementDao.save(datafield, s, result_score, group_id, group_num, ex_index);
 
         if (count <= 0) {
             return new ReturnObj("error", "保存失败: 数据库错误 !", null);
@@ -214,14 +214,110 @@ public class GroupManagementService {
     }
 
 
-    /**
+   /* *
      * 使用statement的时候, 需要补充上''
      * @param value
      * @return
-     */
-    public String getArgsStr(String value) {
+    private String getArgsStr(String value) {
         return "'" + value + "'";
+    }*/
+
+    /**
+     * 查询实验成绩次数
+     *
+     * @param req
+     * @return
+     */
+    public ReturnObj queryScoreCounts(HttpServletRequest req) {
+        String data = req.getParameter("data");
+
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "查询成绩次数失败, 关键数据缺失!", null);
+        }
+
+        Map<String, String> map = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(map)) {
+            return new ReturnObj(Constant.ERROR, "查询成绩次数失败, 关键数据转换失败!", null);
+        }
+        String id = map.get("teaNo") + "T" + map.get("termId") +
+                "T" + map.get("courseId") + "T" + map.get("classId");
+
+        // 根据groupId查找次数
+        List<Map<String, String>> counts = groupManagementDao.queryScoreCount(id);
+
+        if (!Chk.emptyCheck(counts)) {
+            return new ReturnObj(Constant.ERROR, "查询成绩次数失败, 关键数据转换失败!", null);
+        }
+
+        List<SelectModel> csm = new ArrayList<>();
+
+        for (Map m : counts) {
+            SelectModel sm = new SelectModel();
+
+            sm.setKey(m.get("counts").toString());
+            sm.setValue(m.get("counts").toString());
+
+            csm.add(sm);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "", csm);
     }
 
+    public ReturnObj resetScore(HttpServletRequest req) {
+        String data = req.getParameter("data");
 
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "重置失败, 关键数据缺失!", null);
+        }
+
+        Map<String, String> map = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(map)) {
+            return new ReturnObj(Constant.ERROR, "重置失败, 关键数据转换失败!", null);
+        }
+
+        String id = map.get("teaNo") + "T" + map.get("termId") +
+                "T" + map.get("courseId") + "T" + map.get("classId");
+
+        String cindex = map.get("cindex");
+
+        int count = groupManagementDao.reset(id, cindex);
+
+        if (count < 1) {
+            return new ReturnObj(Constant.ERROR, "重置失败, 数据库错误!", null);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "重置成功!", null);
+
+    }
+
+    public ReturnObj deleteScore(HttpServletRequest req) {
+
+        String data = req.getParameter("data");
+
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "重置失败, 关键数据缺失!", null);
+        }
+
+        Map<String, String> map = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(map)) {
+            return new ReturnObj(Constant.ERROR, "重置失败, 关键数据转换失败!", null);
+        }
+
+        String id = map.get("teaNo") + "T" + map.get("termId") +
+                "T" + map.get("courseId") + "T" + map.get("classId");
+
+        String cIndex = map.get("cIndex");
+
+        int count = groupManagementDao.deleteScoreByIndex(id, cIndex);
+
+        if (count < 1) {
+            return new ReturnObj(Constant.ERROR, "删除失败, 数据库错误!", null);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "删除第" + cIndex + "次成绩成功, 请刷新页面!", null);
+
+    }
 }

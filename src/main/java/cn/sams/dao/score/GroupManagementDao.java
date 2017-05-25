@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Fanpeng on 2017/2/27.
@@ -62,4 +63,30 @@ public interface GroupManagementDao {
      * @return
      */
     Integer deleteGroupByIdAndNum(@Param("groupId") String groupId, @Param("groupNum") String groupNum);
+
+    /**
+     * 根据分组编号查询成绩次数
+     *
+     * @param groupId
+     * @return
+     */
+    List<Map<String, String>> queryScoreCount(String groupId);
+
+    /**
+     * 重置分数
+     *
+     * @param id     分组编号
+     * @param cindex 次数
+     * @return
+     */
+    Integer reset(String id, String cindex);
+
+    /**
+     * 根据次数删除记录
+     *
+     * @param id     分组编号
+     * @param cIndex 次数
+     * @return
+     */
+    Integer deleteScoreByIndex(@Param("id") String id, @Param("index") String cIndex);
 }

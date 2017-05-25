@@ -79,6 +79,11 @@
                                                 打印成绩单
                                             </button>
                                         </td>
+
+                                        <td class="lb"></td>
+                                        <td style="padding-left: 10px;">
+                                            <a href="#" id="reset_score">重置分数</a>
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
@@ -177,8 +182,6 @@
         </div>
 
     </div>
-</div>
-
 </div>
 
 <script src="${ctx}/js/score/scoreManagement.js"></script>

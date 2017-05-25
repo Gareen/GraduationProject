@@ -83,19 +83,20 @@
     </insert>
 
     <update id="updateCourseInfo" parameterType="string">
-        UPDATE sams_course_info SET course_name = #{cname}, course_unit = #{cunit}
+        UPDATE sams_course_info
+        SET course_name = #{cname}, course_unit = #{cunit}
         WHERE course_id = #{cno}
     </update>
 
     <insert id="save" parameterType="string">
-        INSERT INTO sams_course VALUES (NULL , #{cid}, #{cre}, #{per}, #{tea}, #{counts},
-                                        #{term}, #{clz},  #{tp})
+        INSERT INTO sams_course VALUES (NULL, #{cid}, #{cre}, #{per}, #{tea}, #{counts},
+                                        #{term}, #{clz}, #{tp})
     </insert>
 
     <update id="update" parameterType="string">
-        UPDATE sams_course t SET t.course_id = #{cid}, t.cou_credit =  #{cre}, t.cou_period =  #{per},
-            t.cou_counts = #{counts}, t.cou_tea_no = #{tea}, t.class_id = #{clz}, t.cou_term_id = #{term},
-            t.class_time_place = #{tp}
+        UPDATE sams_course t SET t.course_id = #{cid}, t.cou_credit = #{cre}, t.cou_period = #{per},
+        t.cou_counts = #{counts}, t.cou_tea_no = #{tea}, t.class_id = #{clz}, t.cou_term_id = #{term},
+        t.class_time_place = #{tp}
         WHERE cou_number = #{cno}
     </update>
 
