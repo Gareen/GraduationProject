@@ -79,4 +79,13 @@ public interface ScoreManagementDao {
      * @return
      */
     Integer saveRemark(@Param("remark") String remark, @Param("finalId") String finalId, @Param("stuNo") String stuNo);
+
+
+    /**
+     * 成绩和其他情况重置
+     *
+     * @param id
+     * @return
+     */
+    int resetScore(String id);
 }

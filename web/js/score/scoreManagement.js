@@ -440,7 +440,8 @@ $(function () {
 
     search();
 
-    $("#query_button").click(function () {
+    let $query = $("#query_button");
+    $query.click(function () {
         if (query_flag) {
             // 使打印按钮生效
             $("#export").prop('disabled', false);
@@ -458,4 +459,71 @@ $(function () {
         }
     });
 
+    let postData = {};
+
+    let getData = function () {
+
+        // 延时0.5秒, 保证查询成功
+        return new Promise(function (success) {
+            setTimeout(function () {
+                postData = {
+                    teaNo: teacher["tea_no"],
+                    termId: term_Id,
+                    courseId: $chooseCourse.val(),
+                    classId: $chooseClass.val()
+                };
+
+                success(postData);
+
+            }, 300);
+        })
+    };
+
+    let resetScore = function (data) {
+
+        return new Promise(function (success, error) {
+
+            $.post(
+                './resetScore.do',
+                {
+                    data: JSON.stringify(data)
+                },
+                function (rtn) {
+                    if (rtn.status === 'success') {
+                        success(rtn.msg);
+                    } else {
+                        error(rtn.msg)
+                    }
+                }
+            )
+        })
+    };
+
+    $("#reset_score").unbind('click').click(function () {
+
+        $bs.confirm('确认重置当前搜索条件下的分数么?', function () {
+            getData().then(function (postData) {
+                return resetScore(postData);
+
+            }).then(function (msg) {
+
+                $bs.success(msg);
+
+
+                $("#dataTable").each(function () {
+                    $(this).jqxGrid("destroy");
+                });
+
+                $("#dataTable-panel").append($("<div id='dataTable'></div>"));
+                search();
+
+            }, function (msg) {
+
+                $bs.success(msg);
+
+            })
+
+        })
+    })
+    
 });

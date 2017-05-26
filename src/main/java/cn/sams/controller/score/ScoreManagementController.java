@@ -94,4 +94,12 @@ public class ScoreManagementController {
     public void export(HttpServletRequest req, HttpServletResponse response) throws IOException {
         scoreManagementService.export(req, response);
     }
+
+    @RequestMapping("resetScore.do")
+    @ResponseBody
+    public ReturnObj resetScore(HttpServletRequest req) {
+        return scoreManagementService.resetScore(req);
+    }
+
+
 }

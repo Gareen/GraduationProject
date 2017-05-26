@@ -1,8 +1,10 @@
 package cn.sams.service.score;
 
+import cn.sams.common.constants.Constant;
 import cn.sams.common.util.ExcelUtil;
 import cn.sams.common.util.BatchUpdateUtil;
 import cn.sams.common.util.Chk;
+import cn.sams.common.util.JsonUtil;
 import cn.sams.dao.score.GroupInitManagementDao;
 
 import cn.sams.dao.score.ScoreManagementDao;
@@ -634,4 +636,49 @@ public class ScoreManagementService {
                 "教研室主任(签字):__________  审核日期:___________");
     }
 
+
+    public ReturnObj resetScore(HttpServletRequest req) {
+
+        String data = req.getParameter("data");
+
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "重置成绩失败: 关键数据缺失!", null);
+
+        }
+
+        Map<String, String> dataMap = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(dataMap)) {
+            return new ReturnObj(Constant.ERROR, "重置成绩失败: 关键数据转换失败!", null);
+
+        }
+
+        String id = getEncodeFinalId(dataMap);
+
+        if (!Chk.spaceCheck(id)) {
+            return new ReturnObj(Constant.ERROR, "重置成绩失败: id获取失败!", null);
+
+        }
+
+        // 重置期末成绩, 总成绩, 备注
+        int count = scoreManagementDao.resetScore(id);
+
+        if (count < 1) {
+            return new ReturnObj(Constant.ERROR, "重置成绩失败: 数据库错误!", null);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "重置分数成功!", null);
+    }
+
+    private String getEncodeFinalId(Map<String, String> dataMap) {
+        String termId = dataMap.get("termId");
+        String courseId = dataMap.get("courseId");
+        String classId = dataMap.get("classId");
+
+        // 如果一项为空直接返回空
+        if (!Chk.spaceCheck(termId) || !Chk.spaceCheck(courseId) || !Chk.spaceCheck(classId)) {
+            return "";
+        }
+        return termId + "F" + courseId + "F" + classId;
+    }
 }
