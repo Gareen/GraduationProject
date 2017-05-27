@@ -1,6 +1,7 @@
 package cn.sams.dao.score;
 
 import cn.sams.entity.Homework;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,4 +43,30 @@ public interface HomeworkManagementDao {
      * @return
      */
     List<Homework> queryHomeworkByworkId(String id);
+
+    /**
+     * 返回作业次数列表
+     *
+     * @param id
+     * @return
+     */
+    List<Map<String, String>> queryScoreCounts(String id);
+
+    /**
+     * 重置次数
+     *
+     * @param id
+     * @param windex
+     * @return
+     */
+    Integer resetScoreByIndex(@Param("id") String id, @Param("windex") String windex);
+
+    /**
+     * 删除次数
+     *
+     * @param id
+     * @param windex
+     * @return
+     */
+    Integer deleteScoreByIndex(@Param("id") String id, @Param("windex") String windex);
 }

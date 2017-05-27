@@ -92,4 +92,22 @@ public class HomeWorkManagementController {
     public ReturnObj save(HttpServletRequest req) {
         return homeWorkManagementService.save(req);
     }
+
+    @RequestMapping("queryScoreCounts.do")
+    @ResponseBody
+    public ReturnObj queryScoreCounts(HttpServletRequest req) {
+        return homeWorkManagementService.queryScoreCounts(req);
+    }
+
+    @RequestMapping("resetScore.do")
+    @ResponseBody
+    public ReturnObj resetScore(HttpServletRequest req) {
+        return homeWorkManagementService.resetScore(req);
+    }
+
+    @RequestMapping("deleteScore.do")
+    @ResponseBody
+    public ReturnObj deleteScore(HttpServletRequest req) {
+        return homeWorkManagementService.deleteScore(req);
+    }
 }

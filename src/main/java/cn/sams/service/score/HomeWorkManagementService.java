@@ -3,11 +3,13 @@ package cn.sams.service.score;
 import cn.sams.common.constants.Constant;
 import cn.sams.common.util.BatchUpdateUtil;
 import cn.sams.common.util.Chk;
+import cn.sams.common.util.JsonUtil;
 import cn.sams.dao.score.HomeworkManagementDao;
 import cn.sams.dao.system.StudentManagementDao;
 import cn.sams.entity.Homework;
 import cn.sams.entity.Student;
 import cn.sams.entity.commons.ReturnObj;
+import cn.sams.entity.commons.SelectModel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -165,4 +167,116 @@ public class HomeWorkManagementService {
         return termId + "H" + courseId + "H" + classId; // 学期号+H+课程编号+H+班级编号
     }
 
+    private String getWorkId(Map<String, String> dataMap) {
+        String termId = dataMap.get("termId");
+        String courseId = dataMap.get("courseId");
+        String classId = dataMap.get("classId");
+
+        // 如果一项为空直接返回空
+        if (!Chk.spaceCheck(termId) || !Chk.spaceCheck(courseId) || !Chk.spaceCheck(classId)) {
+            return "";
+        }
+        return termId + "H" + courseId + "H" + classId; // 学期号+H+课程编号+H+班级编号
+    }
+
+    public ReturnObj queryScoreCounts(HttpServletRequest req) {
+
+        String data = req.getParameter("data");
+
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "查询成绩次数失败, 关键数据缺失!", null);
+        }
+
+        Map<String, String> map = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(map)) {
+            return new ReturnObj(Constant.ERROR, "查询成绩次数失败, 关键数据转换失败!", null);
+        }
+
+        String id = getWorkId(map);
+
+        List<Map<String, String>> counts = homeworkManagementDao.queryScoreCounts(id);
+
+        if (!Chk.emptyCheck(counts)) {
+            return new ReturnObj(Constant.ERROR, "查询成绩次数失败, 查询失败!", null);
+        }
+
+        List<SelectModel> csm = new ArrayList<>();
+
+        for (Map m : counts) {
+            SelectModel sm = new SelectModel();
+
+            sm.setKey(m.get("windex").toString());
+            sm.setValue(m.get("windex").toString());
+
+            csm.add(sm);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "", csm);
+    }
+
+
+    /**
+     * 重置分数
+     *
+     * @param req
+     * @return
+     */
+    public ReturnObj resetScore(HttpServletRequest req) {
+        String data = req.getParameter("data");
+
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "重置失败, 关键数据缺失!", null);
+        }
+
+        Map<String, String> map = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(map)) {
+            return new ReturnObj(Constant.ERROR, "重置失败, 关键数据转换失败!", null);
+        }
+
+        String id = getWorkId(map);
+
+        String windex = map.get("windex");
+
+        int count = homeworkManagementDao.resetScoreByIndex(id, windex);
+
+        if (count < 1) {
+            return new ReturnObj(Constant.ERROR, "重置失败, 数据库错误!", null);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "重置第" + windex + "次成绩成功, 请刷新页面!", null);
+    }
+
+    /**
+     * 删除分数
+     *
+     * @param req
+     * @return
+     */
+    public ReturnObj deleteScore(HttpServletRequest req) {
+        String data = req.getParameter("data");
+
+        if (!Chk.spaceCheck(data)) {
+            return new ReturnObj(Constant.ERROR, "删除失败, 关键数据缺失!", null);
+        }
+
+        Map<String, String> map = JsonUtil.toMap(data, String.class, String.class);
+
+        if (!Chk.emptyCheck(map)) {
+            return new ReturnObj(Constant.ERROR, "删除失败, 关键数据转换失败!", null);
+        }
+
+        String id = getWorkId(map);
+
+        String windex = map.get("windex");
+
+        int count = homeworkManagementDao.deleteScoreByIndex(id, windex);
+
+        if (count < 1) {
+            return new ReturnObj(Constant.ERROR, "删除失败, 数据库错误!", null);
+        }
+
+        return new ReturnObj(Constant.SUCCESS, "删除第" + windex + "次成绩成功, 请刷新页面!", null);
+    }
 }

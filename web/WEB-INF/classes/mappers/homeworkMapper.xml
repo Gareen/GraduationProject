@@ -22,4 +22,21 @@
         WHERE work_id = #{0}
     </select>
 
+    <select id="queryScoreCounts" parameterType="string" resultType="java.util.HashMap">
+        SELECT DISTINCT t.work_index AS windex
+        FROM sams_homework t
+        WHERE t.work_id = #{0}
+        ORDER BY t.work_index
+    </select>
+
+    <update id="resetScoreByIndex" parameterType="string">
+        UPDATE sams_homework
+        SET work_score = NULL
+        WHERE work_id = #{id} AND work_index = #{windex}
+    </update>
+
+    <update id="deleteScoreByIndex" parameterType="string">
+        DELETE FROM sams_homework
+        WHERE work_id = #{id} AND work_index = #{windex}
+    </update>
 </mapper>

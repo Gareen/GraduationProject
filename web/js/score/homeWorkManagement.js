@@ -34,8 +34,10 @@ $(function () {
     let $chooseTerm = $("#chooseTerms");
     let $chooseCourse = $("#choose_course");
     let $chooseClass = $("#choose_class");
-    // 作业次数
     let $chooseHomework = $("#choose_homework");
+
+    let $scoreCounts = $("#score_counts");
+    let $deleteCounts = $("#delete_score_counts");
 
     $.post(
         './queryCurrentTime.do',
@@ -173,12 +175,73 @@ $(function () {
         height: "25px",
     });
 
+    // 查询现在已经有的实现次数
+    let data_count = {};
+
+    let getData = function () {
+
+        // 延时0.5秒, 保证查询成功
+        return new Promise(function (success) {
+            setTimeout(function () {
+                data_count = {
+                    termId: term_Id,
+                    courseId: $chooseCourse.val(),
+                    classId: $chooseClass.val()
+                };
+
+                success(data_count);
+
+            }, 300);
+        })
+    };
+
+    let queryScoreCounts = function (data) {
+
+        return new Promise(function (success, error) {
+            $.post(
+                './queryScoreCounts.do',
+                {
+                    data: JSON.stringify(data)
+                },
+                function (rtn) {
+
+                    if (rtn.status === 'success') {
+                        success(rtn.data)
+
+                    } else {
+                        error(rtn.msg)
+                    }
+                }
+            )
+        });
+    };
+
+
+    let createCountInfo = function () {
+
+        getData().then(function (data) {
+            return queryScoreCounts(data);
+
+        }).then(function (rtn) {
+
+            $("#scount").text(rtn.length);
+            $createDropDownList(rtn, 'score_counts');
+            $createDropDownList(rtn, 'delete_score_counts');
+
+        }, function (msg) {
+            $bs.error(msg);
+
+        });
+    }
+
     var search = function () {
 
         if (!query_flag) {
             return;
         }
         query_flag = false;
+
+        createCountInfo();
 
         var data = {
             teaNo: teacher["tea_no"],
@@ -334,5 +397,69 @@ $(function () {
             search();
         }
     });
+
+    let $resetScore = $("#reset_score");
+    let $delete_score = $("#delete_score");
+    let $reset_sub = $("#reset_sub");
+    let $reset_cancel = $("#reset_cancel");
+    let $delete_sub = $("#delete_sub");
+    let $delete_cancel = $("#delete_cancel");
+
+
+    let $resetWin = $("#resetWin");
+    let $deleteWin = $("#deleteWin");
+
+    $resetScore.unbind('click').click(function () {
+        $resetWin.modal('show');
+    });
+
+    $delete_score.unbind('click').click(function () {
+        $deleteWin.modal('show');
+    });
+
+    $reset_sub.unbind('click').click(function () {
+        // 重置次数
+        data_count.windex = $scoreCounts.val();
+
+        $.post(
+            './resetScore.do',
+            {
+                data: JSON.stringify(data_count)
+            },
+            function (rtn) {
+                $reset_cancel.click();
+
+                if (rtn.status === 'success') {
+                    $bs.success(rtn.msg)
+                } else {
+                    $bs.error(rtn.msg)
+                }
+            }
+        )
+    });
+
+    $delete_sub.unbind('click').click(function () {
+        // 重置次数
+        data_count.windex = $deleteCounts.val();
+
+        $.post(
+            './deleteScore.do',
+            {
+                data: JSON.stringify(data_count)
+            },
+            function (rtn) {
+                $delete_cancel.click();
+
+                if (rtn.status === 'success') {
+                    $bs.success(rtn.msg)
+                    createCountInfo();
+
+                } else {
+                    $bs.error(rtn.msg)
+                }
+            }
+        )
+    });
+
 });
 
