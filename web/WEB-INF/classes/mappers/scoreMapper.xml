@@ -65,4 +65,14 @@
         SET final_remark = #{remark}
         WHERE final_id = #{finalId} AND final_stu_id = #{stuNo}
     </update>
+
+    <update id="resetScore" parameterType="string">
+
+        UPDATE sams_finalgrade
+        SET
+            final_exam_score = NULL,
+            final_score      = NULL,
+            final_remark     = NULL
+        WHERE final_id = #{0}
+    </update>
 </mapper>

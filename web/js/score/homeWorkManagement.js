@@ -31,6 +31,12 @@ $(function () {
 
     var query_flag = true;
 
+    let $chooseTerm = $("#chooseTerms");
+    let $chooseCourse = $("#choose_course");
+    let $chooseClass = $("#choose_class");
+    // 作业次数
+    let $chooseHomework = $("#choose_homework");
+
     $.post(
         './queryCurrentTime.do',
         function (rtn) {
@@ -48,7 +54,7 @@ $(function () {
             './queryAllTerms.do',
             function (rtn) {
                 if (rtn) {
-                    $("#chooseTerms").jqxDropDownList({
+                    $chooseTerm.jqxDropDownList({
                         source: rtn,
                         selectedIndex: 0,
                         width: '170',
@@ -68,8 +74,8 @@ $(function () {
 
     $("#termSub").click(function () {
         var ct = store.getItem('currentTime');
-        var value = $("#chooseTerms").val();
-        var text = $("#chooseTerms").text();
+        var value = $chooseTerm.val();
+        var text = $chooseTerm.text();
 
         if (ct === text) {
             term_info.showChangeClass = false;
@@ -97,14 +103,13 @@ $(function () {
     };
 
 
-    var $choose_course = $("#choose_course");
     var createCourse = function () {
         $.when(
             $.post(
                 "./queryCoursesByTeacherIdAndTerm.do",
                 queryCourseData,
                 function (rtn) {
-                    $choose_course.jqxDropDownList({
+                    $chooseCourse.jqxDropDownList({
                         placeHolder: "选择课程",
                         source: rtn,
                         selectedIndex: 0,
@@ -126,12 +131,12 @@ $(function () {
     };
 
     // 当课程发生改变的时候，班级也需要进行改变
-    $choose_course.on("change", function () {
+    $chooseCourse.on("change", function () {
         createClass();
     });
 
     function createClass() {
-        var courseId = $("#choose_course").val();
+        var courseId = $chooseCourse.val();
         $.post(
             "./queryClasses.do",
             {
@@ -140,7 +145,7 @@ $(function () {
                 courseId: courseId
             },
             function (rtn) {
-                $("#choose_class").jqxDropDownList({
+                $chooseClass.jqxDropDownList({
                     placeHolder: "选择班级",
                     source: rtn,
                     selectedIndex: 0,
@@ -156,9 +161,6 @@ $(function () {
     }
 
     createCourse();
-
-    // 作业次数
-    var $chooseHomework = $("#choose_homework");
 
     var homework_count = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -177,9 +179,6 @@ $(function () {
             return;
         }
         query_flag = false;
-
-        var $chooseCourse = $("#choose_course");
-        var $chooseClass = $("#choose_class");
 
         var data = {
             teaNo: teacher["tea_no"],

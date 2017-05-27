@@ -79,12 +79,20 @@
                                         <td style="padding-left: 10px;">
                                             <a href="#" id="reset_score">重置分数</a>
                                         </td>
+                                        <td class="lb"></td>
+                                        <td style="padding-left: 10px;">
+                                            <a href="#" id="delete_score">删除次数</a>
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                     </div>
-
+                    <div class="text-left" style="margin-top: -20px; font-size: 12px;">
+                        <strong> 系统中已有 </strong>
+                        <span id="scount" style="color: red">2</span>
+                        <strong> 次平时成绩记录,&nbsp;选择次数后搜索新增该次记录 </strong>
+                    </div>
                     <div class="row" id="gridTable">
                         <div class="col-md-12" id="dataTable-panel">
                             <%--表格区--%>

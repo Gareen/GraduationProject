@@ -52,14 +52,14 @@
             ex_score = #{score}
         </if>
         <if test="datafield == 're_score'">
-            re_score  = #{score}
+            re_score = #{score}
         </if>
     </sql>
 
     <update id="save" parameterType="java.util.Map">
         UPDATE sams_group_score SET
-            <include refid="datafield"/>
-            , score = #{result}
+        <include refid="datafield"/>
+        , score = #{result}
         WHERE
         group_id = #{groupId} AND group_num = #{groupNum} AND ex_index = #{exIndex}
     </update>
@@ -69,7 +69,7 @@
     </delete>
 
     <select id="queryScoreCount" parameterType="string" resultType="java.util.HashMap">
-        select t.ex_index AS counts
+        SELECT t.ex_index AS counts
         FROM sams_group_score t
         WHERE t.group_id = #{0}
         GROUP BY t.ex_index
