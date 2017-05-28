@@ -15,4 +15,8 @@ public class LoggerAspect {
         System.out.println("end log:" + joinPoint.getSignature().getName());
         return object;
     }
+
+    public void before() {
+        System.out.println("before");
+    }
 }

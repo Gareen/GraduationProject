@@ -21,7 +21,14 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
 
-    <!--配置AOP-->
+    <bean id="log" class="cn.sams.aspect.LoggerAspect"/>
 
+    <!--配置AOP-->
+    <aop:config>
+        <aop:aspect id="loggerAspect" ref="log">
+            <aop:pointcut id="logPointcut" expression="execution(* cn.sams.aspect.LoggerAspect.*(..))"/>
+            <aop:before method="before" pointcut-ref="logPointcut"/>
+        </aop:aspect>
+    </aop:config>
 
 </beans>

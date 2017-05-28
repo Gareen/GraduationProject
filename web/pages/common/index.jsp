@@ -13,8 +13,12 @@
 <div id="view-top">
 
   <div class="aiis fl">
-    <%--<a href="#"><span class="glyphicon glyphicon-home"></span></a>--%>
-    <span class="glyphicon glyphicon-home"></span>
+      <%--<a href="#"></a>--%>
+
+      <a href="../../common/welcome/index.do" title="跳转到首页">
+          <span class="glyphicon glyphicon-home"></span>
+      </a>
+
   </div>
 
   <div class="fl topbar-nav">
